@@ -14,7 +14,7 @@ public class Deck {
     
             for (String colour : cardColours) {
                 for(int i = 0; i <= 10; i++){
-                    Card cardToBeAdded = new Card(i, colour);
+                    Card cardToBeAdded = new Card(colour, i);
                     cardDeck.add(cardToBeAdded);
     
                 }

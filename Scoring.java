@@ -3,6 +3,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+
 public class Scoring {
 
     public static void calculateScores(ArrayList<Player> players, boolean isTwoPlayerGame) {
@@ -41,38 +42,38 @@ public class Scoring {
             }
         }
 
-        // Determine majority for each color, I used HashMaps cos its much more efficient than counting with ArrayList and a switch statement
-        Map<String, Integer> colorMajorities = new HashMap<>();
+        // Determine majority for each colour, I used HashMaps cos its much more efficient than counting with ArrayList and a switch statement
+        Map<String, Integer> colourMajorities = new HashMap<>();
         for (Player player : players) {
-            Map<String, Integer> colorCounts = new HashMap<>();
+            Map<String, Integer> colourCounts = new HashMap<>();
 
-            // Count cards of each color for this player
+            // Count cards of each colour for this player
             for (Card card : player.getCardsInFront()) {
-                String color = card.getColor();
-                // Get the current count of this color from the map
-                int currentCount = colorCounts.getOrDefault(color, 0);
+                String colour = card.getColour();
+                // Get the current count of this colour from the map
+                int currentCount = colourCounts.getOrDefault(colour, 0);
                 int newCount = currentCount + 1;
                 // Update the map with the new count
-                colorCounts.put(color, newCount);
+                colourCounts.put(colour, newCount);
             }
 
-            for (String color : colorCounts.keySet()) {
-                // Checks if color not in colorMajorities or if new count is greater
-                if (!colorMajorities.containsKey(color) || colorCounts.get(color) > colorMajorities.get(color)) {
-                    colorMajorities.put(color, colorCounts.get(color));
+            for (String colour : colourCounts.keySet()) {
+                // Checks if colour not in colourMajorities or if new count is greater
+                if (!colourMajorities.containsKey(colour) || colourCounts.get(colour) > colourMajorities.get(colour)) {
+                    colourMajorities.put(colour, colourCounts.get(colour));
                 }
             }
         }
 
         // Flip majority cards face down
         for (Player player : players) {
-            for (String color : colorMajorities.keySet()) {
-                int majorityCount = colorMajorities.get(color);
+            for (String colour : colourMajorities.keySet()) {
+                int majorityCount = colourMajorities.get(colour);
                 int countForPlayer = 0;
 
-                // Count how many cards of this color the player has
+                // Count how many cards of this colour the player has
                 for (Card card : player.getCardsInFront()) {
-                    if (card.getColor().equals(color)) {
+                    if (card.getColour().equals(colour)) {
                         countForPlayer++;
                     }
                 }
@@ -83,9 +84,9 @@ public class Scoring {
                         : countForPlayer == majorityCount;   // Multi-player rule: just find majority
 
                 if (hasMajority) {
-                    // Flip all cards of this color face down
+                    // Flip all cards of this colour face down
                     for (Card card : player.getCardsInFront()) {
-                        if (card.getColor().equals(color)) {
+                        if (card.getColour().equals(colour)) {
                             card.setFaceDown(true);
                         }
                     }
@@ -135,76 +136,3 @@ public class Scoring {
 }
 
 
-// Class methods that I need:
-class Card {
-    private String color;
-    private int value;
-    private boolean faceDown;
-
-    public Card(String color, int value) {
-        this.color = color;
-        this.value = value;
-        this.faceDown = false;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public int getValue() {
-        return value;
-    }
-
-    public boolean isFaceDown() {
-        return faceDown;
-    }
-
-    public void setFaceDown(boolean faceDown) {
-        this.faceDown = faceDown;
-    }
-
-    public String getDetails() {
-        return "Card [Color: " + color + ", Value: " + value + "]";
-    }
-}
-
-class Player {
-    private String name;
-    private ArrayList<Card> cardsInFront;
-    private ArrayList<Card> cardsInHand;
-    private int score;
-
-    public Player(String name) {
-        this.name = name;
-        this.cardsInFront = new ArrayList<>();
-        this.cardsInHand = new ArrayList<>();
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public ArrayList<Card> getCardsInFront() {
-        return cardsInFront;
-    }
-
-    public ArrayList<Card> getCardsInHand() {
-        return cardsInHand;
-    }
-
-    public void addCardToFront(Card card) {
-        cardsInFront.add(card);
-    }
-
-    public void addCardToHand(Card card) {
-        cardsInHand.add(card);
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-}

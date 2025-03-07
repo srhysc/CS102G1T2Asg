@@ -10,8 +10,8 @@ public class Parade {
     
    
 
-    public ArrayList<Card> addCard(){
-        paradeList.add(Deck.drawCard());
+    public ArrayList<Card> addCard(Card card){
+        paradeList.add(card);
         return paradeList;
     }
 

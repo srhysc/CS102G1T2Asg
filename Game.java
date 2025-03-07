@@ -47,20 +47,31 @@ public class Game {
         }
     }
 
-    public void playTurn() {
-        System.out.println("Starting Parade...");
+    public void initalizeGame(){
+        //shuffle deck 
 
-        // Shuffle deck and deal 5 cards to each player
+        deck.shuffle();
+
+        //deal each player 5 cards
         for (Player player : playerList) {
             for (int i = 0; i < 5; i++) {
                 player.addToHand(deck.drawCard());
             }
         }
 
+        //create parade 
         // Initialize parade row with 6 cards
         for (int i = 0; i < 6; i++) {
             Parade.addCard(deck.drawCard());
         }
+
+    }
+
+    public void playTurn() {
+        System.out.println("Starting Parade...");
+
+        initalizeGame();
+  
 
         boolean hasAllColours = false;
         String firstPlayerWithAllColours = null;
@@ -185,6 +196,10 @@ public class Game {
             int score = ScoringSystem.calculateScore(player);
             System.out.println(player.getName() + "1's final score: " + score);
         }
+
+
+        //bring back to main menu 
+        
     }
 
     public static void main(String[] args) {

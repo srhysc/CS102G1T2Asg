@@ -112,14 +112,22 @@ public class Scoring {
             player.setScore(score);
             System.out.println(player.getName() + "'s total score: " + score);
 
+            // winner is the one with the lower score or if equal score smaller hand
             if (score < lowestScore || (score == lowestScore && winner != null && 
                                         player.getCardsInFront().size() < winner.getCardsInFront().size())) {
                 lowestScore = score; // Measure size of hand
                 winner = player;
+            } else if (score == lowestScore && winner != null && player.getCardsInFront().size() == winner.getCardsInFront().size()) {
+                winner = null;
             }
         }
 
-        System.out.println("The winner is: " + winner.getName() + " with a score of " + winner.getScore());
+        if (winner != null) {
+            System.out.println("The winner is: " + winner.getName() + " with a score of " + winner.getScore());    
+        } else {
+            System.out.println("THERE IS NO WINNER HAHAHAHA, YOU ALL LOST!");
+        }
+        
     }
 
     private static int getValidCardIndex(Scanner sc, int maxSize, String prompt) {

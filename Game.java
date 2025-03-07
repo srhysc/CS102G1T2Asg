@@ -14,8 +14,11 @@ public class Game {
 
     }
 
-    public static void checkGameEnd() {
+    public static void checkGameEnd(boolean allColoursCollected) {
+        if (allColoursCollected || ) {
+            this.playTurn();
 
+        }
     }
 
     public static void main(String[] args) {

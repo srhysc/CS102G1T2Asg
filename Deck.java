@@ -1,50 +1,41 @@
 import java.util.*;
 
 public class Deck {
-    public static ArrayList<Card> cardDeck = new ArrayList<>();
-    
-        public ArrayList<Card> generateDeck(){
+    private List<Card> cards;
+
+    public Deck(){
     
             //deck requirements are 
             //66 cards
             //6 colours with values ranging from 0 to 10
     
-            String[] cardColours = {"red","blue","purple","green","grey","orange"};    
-            
+            String[] cardColours = {"Red ","Blue ","Purple ","Green ","Grey ","Orange "};    
+            cards = new ArrayList<>();
     
             for (String colour : cardColours) {
-                for(int i = 0; i <= 10; i++){
+                for(int i = 0; i <= 3; i++){
                     Card cardToBeAdded = new Card(colour, i);
-                    cardDeck.add(cardToBeAdded);
+                    cards.add(cardToBeAdded);
     
                 }
             }
-    
-            return cardDeck; 
+            shuffle();
         }
-    
-    
-        public ArrayList<Card> shuffleDeck(){
-    
-            Collections.shuffle(cardDeck);
-        
-            return cardDeck;
-        }
-    
-    
-        //this one idk how we want to handle cos its either we choose by index or card or smth. if not
-        //there needs to be a system to check if the drawed card is valid fromt he current parade
-        //unless this is str into the parade 
-        public static Card drawCard(){
-    
-        //remove the card from the deck and return the card
-        Card cardToAdd = cardDeck.get(0);
-        cardDeck.remove(cardToAdd);
 
-        return cardToAdd;
+    public void shuffle() {
+        Collections.shuffle(cards);
     }
 
+    public Card drawCard() {
+        return cards.isEmpty() ? null : cards.remove(0);
+    }
 
+    public int getSize(){
+        return this.cards.size();
+    }
 
-
+    // ✅ Fix: Added isEmpty() method
+    public boolean isEmpty() {
+        return cards.isEmpty();
+    }
 }

@@ -39,4 +39,8 @@ public class Card{
         return "Card [Color: " + colour + ", Value: " + value + "]";
     }
 
+    @Override
+    public String toString() {
+        return colour + value;
+    }
 }

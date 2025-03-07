@@ -1,33 +1,37 @@
-import java.util.ArrayList;
+import java.util.*;
 
 public class Parade {
+    public static ArrayList<Card> paradeRow = new ArrayList<>();
 
-    ArrayList<Card> paradeList = new ArrayList<>();
+    // public Parade(ArrayArrayList<Card> paradeList) {
+    //     this.paradeList = paradeList;
+    // }
 
-    public Parade(ArrayList<Card> paradeList) {
-        this.paradeList = paradeList;
-    }
-    
-   
-
-    public ArrayList<Card> addCard(){
-        paradeList.add(Deck.drawCard());
-        return paradeList;
+    public static void addCard(Card card) {
+        paradeRow.add(card);
     }
 
-    public ArrayList<Card> removeCard(ArrayList<Card> cardsToBeRemoved){
-        for (Card card : cardsToBeRemoved) {
-            paradeList.remove(card);
-       
+    public static ArrayList<Card> removeCards(Card playedCard) {
+
+        int idxLimit = paradeRow.size() - playedCard.getValue();
+        ArrayList<Card> remainingCards = new ArrayList<>();
+        if (idxLimit > 0) {
+            remainingCards = new ArrayList<>(paradeRow.subList(0, idxLimit));
         }
-        return paradeList;
+
+        ArrayList<Card> takenCards = new ArrayList<>();
+        for (Card card : remainingCards) {
+            if (card.getColour().equals(playedCard.getColour()) || card.getValue() <= playedCard.getValue()) {
+                takenCards.add(card);
+            }
+        }
+        paradeRow.removeAll(takenCards);
+
+        return takenCards;
     }
 
-
-
-    public ArrayList<Card> getParadeList() {
-        return paradeList;
+    public static ArrayList<Card> getParadeRow() {
+        return paradeRow;
     }
-
 
 }

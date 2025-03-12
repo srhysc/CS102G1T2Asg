@@ -8,20 +8,149 @@ public class Game {
     private Scanner scanner;
 
     public Game(ArrayList<Player> playerList) {
-        this.playerList = playerList;
+        Game.playerList = playerList;
         this.deck = new Deck();
         // this.parade = Parade.Parade();
         this.turnManager = new TurnManager(playerList.size());
         this.scanner = new Scanner(System.in);
     }
 
+    public void printMenu() {
+        System.out.println("===== Menu =====");
+        System.out.println("1. Start Game");
+        System.out.println("2. Settings");
+        System.out.println("3. Help");
+        System.out.print("Enter your choice: ");
+        int userChoice = 0;
+        Scanner sc = new Scanner(System.in);
+    
+        while (!(userChoice >= 1 && userChoice <= 3)) {
+            try {
+                String userInput = sc.nextLine();
+                userChoice = Integer.parseInt(userInput);
+                if (userChoice < 1 || userChoice > 3) {
+                    System.out.println("Invalid option ! Please choose again");
+                }
+
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid option ! Please choose again");
+            } 
+
+        }
+
+        switch (userChoice) {
+            case (1):
+                System.out.println();
+                startGame();
+                break;
+        }
+    }
+
+    public void selectHumanPlayers() {
+        
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Select the number of players (from 2 to 6): ");
+        int noOfPlayers = 0;
+
+        while (!(noOfPlayers >= 2 && noOfPlayers <= 6)) {
+            try {
+                String numberChosen = sc.nextLine();
+                noOfPlayers = Integer.parseInt(numberChosen);
+                if (noOfPlayers < 2) {
+                    System.out.println("Too little players, unable to start game ! Please choose again");
+                } else if (noOfPlayers > 6) {
+                    System.out.println("Too many players, unable to start game ! Please choose again");
+                }
+
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid option ! Please choose again");
+            } 
+
+        }
+
+        playerList = new ArrayList<>();
+        int currentNumber = 1;
+        while (noOfPlayers > 0) {
+            System.out.print("Player " + currentNumber + "'s name: ");
+            String playerNames = sc.nextLine();
+            playerList.add(new Player(playerNames));
+            currentNumber++;
+            noOfPlayers--;
+        }
+        
+        
+        turnManager = new TurnManager(playerList.size());
+
+        playTurn();
+
+    }
+
+    public void aiDifficultyLevel() {
+        System.out.print("===== Difficulty Level =====");
+        System.out.println("1. Easy");
+        System.out.println("2. Intermediate");
+        System.out.println("3. Difficult");
+        Scanner sc = new Scanner(System.in);
+        int levelNo = 0;
+
+        while (!(levelNo >= 1 && levelNo <= 3)) {
+            try {
+                String chosenLevelNo = sc.nextLine();
+                levelNo = Integer.parseInt(chosenLevelNo);
+                if (levelNo < 1 || levelNo > 3) {
+                    System.out.println("Invalid difficulty level ! Please choose again");
+                }
+
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid difficulty level ! Please choose again");
+            }
+
+        }
+        
+    }
+
+    public void selectAiPlayers() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Your name: ");
+        String Human = sc.nextLine();
+        System.out.print("Select the number of AI players (from 1 to 5): ");
+        int noOfAIPlayers = 0;
+
+        while (!(noOfAIPlayers >= 1 && noOfAIPlayers <= 5)) {
+            try {
+                String noOfAIPlayersChosen = sc.nextLine();
+                noOfAIPlayers = Integer.parseInt(noOfAIPlayersChosen);
+                if (noOfAIPlayers < 1) {
+                    System.out.println("Too little AI players, unable to start game ! Please choose again");
+                } else if (noOfAIPlayers > 5) {
+                    System.out.println("Too many AI players, unable to start game ! Please choose again");
+                }
+               
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid option ! Please choose again");
+            } 
+
+        }
+
+        playerList = new ArrayList<>();
+        int currentNumber = 1;
+        while (noOfAIPlayers > 0) {
+            String aiName = "CPU" + Integer.toString(currentNumber);
+            // playerList.add(new ComputerPlayer(aiName));
+            currentNumber++;
+            noOfAIPlayers--;
+        }
+
+        System.out.println(playerList);
+        playTurn();
+    }
+
     public void startGame() {
-        System.out.println("Game styles");
-        System.out.println("-----------");
-        System.out.println("Local Play (1)");
-        System.out.println("Play vs AI (2)");
-        System.out.println("Play Online (3)");
-        System.out.println("Choose game style:");
+        System.out.println("===== Game styles =====");
+        System.out.println("1. Local Play");
+        System.out.println("2. Play vs AI");
+        System.out.println("3. Play Online");
+        System.out.print("Choose game style:");
         int styleNumber = 0;
         Scanner sc1 = new Scanner(System.in);
 
@@ -42,10 +171,16 @@ public class Game {
         switch (styleNumber) {
             case (1):
                 System.out.println();
-                playTurn();
+                selectHumanPlayers();
                 break;
+            case(2):
+                System.out.println();
+                aiDifficultyLevel();
         }
     }
+
+    
+
 
     public void initalizeGame(){
         //shuffle deck 
@@ -64,7 +199,7 @@ public class Game {
         for (int i = 0; i < 6; i++) {
             Parade.addCard(deck.drawCard());
         }
-
+        System.out.println("game initalized");
     }
 
     public void playTurn() {
@@ -174,17 +309,17 @@ public class Game {
         boolean gameEnd = false;
 
         // for (Player player : playerList) {
-        // if (player.allColoursCollected()) {
-        // gameEnd = true;
-        // break;
+        //     if (player.allColoursCollected()) {
+        //     gameEnd = true;
+        //     break;
         // }
         // }
 
         // if (gameEnd || deck.getCards() == 0) {
-        // System.out.println("This is the last round!");
-        // playTurn(); // Last Round to end up with 4 cards, I need to see how the play
-        // turn is being handled
-        // return true;
+        //     System.out.println("This is the last round!");
+        //     playTurn(); // Last Round to end up with 4 cards, I need to see how the play
+        //     // turn is being handled
+        //     return true;
         // }
 
         return false;
@@ -200,15 +335,19 @@ public class Game {
 
         //bring back to main menu 
         
+        printMenu();
+        
     }
 
     public static void main(String[] args) {
-        ArrayList<Player> playerList = new ArrayList<>();
-        playerList.add(new Player("Alice"));
-        playerList.add(new Player("Bob"));
-        // playerList.add(new Player("Charlie"));
+        // ArrayList<Player> playerList = new ArrayList<>();
+        // playerList.add(new Player("Alice"));
+        // playerList.add(new Player("Bob"));
+        // // playerList.add(new Player("Charlie"));
 
         Game game = new Game(playerList);
-        game.startGame();
+       
+        game.printMenu();
+
     }
 }

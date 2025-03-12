@@ -19,6 +19,9 @@ public class ComputerPlayerTest {
         playerList.add(new ComputerPlayer("CPU 1"));
         playerList.add(new ComputerPlayer("CPU 2"));
 
+        Game game = new Game(playerList);
+        game.printMenu();
+
         turnManager = new TurnManager(playerList.size());
 
         // Set game difficulty for AI

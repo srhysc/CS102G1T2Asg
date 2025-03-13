@@ -3,17 +3,10 @@ import java.util.*;
 public class ComputerPlayer extends Player {
 
     private static Difficulty gameDifficulty;
-    private Random random; 
 
     public ComputerPlayer(String name) {
         super(name);
-        this.random = new Random(); 
     }
-
-    // public ComputerPlayer(String name, ArrayList<Card> hand) {
-    //     super(name);
-       
-    // }
 
     public static void setGameDifficulty(Difficulty difficulty) {
         gameDifficulty = difficulty; 
@@ -23,7 +16,6 @@ public class ComputerPlayer extends Player {
         return gameDifficulty; 
     }
 
-    //VOID will probably become smth else depending on how we confirm each round will play
     public void playComputerMove(ArrayList <Card> parade){
         if (super.getHand().isEmpty()) {
             return; 
@@ -31,15 +23,26 @@ public class ComputerPlayer extends Player {
 
         Card chosenCard; 
         if (gameDifficulty == Difficulty.EASY) {
-            chosenCard = getHand().get(random.nextInt(getHand().size())); 
-        } else {
+            chosenCard = chooseRandomCard();
+        } else if (gameDifficulty == Difficulty.HARD) {
             chosenCard = chooseBestCard(); 
+        } else {
+            Random r = new Random(); 
+            boolean randomChoice = r.nextBoolean(); 
+            if (randomChoice) {
+                chosenCard = chooseRandomCard();
+            } else {
+                chosenCard = chooseBestCard(); 
+            }
         }
-        // edit later to add medium 
-
         getHand().remove(chosenCard);
         parade.add(chosenCard); 
         System.out.println(getName() + "played:" + chosenCard);
+    }
+
+    public Card chooseRandomCard() {
+        Random random = new Random(); 
+        return getHand().get(random.nextInt(getHand().size())); 
     }
 
     public Card chooseBestCard() {

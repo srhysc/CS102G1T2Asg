@@ -86,10 +86,11 @@ public class Game {
     }
 
     public void aiDifficultyLevel() {
-        System.out.print("===== Difficulty Level =====");
+        System.out.println("===== Difficulty Level =====");
         System.out.println("1. Easy");
         System.out.println("2. Intermediate");
         System.out.println("3. Difficult");
+        System.out.print("Choose Difficulty Level: ");
         Scanner sc = new Scanner(System.in);
         int levelNo = 0;
 
@@ -150,7 +151,7 @@ public class Game {
         System.out.println("1. Local Play");
         System.out.println("2. Play vs AI");
         System.out.println("3. Play Online");
-        System.out.print("Choose game style:");
+        System.out.print("Choose game style: ");
         int styleNumber = 0;
         Scanner sc1 = new Scanner(System.in);
 

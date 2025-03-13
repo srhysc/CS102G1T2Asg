@@ -13,7 +13,7 @@ public class Deck {
             cards = new ArrayList<>();
     
             for (String colour : cardColours) {
-                for(int i = 0; i <= 3; i++){
+                for(int i = 0; i <= 10; i++){
                     Card cardToBeAdded = new Card(colour, i);
                     cards.add(cardToBeAdded);
     

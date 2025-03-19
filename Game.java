@@ -6,6 +6,7 @@ public class Game {
     private Parade parade;
     private TurnManager turnManager;
     private Scanner scanner;
+    private boolean online = false;
 
     public Game(ArrayList<Player> playerList) {
         Game.playerList = playerList;
@@ -177,10 +178,57 @@ public class Game {
             case(2):
                 System.out.println();
                 aiDifficultyLevel();
+            case(3):
+                multiplayerMenu();
+                System.out.println();
+                
         }
     }
 
-    
+    public void multiplayerMenu(){
+
+        //chose between host or client
+        System.out.println("===== Host or Join on LAN =====");
+        System.out.println("1. Host");
+        System.out.println("2. Join");
+        System.out.print("Choose option: ");
+
+        int menuChoice = 0;
+        Scanner sc1 = new Scanner(System.in);
+
+        while (!(menuChoice >= 1 && menuChoice <= 2)) {
+            try {
+                String chosenStyle = sc1.nextLine();
+                menuChoice = Integer.parseInt(chosenStyle);
+                if (menuChoice < 1 || menuChoice > 2) {
+                    System.out.println("Invalid game style! Please choose again");
+                }
+
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid game style ! Please choose again");
+            }
+
+        }
+
+        switch (menuChoice) {
+            case (1): //run host game server 
+                System.out.println();
+                this.online = true;
+                
+                new GameServer().startServer(); //give the entire game object
+                break;
+            case(2): //run client game server
+                this.online = true;
+                System.out.println();
+                new GameClient().startClient();
+                //String[] arguments = {"localhost", "12345"};
+                //setUpClient(arguments);
+                
+                
+                //new GameClient().startClient(arguments);
+        }
+
+    }
 
 
     public void initalizeGame(){

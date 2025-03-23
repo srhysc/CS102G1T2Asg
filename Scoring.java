@@ -12,7 +12,7 @@ public class Scoring {
         // Allow each player to discard two cards
         for (Player player : players) {
             System.out.println(player.getName() + ", here are your cards in hand:");
-            ArrayList<Card> hand = player.getCardsInHand();
+            ArrayList<Card> hand = player.getHand();
             for (int i = 0; i < hand.size(); i++) {
                 System.out.println((i + 1) + ": " + hand.get(i).getDetails());
             }
@@ -38,7 +38,7 @@ public class Scoring {
 
             // Add remaining cards to front
             while (!hand.isEmpty()) {
-                player.addCardToFront(hand.remove(0));
+                player.addToHand(hand.remove(0));
             }
         }
 
@@ -48,7 +48,7 @@ public class Scoring {
             Map<String, Integer> colourCounts = new HashMap<>();
 
             // Count cards of each colour for this player
-            for (Card card : player.getCardsInFront()) {
+            for (Card card : player.getHand()) {
                 String colour = card.getColour();
                 // Get the current count of this colour from the map
                 int currentCount = colourCounts.getOrDefault(colour, 0);
@@ -72,7 +72,7 @@ public class Scoring {
                 int countForPlayer = 0;
 
                 // Count how many cards of this colour the player has
-                for (Card card : player.getCardsInFront()) {
+                for (Card card : player.getHand()) {
                     if (card.getColour().equals(colour)) {
                         countForPlayer++;
                     }
@@ -85,7 +85,7 @@ public class Scoring {
 
                 if (hasMajority) {
                     // Flip all cards of this colour face down
-                    for (Card card : player.getCardsInFront()) {
+                    for (Card card : player.getHand()) {
                         if (card.getColour().equals(colour)) {
                             card.setFaceDown(true);
                         }
@@ -101,7 +101,7 @@ public class Scoring {
         for (Player player : players) {
             int score = 0;
 
-            for (Card card : player.getCardsInFront()) {
+            for (Card card : player.getHand()) {
                 if (card.isFaceDown()) {
                     score += 1; // Down cards count as 1 point
                 } else {
@@ -114,10 +114,10 @@ public class Scoring {
 
             // winner is the one with the lower score or if equal score smaller hand
             if (score < lowestScore || (score == lowestScore && winner != null && 
-                                        player.getCardsInFront().size() < winner.getCardsInFront().size())) {
+                                        player.getHand().size() < winner.getHand().size())) {
                 lowestScore = score; // Measure size of hand
                 winner = player;
-            } else if (score == lowestScore && winner != null && player.getCardsInFront().size() == winner.getCardsInFront().size()) {
+            } else if (score == lowestScore && winner != null && player.getHand().size() == winner.getHand().size()) {
                 winner = null;
             }
         }

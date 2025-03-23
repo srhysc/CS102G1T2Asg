@@ -252,7 +252,7 @@ public class Game {
                 System.out.println();
                 this.online = true;
                 
-                new GameServer().startServer(); //give the entire game object
+                new GameServer().startServer(deck); //give the entire game object
                 break;
             case(2): //run client game server
                 this.online = true;

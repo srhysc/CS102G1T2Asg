@@ -1,4 +1,7 @@
+
+import java.io.*;
 import java.util.*;
+import java.net.*;
 
 public class Player {
     private String name;
@@ -6,10 +9,23 @@ public class Player {
     private ArrayList<Card> collected;
     private int score;
 
+    //for online
+    private ObjectOutputStream out;
+    private ObjectInputStream in;
+
+
     public Player(String name) {
         this.name = name;
         this.hand = new ArrayList<>();
         this.collected = new ArrayList<>();
+    }
+
+    public Player(String name, ObjectOutputStream output, ObjectInputStream input){
+        this.name = name;
+        this.hand = new ArrayList<>();
+        this.collected = new ArrayList<>();
+        this.out = output;
+        this.in = input;
     }
 
     public void addToHand(Card card) {
@@ -62,6 +78,16 @@ public class Player {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    
+
+    public ObjectOutputStream getOutputSteam() {
+        return out;
+    }
+
+    public ObjectInputStream getInputSteam() {
+        return in;
     }
 
     public boolean checkColours(){

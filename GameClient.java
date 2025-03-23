@@ -26,6 +26,37 @@ public class GameClient {
             out.flush();
             System.out.println("Connected to game server! Waiting for turns...");
 
+            while (true) {
+                try{
+                    Object serverMessage = in.readObject();
+                    if(serverMessage instanceof String){
+                        System.out.println("Server: " + serverMessage);
+                    }
+
+                    if (serverMessage.toString().equals(playerName)){
+                        System.out.println("its your turn!!");
+
+                        String testInput = sc.nextLine();
+
+                        //send move to server
+                        out.writeObject(testInput);
+                        out.flush();
+                        System.out.println("move sent");
+
+
+                    }
+                    else{
+                        System.out.println("its "  + playerName + " turn please wait");
+                    }
+                }
+                catch(ClassNotFoundException | EOFException e){
+                    System.out.println("Error reading data from server or server closed connection");
+                    break;
+                }
+            }
+
+
+
         }
         catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();

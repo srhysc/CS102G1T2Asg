@@ -1,10 +1,12 @@
 import java.io.*;
 import java.util.*;
+import java.net.*;
 
 
 public class GameLogic {
     
     private static Scanner sc = new Scanner(System.in);
+    private static BufferedReader stdIn =  new BufferedReader(new InputStreamReader(System.in));
 
     private static void initalizeGame(Deck deck, ArrayList<Player> playerList){
         //shuffle deck 
@@ -25,6 +27,114 @@ public class GameLogic {
         }
         System.out.println("game initalized");
     }
+
+    public static void playOnlineTurn(Deck deck, ArrayList<Player> playerList, TurnManager turnManager, boolean isTwoPlayerGame, List<ObjectOutputStream> outputs, List<ObjectInputStream> inputs, Scanner sc) {
+        initalizeGame(deck, playerList);
+
+        System.out.println("Starting Parade...");
+        boolean hasAllColours = false;
+        String firstPlayerWithAllColours = null;
+
+
+        System.out.println("Game begins! First player: " + playerList.get(0).getName());
+        Player currentPlayer = playerList.get(turnManager.getCurrentPlayer());
+        //to manage player disconnects
+        while(!GameServer.playersSockets.isEmpty()){
+            
+            try{
+                
+
+                //rotate turns 
+
+                //every turn send this set 
+                    // Current board to current player
+                    // friends boards to other players 
+
+
+                //player index 0 is alw the local host 
+
+                while (!deck.isEmpty()) {
+                    
+                    for (Player player : playerList){
+                        if(player.getOutputSteam() != null){
+                            ObjectOutputStream o = player.getOutputSteam();
+                            o.writeObject(currentPlayer.getName());  //test it is this guys turns
+                            o.flush();
+
+
+                            //so after this ^ all players will get a message of the current players name 
+                            //and will accordingly print it is "your turn" or someone elses turn 
+
+                            //will pause the code and wait for the input from the client side
+                            String inputChoice = (String) currentPlayer.getInputSteam().readObject();
+
+                            broadcastToAll(playerList, inputChoice);
+                            break;
+                            
+                        }
+                        else{//local
+                            
+                            String move = sc.nextLine();
+                            broadcastToAll(playerList, move);
+                            break;
+                            
+                        }
+                    }
+
+                    
+
+                    
+                    
+                    // Switch to next player
+                    turnManager.nextTurn();
+                    currentPlayer = playerList.get(turnManager.getCurrentPlayer());
+                    
+                    continue;
+                }
+
+
+            }
+            //manage player disconnects
+            catch (IOException | ClassNotFoundException e) {
+                System.out.println("Player " + currentPlayer.getName() + " disconnected.");
+
+                // Remove disconnected player
+                int currentPlayerIndex = playerList.indexOf(currentPlayer);
+                if (currentPlayerIndex > 0) { // Don't remove the server
+                    GameServer.playersSockets.remove(currentPlayerIndex);
+                    outputs.remove(currentPlayerIndex);
+                    inputs.remove(currentPlayerIndex);
+                    playerList.remove(currentPlayerIndex);
+                }
+
+                // If no players left, end the game
+                if (GameServer.playersSockets.isEmpty()) {
+                    System.out.println("All players disconnected. Ending game.");
+                    break;
+                }
+
+                // Adjust current player index
+                turnManager.nextTurn();
+                currentPlayer = playerList.get(turnManager.getCurrentPlayer());
+                //currentPlayer = currentPlayer % (GameServer.playersSockets.size() + 1);
+            }
+            
+
+        }
+
+    }
+
+    public static void broadcastToAll(ArrayList<Player> playerList, String message) throws IOException{
+            //broadcast move to all players
+            for(Player player : playerList){
+                if(player.getOutputSteam() != null){
+                    ObjectOutputStream o = player.getOutputSteam();
+                    o.writeObject(message);  //some guys move 
+                    o.flush();
+                }
+            }
+    }
+   
 
     public static void playTurn(Deck deck, ArrayList<Player> playerList, TurnManager turnManager, boolean isTwoPlayerGame) {
         System.out.println("Starting Parade...");

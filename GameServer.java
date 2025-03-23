@@ -6,19 +6,20 @@ import java.util.*;
 public class GameServer {
     
     private static final int PORT = 1234;
-    private static List<Socket> playersSockets = new ArrayList<>();
+    static List<Socket> playersSockets = new ArrayList<>();
     ArrayList<Player> multiplayerPlayerList = new ArrayList<>();
     private static List<ObjectOutputStream> outputs = new ArrayList<>();
     private static List<ObjectInputStream> inputs = new ArrayList<>();
+    private boolean isTwoPlayerGame = false;
 
-    public void startServer(){
-
-        try (ServerSocket serverSocket = new ServerSocket(PORT); Scanner sc = new Scanner(System.in);) {
+    public void startServer(Deck deck){
+        Scanner sc = new Scanner(System.in);
+        try (ServerSocket serverSocket = new ServerSocket(PORT); ) {
             
             System.out.println("Server started on port ");
             System.out.println("Please enter your name");
             String ServerPLayerName = sc.nextLine();
-            multiplayerPlayerList.add(new Player(ServerPLayerName));
+            multiplayerPlayerList.add(new Player(ServerPLayerName, null, null));
 
             //menu for server
             clearConsole();
@@ -39,7 +40,7 @@ public class GameServer {
                     out.flush();
             
                     String playerName = (String) in.readObject();
-                    Player newPlayer = new Player(playerName);
+                    Player newPlayer = new Player(playerName, out, in);
             
                     // Add the new player to the list
                     multiplayerPlayerList.add(newPlayer);
@@ -56,14 +57,20 @@ public class GameServer {
                 confirmLobby = displayLobby(multiplayerPlayerList, sc);
             }
                 
-            
-            
-
 
         } 
         catch (IOException | ClassNotFoundException e) {
             System.out.println("Server error: " + e.getMessage());
         }
+
+        //done with players and confirmed lobby 
+        TurnManager turnManager = new TurnManager(multiplayerPlayerList.size());
+
+        if (multiplayerPlayerList.size() > 1){
+            isTwoPlayerGame = true;
+        }
+
+        GameLogic.playOnlineTurn(deck, multiplayerPlayerList, turnManager, isTwoPlayerGame, outputs, inputs, sc );
 
 
 

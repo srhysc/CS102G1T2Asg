@@ -101,7 +101,8 @@ public class Game {
         
         turnManager = new TurnManager(playerList.size());
 
-        playTurn();
+        GameLogic.playTurn(deck,playerList,turnManager,isTwoPlayerGame);
+       
 
     }
 
@@ -177,7 +178,7 @@ public class Game {
         }
 
         System.out.println(playerList);
-        playTurn();
+        GameLogic.playTurn(deck, playerList, turnManager, isTwoPlayerGame);
     }
 
     public void startGame() {
@@ -266,122 +267,6 @@ public class Game {
 
     }
 
-
-    public void initalizeGame(){
-        //shuffle deck 
-
-        deck.shuffle();
-
-        //deal each player 5 cards
-        for (Player player : playerList) {
-            for (int i = 0; i < 5; i++) {
-                player.addToHand(deck.drawCard());
-            }
-        }
-
-        //create parade 
-        // Initialize parade row with 6 cards
-        for (int i = 0; i < 6; i++) {
-            Parade.addCard(deck.drawCard());
-        }
-        System.out.println("game initalized");
-    }
-
-    public void playTurn() {
-        System.out.println("Starting Parade...");
-
-        initalizeGame();
-  
-
-        boolean hasAllColours = false;
-        String firstPlayerWithAllColours = null;
-
-        System.out.println("Game begins! First player: " + playerList.get(0).getName());
-        while (!deck.isEmpty()) {
-            Player currentPlayer = playerList.get(turnManager.getCurrentPlayer());
-            System.out.println("\n" + currentPlayer.getName() + "'s turn!");
-            System.out.println("Deck num : " + deck.getSize());
-            System.out.println("Parade: " + Parade.getParadeRow());
-            System.out.println("Collected Cards: " + currentPlayer.getCollected());
-            System.out.println("Your hand: " + currentPlayer.getHandWithIndex());
-
-            // Player chooses a card to play
-            System.out.print("Choose a card index (1-" + (currentPlayer.getHand().size()) + "): ");
-            int cardIndex = scanner.nextInt() - 1;
-            while (cardIndex < 0 || cardIndex > 4) {
-                System.out.println("Invalid card number");
-                System.out.print("Choose a card index (1-" + (currentPlayer.getHand().size()) + "): ");
-                cardIndex = scanner.nextInt() - 1;
-                System.out.println("Card index: " + cardIndex);
-            }
-            Card playedCard = currentPlayer.playCard(cardIndex);
-            ArrayList<Card> takenCards = new ArrayList<>(parade.removeCards(playedCard));
-            parade.addCard(playedCard);
-
-            // Resolve parade rules
-            currentPlayer.addToCollected(takenCards);
-            System.out.println("You took: " + takenCards);
-
-            // Draw a new card
-            currentPlayer.addToHand(deck.drawCard());
-
-            for (Player player : playerList) {
-                if (player.checkColours()) {
-                    hasAllColours = true;
-                    firstPlayerWithAllColours = player.getName();
-                    break;
-                }
-            }
-
-            if (hasAllColours) {
-                System.out.println();
-                System.out.println();
-                System.out.println(firstPlayerWithAllColours + " has all 6 colours");
-                System.out.println("Commencing last round");
-                // Next player's turn
-                turnManager.nextTurn();
-                break;
-            }
-
-            // Next player's turn
-            turnManager.nextTurn();
-        }
-        lastRound();
-    }
-
-    public void lastRound() {
-        for (int i = 0; i < playerList.size() - 1; i++) {
-            Player currentPlayer = playerList.get(turnManager.getCurrentPlayer());
-            System.out.println("\n" + currentPlayer.getName() + "'s turn!");
-            System.out.println("Deck num : " + deck.getSize());
-            System.out.println("Parade: " + Parade.getParadeRow());
-            System.out.println("Collected Cards: " + currentPlayer.getCollected());
-            System.out.println("Your hand: " + currentPlayer.getHandWithIndex());
-
-            // Player chooses a card to play
-            System.out.print("Choose a card index (1-" + (currentPlayer.getHand().size()) + "): ");
-            int cardIndex = scanner.nextInt() - 1;
-            while (cardIndex < 0 || cardIndex > 4) {
-                System.out.println("Invalid card number");
-                System.out.print("Choose a card index (1-" + (currentPlayer.getHand().size()) + "): ");
-                cardIndex = scanner.nextInt() - 1;
-                System.out.println("Card index: " + cardIndex);
-            }
-            Card playedCard = currentPlayer.playCard(cardIndex);
-            ArrayList<Card> takenCards = new ArrayList<>(parade.removeCards(playedCard));
-            parade.addCard(playedCard);
-
-            // Resolve parade rules
-            currentPlayer.addToCollected(takenCards);
-            System.out.println("You took: " + takenCards);
-
-            // Draw a new card
-            currentPlayer.addToHand(deck.drawCard());
-
-            turnManager.nextTurn();
-        }
-        endGame();
-    }
 
     public static void checkGameEnd(boolean allColoursCollected) {
         // if (allColoursCollected || ) {

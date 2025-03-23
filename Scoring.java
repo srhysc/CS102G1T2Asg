@@ -36,10 +36,14 @@ public class Scoring {
             Card discardedSecondCard = hand.remove(secondCardIndex - 1);
             System.out.println("\n You discarded: " + discardedSecondCard.getDetails() + "\n");
 
-            // Add remaining cards to front
-            while (!hand.isEmpty()) {
-                player.addToHand(hand.remove(0));
-            }
+            // Add remaining cards to front //im not sure this is correct 
+            player.addToCollected(hand);
+            // while (!hand.isEmpty()) {
+            //    player.addToCollected(hand);
+                
+            //     System.out.println("stuck");
+            
+            // System.out.println("test ");
         }
 
         // Determine majority for each colour, I used HashMaps cos its much more efficient than counting with ArrayList and a switch statement
@@ -50,7 +54,7 @@ public class Scoring {
             // Count cards of each colour for this player
             for (Card card : player.getHand()) {
                 String colour = card.getColour();
-                // Get the current count of this colour from the map
+                // Get the current count of this colouçr from the map
                 int currentCount = colourCounts.getOrDefault(colour, 0);
                 int newCount = currentCount + 1;
                 // Update the map with the new count

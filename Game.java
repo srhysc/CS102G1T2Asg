@@ -7,6 +7,11 @@ public class Game {
     private TurnManager turnManager;
     private Scanner scanner;
     private boolean online = false;
+    private Difficulty difficulty;
+
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
+    }
 
     public Game(ArrayList<Player> playerList) {
         Game.playerList = playerList;
@@ -108,6 +113,13 @@ public class Game {
             }
 
         }
+        if (levelNo == 1) {
+            this.setDifficulty(Difficulty.EASY);
+        } else if (levelNo == 2) {
+            this.setDifficulty(Difficulty.MEDIUM);
+        } else if (levelNo == 3) {
+            this.setDifficulty(Difficulty.HARD);
+        } 
         
     }
 
@@ -138,7 +150,9 @@ public class Game {
         int currentNumber = 1;
         while (noOfAIPlayers > 0) {
             String aiName = "CPU" + Integer.toString(currentNumber);
-            // playerList.add(new ComputerPlayer(aiName));
+            ComputerPlayer ai = new ComputerPlayer(aiName);
+            ai.setGameDifficulty(difficulty);
+            playerList.add(ai);
             currentNumber++;
             noOfAIPlayers--;
         }
@@ -178,9 +192,12 @@ public class Game {
             case(2):
                 System.out.println();
                 aiDifficultyLevel();
+                selectAiPlayers();
+                break;
             case(3):
                 multiplayerMenu();
                 System.out.println();
+                break;
                 
         }
     }

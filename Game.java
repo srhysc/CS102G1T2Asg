@@ -8,6 +8,15 @@ public class Game {
     private Scanner scanner;
     private boolean online = false;
     private Difficulty difficulty;
+    private boolean isTwoPlayerGame;
+
+    public boolean isTwoPlayerGame() {
+        return isTwoPlayerGame;
+    }
+
+    public void setTwoPlayerGame(boolean isTwoPlayerGame) {
+        this.isTwoPlayerGame = isTwoPlayerGame;
+    }
 
     public void setDifficulty(Difficulty difficulty) {
         this.difficulty = difficulty;
@@ -72,6 +81,11 @@ public class Game {
                 System.out.println("Invalid option ! Please choose again");
             } 
 
+        }
+        if (noOfPlayers == 2) {
+            setTwoPlayerGame(true);
+        } else {
+            setTwoPlayerGame(false);
         }
 
         playerList = new ArrayList<>();
@@ -144,6 +158,11 @@ public class Game {
                 System.out.println("Invalid option ! Please choose again");
             } 
 
+        }
+        if (noOfAIPlayers == 1) {
+            setTwoPlayerGame(true);
+        } else {
+            setTwoPlayerGame(false);
         }
 
         playerList = new ArrayList<>();
@@ -393,10 +412,11 @@ public class Game {
 
     public void endGame() {
         System.out.println("\nGame Over! Calculating scores...");
-        for (Player player : playerList) {
-            int score = ScoringSystem.calculateScore(player);
-            System.out.println(player.getName() + "1's final score: " + score);
-        }
+        // for (Player player : playerList) {
+        //     int score = ScoringSystem.calculateScore(player);
+        //     System.out.println(player.getName() + "1's final score: " + score);
+        // }
+        Scoring.calculateScores(playerList, this.isTwoPlayerGame());
 
 
         //bring back to main menu 

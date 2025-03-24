@@ -3,7 +3,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-
 public class Scoring {
 
     public static void calculateScores(ArrayList<Player> players, boolean isTwoPlayerGame) {
@@ -21,7 +20,7 @@ public class Scoring {
 
             // Discard first card
             int firstCardIndex = getValidCardIndex(sc, hand.size(), "Choose the number of the 1st card to discard: ");
-            Card discardedFirstCard = hand.remove(firstCardIndex - 1);
+            Card discardedFirstCard = hand.remove(firstCardIndex);
             System.out.println("\n You discarded: " + discardedFirstCard.getDetails());
 
             // Update display after first discard
@@ -33,36 +32,37 @@ public class Scoring {
 
             // Discard second card
             int secondCardIndex = getValidCardIndex(sc, hand.size(), "Choose the number of the 2nd card to discard: ");
-            Card discardedSecondCard = hand.remove(secondCardIndex - 1);
+            Card discardedSecondCard = hand.remove(secondCardIndex);
             System.out.println("\n You discarded: " + discardedSecondCard.getDetails() + "\n");
 
-            // Add remaining cards to front //im not sure this is correct 
+            // Add remaining cards to front //im not sure this is correct
             player.addToCollected(hand);
             // while (!hand.isEmpty()) {
-            //    player.addToCollected(hand);
-                
-            //     System.out.println("stuck");
-            
+            // player.addToCollected(hand);
+
+            // System.out.println("stuck");
+
             // System.out.println("test ");
         }
 
-        // Determine majority for each colour, I used HashMaps cos its much more efficient than counting with ArrayList and a switch statement
+        // Determine majority for each colour, I used HashMaps cos its much more
+        // efficient than counting with ArrayList and a switch statement
         Map<String, Integer> colourMajorities = new HashMap<>();
         for (Player player : players) {
             Map<String, Integer> colourCounts = new HashMap<>();
 
-            // Count cards of each colour for this player
             for (Card card : player.getHand()) {
                 String colour = card.getColour();
-                // Get the current count of this colouçr from the map
-                int currentCount = colourCounts.getOrDefault(colour, 0);
-                int newCount = currentCount + 1;
-                // Update the map with the new count
-                colourCounts.put(colour, newCount);
+                // Check if map already has colour
+                if (colourCounts.containsKey(colour)) {
+                    colourCounts.put(colour, colourCounts.get(colour) + 1);
+                } else {
+                    colourCounts.put(colour, 1);
+                }
             }
 
             for (String colour : colourCounts.keySet()) {
-                // Checks if colour not in colourMajorities or if new count is greater
+                // Checks if colour not in colourMajorities or if new count is greater and update the majority
                 if (!colourMajorities.containsKey(colour) || colourCounts.get(colour) > colourMajorities.get(colour)) {
                     colourMajorities.put(colour, colourCounts.get(colour));
                 }
@@ -83,9 +83,14 @@ public class Scoring {
                 }
 
                 // Check if this player has the majority
-                boolean hasMajority = isTwoPlayerGame
-                        ? countForPlayer >= majorityCount && countForPlayer >= 2 // Two-player rule: at least 2 cards and equal or more than majority
-                        : countForPlayer == majorityCount;   // Multi-player rule: just find majority
+                boolean hasMajority;
+
+                if (isTwoPlayerGame) {
+                    hasMajority = countForPlayer >= majorityCount && countForPlayer >= 2; // Two-player rule
+                } else {
+                    hasMajority = countForPlayer == majorityCount; // Multi-player rule
+                }
+
 
                 if (hasMajority) {
                     // Flip all cards of this colour face down
@@ -116,22 +121,25 @@ public class Scoring {
             player.setScore(score);
             System.out.println(player.getName() + "'s total score: " + score);
 
-            // winner is the one with the lower score or if equal score smaller hand
-            if (score < lowestScore || (score == lowestScore && winner != null && 
-                                        player.getHand().size() < winner.getHand().size())) {
-                lowestScore = score; // Measure size of hand
+            // winner is the one with the lower score or if equal score then smaller hand
+            if (score < lowestScore) {
+                lowestScore = score;
                 winner = player;
-            } else if (score == lowestScore && winner != null && player.getHand().size() == winner.getHand().size()) {
-                winner = null;
+            } else if (score == lowestScore) {
+                if (winner != null && player.getHand().size() < winner.getHand().size()) {
+                    winner = player;
+                } else if (winner != null && player.getHand().size() == winner.getHand().size()) {
+                    winner = null; // Everyone loses
+                }
             }
         }
 
         if (winner != null) {
-            System.out.println("The winner is: " + winner.getName() + " with a score of " + winner.getScore());    
+            System.out.println("The winner is: " + winner.getName() + " with a score of " + winner.getScore());
         } else {
-            System.out.println("THERE IS NO WINNER HAHAHAHA, YOU ALL LOST!");
+            System.out.println("Sometimes it is not about the game but the friends we made along the way, YOU ALL LOST!");
         }
-        
+
     }
 
     private static int getValidCardIndex(Scanner sc, int maxSize, String prompt) {
@@ -143,8 +151,6 @@ public class Scoring {
                 System.out.println("Invalid choice! Please select a valid card number.");
             }
         } while (index < 1 || index > maxSize);
-        return index;
+        return index - 1; // we count from 0 while player counts from 1
     }
 }
-
-

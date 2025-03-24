@@ -14,12 +14,14 @@ public class GameClient {
             Socket socket = new Socket("localhost", PORT);
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-            Scanner sc = new Scanner(System.in);)
+            Scanner sc = new Scanner(System.in);
+            BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in)))
+
         {
             // Receive prompt for player name
             System.out.println(in.readObject());
             System.out.print("Enter your name: ");
-            String playerName = sc.nextLine();
+            String playerName = stdIn.readLine();
             out.writeObject(playerName);
             out.flush();
             System.out.println("Connected to game server! Waiting for turns...");
@@ -44,7 +46,7 @@ public class GameClient {
 
                     }
                     else{
-                        System.out.println("its "  + playerName + " turn please wait");
+                        System.out.println("its "  + serverMessage.toString() + " turn please wait");
                     }
                 }
                 catch(ClassNotFoundException | EOFException e){

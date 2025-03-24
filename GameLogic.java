@@ -55,9 +55,10 @@ public class GameLogic {
 
                 while (!deck.isEmpty()) {
                     
-                    for (Player player : playerList){
+                    for (Player player : playerList){ //i think the issue may be here
                         if(player.getOutputSteam() != null){
                             ObjectOutputStream o = player.getOutputSteam();
+                            System.out.println("CurrentPLayer is " + currentPlayer.getName());
                             o.writeObject(currentPlayer.getName());  //test it is this guys turns
                             o.flush();
 
@@ -94,6 +95,8 @@ public class GameLogic {
 
 
             }
+            
+            
             //manage player disconnects
             catch (IOException | ClassNotFoundException e) {
                 System.out.println("Player " + currentPlayer.getName() + " disconnected.");

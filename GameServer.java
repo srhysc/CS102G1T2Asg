@@ -27,11 +27,15 @@ public class GameServer {
 
             Boolean confirmLobby = false;
 
-            while(!confirmLobby){
+            System.out.println("Please enter the lobby size 2-6");
+            int ServerSize = sc.nextInt();
+
+            while(multiplayerPlayerList.size() != ServerSize){
                 try {
                     // Accept new client connections
-                    serverSocket.setSoTimeout(500); // Set a timeout to avoid blocking
+                    serverSocket.setSoTimeout(100); // Set a timeout to avoid blocking
                     Socket clientSocket = serverSocket.accept();
+
                     ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
                     ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
             
@@ -55,6 +59,7 @@ public class GameServer {
                 // Update the lobby display and ask for confirmation
                 clearConsole();
                 confirmLobby = displayLobby(multiplayerPlayerList, sc);
+                
             }
                 
 
@@ -108,14 +113,16 @@ public class GameServer {
         System.out.println("========================");
 
         // Ask the server host to confirm the lobby
-        if (playerList.size() >= 2) {
-            System.out.println("Press Enter to wait for more players, or type 'start' to begin the game:");
-            String input = sc.nextLine();
-            return input.equalsIgnoreCase("start");
-        } else {
-            System.out.println("Not enough players to start the game. Waiting for more players...");
-            return false;
-        }
+        // if (playerList.size() >= 2) {
+        //     System.out.println("Type 'start' to begin the game, or wait for more players to join:");
+        //     if (sc.hasNextLine()) {
+        //         String input = sc.nextLine();
+        //         return input.equalsIgnoreCase("start");
+        //     }
+        // } else {
+        //     System.out.println("Not enough players to start the game. Waiting for more players...");
+        // }
+        return false;
     }
 
 

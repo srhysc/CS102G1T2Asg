@@ -16,28 +16,29 @@ public class ComputerPlayer extends Player {
         return gameDifficulty; 
     }
 
-    public void playComputerMove(ArrayList <Card> parade){
+    public Card playComputerMove(ArrayList <Card> parade){
         if (super.getHand().isEmpty()) {
-            return; 
+            return null; 
         }
 
         Card chosenCard; 
         if (gameDifficulty == Difficulty.EASY) {
             chosenCard = chooseRandomCard();
         } else if (gameDifficulty == Difficulty.HARD) {
-            chosenCard = chooseBestCard(); 
+            chosenCard = chooseBestCard(parade); 
         } else {
             Random r = new Random(); 
             boolean randomChoice = r.nextBoolean(); 
             if (randomChoice) {
                 chosenCard = chooseRandomCard();
             } else {
-                chosenCard = chooseBestCard(); 
+                chosenCard = chooseBestCard(parade); 
             }
         }
         getHand().remove(chosenCard);
-        parade.add(chosenCard); 
+        // parade.add(chosenCard); 
         System.out.println(getName() + "played:" + chosenCard);
+        return chosenCard; 
     }
 
     public Card chooseRandomCard() {
@@ -45,13 +46,13 @@ public class ComputerPlayer extends Player {
         return getHand().get(random.nextInt(getHand().size())); 
     }
 
-    public Card chooseBestCard() {
+    public Card chooseBestCard(ArrayList <Card> parade) {
         ArrayList<Card> hand = getHand(); 
         Card bestCard = null; 
         int minPenalty = Integer.MAX_VALUE; 
 
         for (Card card : hand) {
-            int penalty = calculatePenalty(card);
+            int penalty = calculatePenalty(card, parade);
             if (penalty < minPenalty) {
                 minPenalty = penalty;
                 bestCard = card; 
@@ -61,9 +62,9 @@ public class ComputerPlayer extends Player {
         return bestCard != null ? bestCard : hand.get(0); 
     }
 
-    private int calculatePenalty(Card card) {
+    private int calculatePenalty(Card card, ArrayList <Card> parade) {
         int penalty = 0; 
-        ArrayList <Card> parade = Parade.getParadeRow(); 
+        //ArrayList <Card> parade = Parade.getParadeRow(); 
         for (Card c : parade) {
             if (c.getColour().equals(card.getColour())) {
                 penalty += 2; 

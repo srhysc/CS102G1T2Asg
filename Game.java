@@ -167,6 +167,7 @@ public class Game {
         }
 
         playerList = new ArrayList<>();
+        playerList.add(new Player(Human)); 
         int currentNumber = 1;
         while (noOfAIPlayers > 0) {
             String aiName = "CPU" + Integer.toString(currentNumber);
@@ -176,7 +177,7 @@ public class Game {
             currentNumber++;
             noOfAIPlayers--;
         }
-
+        turnManager = new TurnManager(playerList.size());
         System.out.println(playerList);
         GameLogic.playTurn(deck, playerList, turnManager, isTwoPlayerGame);
     }

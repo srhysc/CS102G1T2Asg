@@ -135,7 +135,6 @@ public class GameLogic {
             }
     }
    
-
     public static void playTurn(Deck deck, ArrayList<Player> playerList, TurnManager turnManager, boolean isTwoPlayerGame) {
         System.out.println("Starting Parade...");
 
@@ -146,30 +145,43 @@ public class GameLogic {
         String firstPlayerWithAllColours = null;
 
         System.out.println("Game begins! First player: " + playerList.get(0).getName());
+        System.out.println("Deck num : " + deck.getSize());
+        System.out.println("Parade: " + Parade.getParadeRow());
         while (!deck.isEmpty()) {
             Player currentPlayer = playerList.get(turnManager.getCurrentPlayer());
             System.out.println("\n" + currentPlayer.getName() + "'s turn!");
-            System.out.println("Deck num : " + deck.getSize());
-            System.out.println("Parade: " + Parade.getParadeRow());
-            System.out.println("Collected Cards: " + currentPlayer.getCollected());
-            System.out.println("Your hand: " + currentPlayer.getHandWithIndex());
+            if (currentPlayer instanceof ComputerPlayer) {
+                
+                System.out.println("Collected Cards: " + currentPlayer.getCollected());
+                System.out.println(currentPlayer.getName() + "'s hand: " + currentPlayer.getHandWithIndex());
+                Card playedCard = ((ComputerPlayer) currentPlayer).playComputerMove(Parade.getParadeRow());
+                ArrayList<Card> takenCards = Parade.removeCards(playedCard);
+                Parade.addCard(playedCard);
+                currentPlayer.addToCollected(takenCards);
+                System.out.println(currentPlayer.getName() + " took: " + takenCards);
+            } else {
+                
+                System.out.println("Collected Cards: " + currentPlayer.getCollected());
+                System.out.println("Your hand: " + currentPlayer.getHandWithIndex());
 
-            // Player chooses a card to play
-            System.out.print("Choose a card index (1-" + (currentPlayer.getHand().size()) + "): ");
-            int cardIndex = sc.nextInt() - 1;
-            while (cardIndex < 0 || cardIndex > 4) {
-                System.out.println("Invalid card number");
+                // Player chooses a card to play
                 System.out.print("Choose a card index (1-" + (currentPlayer.getHand().size()) + "): ");
-                cardIndex = sc.nextInt() - 1;
-                System.out.println("Card index: " + cardIndex);
-            }
-            Card playedCard = currentPlayer.playCard(cardIndex);
-            ArrayList<Card> takenCards = new ArrayList<>(Parade.removeCards(playedCard));
-            Parade.addCard(playedCard);
+                int cardIndex = sc.nextInt() - 1;
+                while (cardIndex < 0 || cardIndex > 4) {
+                    System.out.println("Invalid card number");
+                    System.out.print("Choose a card index (1-" + (currentPlayer.getHand().size()) + "): ");
+                    cardIndex = sc.nextInt() - 1;
+                    System.out.println("Card index: " + cardIndex);
+                }
+                Card playedCard = currentPlayer.playCard(cardIndex);
+                ArrayList<Card> takenCards = new ArrayList<>(Parade.removeCards(playedCard));
+                Parade.addCard(playedCard);
 
-            // Resolve parade rules
-            currentPlayer.addToCollected(takenCards);
-            System.out.println("You took: " + takenCards);
+                // Resolve parade rules
+                currentPlayer.addToCollected(takenCards);
+                System.out.println("You took: " + takenCards);
+            }
+            
 
             // Draw a new card
             currentPlayer.addToHand(deck.drawCard());
@@ -197,6 +209,7 @@ public class GameLogic {
         }
         lastRound(deck, playerList, turnManager, isTwoPlayerGame);
     }
+
 
     public static void lastRound(Deck deck, ArrayList<Player> playerList, TurnManager turnManager, boolean isTwoPlayerGame) {
         for (int i = 0; i < playerList.size() - 1; i++) {

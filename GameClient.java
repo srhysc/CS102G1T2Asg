@@ -7,8 +7,6 @@ import java.util.Scanner;
 public class GameClient {
     private static final int PORT = 1234;
 
-
-
     public void startClient(){
 
         try( // Connect to the server

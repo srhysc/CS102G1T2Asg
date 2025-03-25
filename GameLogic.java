@@ -55,36 +55,67 @@ public class GameLogic {
 
                 while (!deck.isEmpty()) {
                     
-                    for (Player player : playerList){ //i think the issue may be here
+                   
+
+                    for (int i = 0 ; i < playerList.size(); i++){
+                        
+                        Player player = playerList.get(i);
+
+                        StringBuilder menuMessage = new StringBuilder(); 
+
+                        //build the message to be sent to the players
+                        menuMessage.append("Current player: " + currentPlayer.getName() + "\n");
+                        menuMessage.append("Collected Cards: " + currentPlayer.getCollected() + "\n");
+                        menuMessage.append("Your hand: " + currentPlayer.getHandWithIndex() + "\n");
+                        menuMessage.append("Choose a card index (1-" + (currentPlayer.getHand().size()) + "): " + "\n");
+
+
                         if(player.getOutputSteam() != null){
                             ObjectOutputStream o = player.getOutputSteam();
-                            System.out.println("CurrentPLayer is " + currentPlayer.getName());
-                            o.writeObject(currentPlayer.getName());  //test it is this guys turns
-                            o.flush();
 
+                            SocketPacket sp = new SocketPacket(menuMessage, currentPlayer.getName());
+
+                            o.writeObject(sp);  //test it is this guys turns
+                            o.flush();
+                            continue;
 
                             //so after this ^ all players will get a message of the current players name 
                             //and will accordingly print it is "your turn" or someone elses turn 
 
                             //will pause the code and wait for the input from the client side
-                            String inputChoice = (String) currentPlayer.getInputSteam().readObject();
-
-                            broadcastToAll(playerList, inputChoice);
-                            break;
+                            //if its this players turn wait 
+                            
+                            
                             
                         }
                         else{//local
-                            
-                            String move = sc.nextLine();
-                            broadcastToAll(playerList, move);
-                            break;
-                            
+
+                            if (player != currentPlayer){
+                                System.out.println("its players " + currentPlayer + " turn now please wait!");
+                            }
+                            else{
+                                System.out.println("its ur turn ");
+                                System.err.println(menuMessage.toString());
+                                // SocketPacket sp = new SocketPacket(new StringBuilder(menuMessage), currentPlayer.getName());
+                                // broadcastToAll(playerList, sp);
+                            }
                         }
                     }
-
+                    System.out.println("Current player" + currentPlayer.getName());
+                    //after all the instructions have been written to the players wait for current players turn 
+                    if (currentPlayer.getInputSteam() == null){
+                        System.out.println("Please enter the move");
+                        String inputChoice = sc.nextLine();
+                        SocketPacket sp = new SocketPacket(new StringBuilder("player " + currentPlayer + " made the move " + inputChoice), currentPlayer.getName());
+                        broadcastToAll(playerList, sp);
+                    }
+                    else{  
+                        String inputChoice = (String) currentPlayer.getInputSteam().readObject();
+                        SocketPacket sp = new SocketPacket(new StringBuilder("player " + currentPlayer + " made the move " + inputChoice), currentPlayer.getName());
+                        broadcastToAll(playerList, sp);
+                    }
                     
-
-                    
+                    System.out.println("turn done");
                     
                     // Switch to next player
                     turnManager.nextTurn();
@@ -95,10 +126,9 @@ public class GameLogic {
 
 
             }
-            
-            
             //manage player disconnects
             catch (IOException | ClassNotFoundException e) {
+
                 System.out.println("Player " + currentPlayer.getName() + " disconnected.");
 
                 // Remove disconnected player
@@ -127,13 +157,17 @@ public class GameLogic {
 
     }
 
-    public static void broadcastToAll(ArrayList<Player> playerList, String message) throws IOException{
+    public static void broadcastToAll(ArrayList<Player> playerList, SocketPacket sp) throws IOException{
             //broadcast move to all players
             for(Player player : playerList){
                 if(player.getOutputSteam() != null){
                     ObjectOutputStream o = player.getOutputSteam();
-                    o.writeObject(message);  //some guys move 
+
+                    o.writeObject(sp);  //some guys move 
                     o.flush();
+                }
+                else{
+                    System.err.println(sp.getSb().toString());
                 }
             }
     }

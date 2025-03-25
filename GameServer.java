@@ -23,6 +23,7 @@ public class GameServer {
 
             System.out.println("Please enter how many players will play (2-6)");
             int numberOfPlayers = sc.nextInt();
+            sc.nextLine();
 
             //menu for server
             clearConsole();

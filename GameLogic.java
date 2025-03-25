@@ -55,37 +55,37 @@ public class GameLogic {
 
                 while (!deck.isEmpty()) {
                     
-                   
+                    StringBuilder menuMessage = new StringBuilder(); 
+
+                    //build the message to be sent to the players
+                    menuMessage.append("--------------------\n");
+                    menuMessage.append("Current player: " + currentPlayer.getName() + "\n");
+                    menuMessage.append("Collected Cards: " + currentPlayer.getCollected() + "\n");
+                    menuMessage.append("Your hand: " + currentPlayer.getHandWithIndex() + "\n");
+                    menuMessage.append("Choose a card index (1-" + (currentPlayer.getHand().size()) + "): " + "\n");
+                    menuMessage.append("--------------------\n");
+
+
 
                     for (int i = 0 ; i < playerList.size(); i++){
                         
                         Player player = playerList.get(i);
 
-                        StringBuilder menuMessage = new StringBuilder(); 
-
-                        //build the message to be sent to the players
-                        menuMessage.append("Current player: " + currentPlayer.getName() + "\n");
-                        menuMessage.append("Collected Cards: " + currentPlayer.getCollected() + "\n");
-                        menuMessage.append("Your hand: " + currentPlayer.getHandWithIndex() + "\n");
-                        menuMessage.append("Choose a card index (1-" + (currentPlayer.getHand().size()) + "): " + "\n");
-
-
+                        
                         if(player.getOutputSteam() != null){
                             ObjectOutputStream o = player.getOutputSteam();
 
-                            SocketPacket sp = new SocketPacket(menuMessage, currentPlayer.getName());
+                            SocketPacket sp = new SocketPacket(menuMessage, currentPlayer.getName(),1);
 
                             o.writeObject(sp);  //test it is this guys turns
                             o.flush();
-                            continue;
+                            
 
                             //so after this ^ all players will get a message of the current players name 
                             //and will accordingly print it is "your turn" or someone elses turn 
 
                             //will pause the code and wait for the input from the client side
                             //if its this players turn wait 
-                            
-                            
                             
                         }
                         else{//local
@@ -101,18 +101,26 @@ public class GameLogic {
                             }
                         }
                     }
-                    System.out.println("Current player" + currentPlayer.getName());
+
+
+                    //System.out.println("Current player" + currentPlayer.getName());
                     //after all the instructions have been written to the players wait for current players turn 
                     if (currentPlayer.getInputSteam() == null){
                         System.out.println("Please enter the move");
                         String inputChoice = sc.nextLine();
-                        SocketPacket sp = new SocketPacket(new StringBuilder("player " + currentPlayer + " made the move " + inputChoice), currentPlayer.getName());
+                        SocketPacket sp = new SocketPacket(new StringBuilder("player " + currentPlayer.getName() + " made the move " + inputChoice), currentPlayer.getName(), 0);
                         broadcastToAll(playerList, sp);
                     }
                     else{  
-                        String inputChoice = (String) currentPlayer.getInputSteam().readObject();
-                        SocketPacket sp = new SocketPacket(new StringBuilder("player " + currentPlayer + " made the move " + inputChoice), currentPlayer.getName());
-                        broadcastToAll(playerList, sp);
+                        //here is the recieveng socket packet from the player
+                        SocketPacket moveResponse = (SocketPacket) currentPlayer.getInputSteam().readObject();
+
+                        //read the move 
+                        if (moveResponse.getMessageType() == 2){
+                            SocketPacket sp = new SocketPacket(new StringBuilder("player " + currentPlayer.getName() + " made the move " + moveResponse.getSb().toString()), currentPlayer.getName(), 0);
+                            broadcastToAll(playerList, sp);
+                        }
+                        
                     }
                     
                     System.out.println("turn done");

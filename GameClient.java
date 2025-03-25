@@ -14,26 +14,24 @@ public class GameClient {
             Socket socket = new Socket("localhost", PORT);
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-            Scanner sc = new Scanner(System.in);
-            BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in)))
-
+            Scanner sc = new Scanner(System.in);)
         {
             // Receive prompt for player name
             System.out.println(in.readObject());
             System.out.print("Enter your name: ");
-            String playerName = stdIn.readLine();
+            String playerName = sc.nextLine();
             out.writeObject(playerName);
             out.flush();
             System.out.println("Connected to game server! Waiting for turns...");
 
             while (true) {
                 try{
-                    Object serverMessage = in.readObject();
-                    if(serverMessage instanceof String){
-                        System.out.println("Server: " + serverMessage);
+                    SocketPacket serverMessage = (SocketPacket) in.readObject();
+                    if(serverMessage instanceof SocketPacket){
+                        System.out.println("Server: " + serverMessage.getSb().toString());
                     }
 
-                    if (serverMessage.toString().equals(playerName)){
+                    if (serverMessage.getCurrentPlayer().equals(playerName)){
                         System.out.println("its your turn!!");
 
                         String testInput = sc.nextLine();
@@ -46,7 +44,7 @@ public class GameClient {
 
                     }
                     else{
-                        System.out.println("its "  + serverMessage.toString() + " turn please wait");
+                        System.out.println("its "  + serverMessage.getCurrentPlayer() + " turn please wait");
                     }
                 }
                 catch(ClassNotFoundException | EOFException e){

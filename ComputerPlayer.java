@@ -76,5 +76,36 @@ public class ComputerPlayer extends Player {
         return penalty; 
     }
 
+    public List<Card> discardTwoCards() {
+        ArrayList<Card> hand = getHand();
+        if (hand.size() != 4) {
+            return new ArrayList<>();
+        }
+    
+        // count collected card colors
+        ArrayList<Card> collected = getCollected();
+        Map<String, Integer> colourCounts = new HashMap<>();
+        for (Card card : collected) {
+            colourCounts.put(card.getColour(), colourCounts.getOrDefault(card.getColour(), 0) + 1);
+        }
+        // sort to remove any new colours not in collected first, then remove cards with higher value
+        List<Card> sortedHand = new ArrayList<>(hand);
+        sortedHand.sort((c1, c2) -> {
+            boolean c1NewColour = !colourCounts.containsKey(c1.getColour());
+            boolean c2NewColour = !colourCounts.containsKey(c2.getColour());
+    
+            if (c1NewColour && !c2NewColour) return -1;
+            if (!c1NewColour && c2NewColour) return 1;
+    
+            return Integer.compare(c2.getValue(), c1.getValue()); // cards with higher value in front
+        });
+    
+        List<Card> toDiscard = new ArrayList<>();
+        toDiscard.add(sortedHand.get(0));
+        toDiscard.add(sortedHand.get(1));
+    
+        return toDiscard;
+    }
+
 }
 

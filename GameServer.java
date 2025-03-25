@@ -21,21 +21,20 @@ public class GameServer {
             String ServerPLayerName = sc.nextLine();
             multiplayerPlayerList.add(new Player(ServerPLayerName, null, null));
 
+            System.out.println("Please enter how many players will play (2-6)");
+            int numberOfPlayers = sc.nextInt();
+
             //menu for server
             clearConsole();
             displayLobby(multiplayerPlayerList, sc);
 
             Boolean confirmLobby = false;
 
-            System.out.println("Please enter the lobby size 2-6");
-            int ServerSize = sc.nextInt();
-
-            while(multiplayerPlayerList.size() != ServerSize){
+            while(numberOfPlayers != multiplayerPlayerList.size()){
                 try {
                     // Accept new client connections
-                    serverSocket.setSoTimeout(100); // Set a timeout to avoid blocking
+                    serverSocket.setSoTimeout(500); // Set a timeout to avoid blocking
                     Socket clientSocket = serverSocket.accept();
-
                     ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
                     ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
             
@@ -55,11 +54,10 @@ public class GameServer {
                 } catch (SocketTimeoutException e) {
                     // No new connections, continue to check for server input
                 }
-            
+
                 // Update the lobby display and ask for confirmation
                 clearConsole();
                 confirmLobby = displayLobby(multiplayerPlayerList, sc);
-                
             }
                 
 
@@ -75,6 +73,8 @@ public class GameServer {
             isTwoPlayerGame = true;
         }
 
+        //start the game
+        System.out.println("online starting now");
         GameLogic.playOnlineTurn(deck, multiplayerPlayerList, turnManager, isTwoPlayerGame, outputs, inputs, sc );
 
 
@@ -111,18 +111,17 @@ public class GameServer {
         }
 
         System.out.println("========================");
+        return true;
 
         // Ask the server host to confirm the lobby
         // if (playerList.size() >= 2) {
-        //     System.out.println("Type 'start' to begin the game, or wait for more players to join:");
-        //     if (sc.hasNextLine()) {
-        //         String input = sc.nextLine();
-        //         return input.equalsIgnoreCase("start");
-        //     }
+        //     System.out.println("Press Enter to wait for more players, or type 'start' to begin the game:");
+        //     String input = sc.nextLine();
+        //     return input.equalsIgnoreCase("start");
         // } else {
         //     System.out.println("Not enough players to start the game. Waiting for more players...");
+        //     return false;
         // }
-        return false;
     }
 
 

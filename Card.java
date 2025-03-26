@@ -42,7 +42,7 @@ public class Card{
             case "blue":   colorCode = "\u001B[34m"; break;
             case "green":  colorCode = "\u001B[32m"; break;
             case "purple": colorCode = "\u001B[35m"; break;
-            case "grey":   colorCode = "\u001B[37m"; break;
+            case "grey":   colorCode = "\u001B[38;5;245m"; break;
             case "orange": colorCode = "\u001B[38;5;214m"; break;
             default:       colorCode = "\u001B[0m";  // Reset if unknown color
         }

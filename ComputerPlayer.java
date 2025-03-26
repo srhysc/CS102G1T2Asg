@@ -37,7 +37,7 @@ public class ComputerPlayer extends Player {
         }
         getHand().remove(chosenCard);
         // parade.add(chosenCard); 
-        System.out.println(getName() + "played:" + chosenCard);
+        System.out.println(getName() + " played:" + chosenCard);
         return chosenCard; 
     }
 
@@ -103,7 +103,10 @@ public class ComputerPlayer extends Player {
         List<Card> toDiscard = new ArrayList<>();
         toDiscard.add(sortedHand.get(0));
         toDiscard.add(sortedHand.get(1));
-    
+        
+        hand.remove(sortedHand.get(0));
+        hand.remove(sortedHand.get(1));
+
         return toDiscard;
     }
 

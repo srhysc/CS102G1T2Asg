@@ -195,7 +195,7 @@ public class GameLogic {
             Player currentPlayer = playerList.get(turnManager.getCurrentPlayer());
             System.out.println("\n" + currentPlayer.getName() + "'s turn!");
             if (currentPlayer instanceof ComputerPlayer) {
-                
+
                 System.out.println("Collected Cards: " + currentPlayer.getCollected());
                 System.out.println(currentPlayer.getName() + "'s hand: " + currentPlayer.getHandWithIndex());
                 Card playedCard = ((ComputerPlayer) currentPlayer).playComputerMove(Parade.getParadeRow());

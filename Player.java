@@ -1,7 +1,7 @@
 
 import java.io.*;
 import java.util.*;
-import java.net.*;
+import java.util.stream.Collectors;
 
 public class Player {
     private String name;
@@ -131,6 +131,12 @@ public class Player {
 
     @Override
     public String toString() {
-        return name + " | Hand: " + hand + " | Collected: " + collected;
+        return name + " | Hand: " + formatCardList(hand) + " | Collected: " + formatCardList(collected);
     }
+
+    // Helper method to apply card formatting properly
+    public String formatCardList(List<Card> cards) {
+        return cards.stream().map(Card::toString).collect(Collectors.joining(" "));
+    }
+    
 }

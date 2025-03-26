@@ -1,0 +1,2 @@
+Player: jordan, Wins: 2
+Player: poopy, Wins: 1

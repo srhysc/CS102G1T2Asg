@@ -1,6 +1,5 @@
 import java.io.*;
 import java.util.*;
-import java.net.*;
 
 
 public class GameLogic {
@@ -292,17 +291,22 @@ public class GameLogic {
 
     public static void endGame(ArrayList<Player> playerList, boolean isTwoPlayerGame) {
         System.out.println("\nGame Over! Calculating scores...");
-        // for (Player player : playerList) {
-        //     int score = ScoringSystem.calculateScore(player);
-        //     System.out.println(player.getName() + "1's final score: " + score);
-        // }
-        Scoring.calculateScores(playerList, isTwoPlayerGame);
-
-
-        //bring back to main menu 
         
+        // Calculate scores and determine the winner
+        Player winner = Scoring.calculateScores(playerList, isTwoPlayerGame);
+        
+        if (winner != null) {
+            // Update high scores
+            HighScoreDatabase highScoreDatabase = new HighScoreDatabase();
+            highScoreDatabase.updateHighScore(winner.getName());
+        
+            // Display the updated high scores
+            highScoreDatabase.displayHighScores();
+        }
+    
+        // Bring back to the main menu
         Game.main(null);
-        
     }
-
+    
+    
 }

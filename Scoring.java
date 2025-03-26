@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Scoring {
 
-    public static void calculateScores(ArrayList<Player> players, boolean isTwoPlayerGame) {
+    public static Player calculateScores(ArrayList<Player> players, boolean isTwoPlayerGame) {
         Scanner sc = new Scanner(System.in);
 
         // Allow each player to discard two cards
@@ -139,6 +139,8 @@ public class Scoring {
         } else {
             System.out.println("Sometimes it is not about the game but the friends we made along the way, YOU ALL LOST!");
         }
+
+        return winner;
 
     }
 

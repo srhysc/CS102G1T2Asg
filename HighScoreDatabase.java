@@ -53,8 +53,14 @@ public class HighScoreDatabase {
         saveScores();
     }
 
-    // Retrieve the high scores (for display or further use)
     public void displayHighScores() {
-        highScores.values().forEach(System.out::println);
+        // Create a list from the highScores values and sort by the number of wins
+        List<HighScore> sortedScores = new ArrayList<>(highScores.values());
+        
+        // Sort the list based on wins in descending order
+        sortedScores.sort((hs1, hs2) -> Integer.compare(hs2.getWins(), hs1.getWins()));
+    
+        // Print the sorted high scores
+        sortedScores.forEach(System.out::println);
     }
 }

@@ -9,6 +9,7 @@ public class Game {
     private boolean online = false;
     private Difficulty difficulty;
     private boolean isTwoPlayerGame;
+    private HighScoreDatabase highScore = new HighScoreDatabase();
 
     public boolean isTwoPlayerGame() {
         return isTwoPlayerGame;
@@ -35,15 +36,16 @@ public class Game {
         System.out.println("1. Start Game");
         System.out.println("2. Settings");
         System.out.println("3. Help");
+        System.out.println("4. Hall of Fame");
         System.out.print("Enter your choice: ");
         int userChoice = 0;
         Scanner sc = new Scanner(System.in);
     
-        while (!(userChoice >= 1 && userChoice <= 3)) {
+        while (!(userChoice >= 1 && userChoice <= 4)) {
             try {
                 String userInput = sc.nextLine();
                 userChoice = Integer.parseInt(userInput);
-                if (userChoice < 1 || userChoice > 3) {
+                if (userChoice < 1 || userChoice > 4) {
                     System.out.println("Invalid option ! Please choose again");
                 }
 
@@ -57,6 +59,11 @@ public class Game {
             case (1):
                 System.out.println();
                 startGame();
+                break;
+
+            case(4): 
+                System.out.println();
+                highScore.displayHighScores();
                 break;
         }
     }

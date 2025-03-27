@@ -9,7 +9,7 @@ public class HighScoreDatabase {
         loadScores();
     }
 
-    private void loadScores() {
+    public void loadScores() {
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
             String line;
             while ((line = reader.readLine()) != null) {

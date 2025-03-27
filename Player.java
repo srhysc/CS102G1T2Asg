@@ -2,15 +2,15 @@
 import java.io.*;
 import java.util.*;
 
-public class Player {
+public class Player implements Serializable {
     private String name;
     private ArrayList<Card> hand;
     private ArrayList<Card> collected;
     private int score;
 
     //for online
-    private ObjectOutputStream out;
-    private ObjectInputStream in;
+    private transient ObjectOutputStream out;
+    private transient ObjectInputStream in;
 
 
     public Player(String name) {
@@ -70,6 +70,8 @@ public class Player {
     public String getName() {
         return name;
     }
+
+   
 
     public int getScore() {
         return score;

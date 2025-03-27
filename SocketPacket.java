@@ -1,16 +1,20 @@
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class SocketPacket implements Serializable {
     public StringBuilder sb;
     public String currentPlayer; 
     public static String[] messageTypeList = {"announcement", "moveRequest", "moveResponse", "gameOver"};
     public int messageType; 
+    public ArrayList<Player> playerList;
 
-    public SocketPacket(StringBuilder sb, String currentPlayer, int messageType) {
+    public SocketPacket(StringBuilder sb, String currentPlayer, int messageType, ArrayList<Player> playerList) {
         this.sb = sb;
         this.currentPlayer = currentPlayer;
         //check if messageType is valid 
         this.messageType = messageType;
+        this.playerList = playerList;
+        
     }
 
     public StringBuilder getSb() {
@@ -35,6 +39,24 @@ public class SocketPacket implements Serializable {
 
     public void setMessageType(int messageType) {
         this.messageType = messageType;
+    }
+
+    public ArrayList<Player> getPlayerList() {
+        return playerList;
+    }
+    public Player getPlayerWithName(String name ) {
+        for (Player player : playerList) {
+            if (player.getName().equals(name)) {
+                return player;
+            }
+        }
+
+        return null;
+       
+    }
+
+    public void setPlayerList(ArrayList<Player> playerList) {
+        this.playerList = playerList;
     }
 
     

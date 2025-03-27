@@ -1,6 +1,7 @@
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
@@ -29,13 +30,13 @@ public class GameClient {
                     SocketPacket serverMessage = (SocketPacket) in.readObject();
                     if(serverMessage instanceof SocketPacket){
                         //check the message type first 
-
+                        
                         switch (serverMessage.getMessageType()){ 
                             case 0 : //announcement
                                 System.out.println("===============\n [Announcement] \n" + serverMessage.getSb().toString());
                                 break;
                             case 1 : //moveRequest
-
+                                clearConsole();
                                 //show the move request (probably the menu)
                                 System.out.println("\n =============== \n [Move Request] \n" + serverMessage.getSb().toString());
 
@@ -43,20 +44,44 @@ public class GameClient {
                                 if(serverMessage.getCurrentPlayer().equals(playerName)){
                                     //if it is ask for their input 
                                     System.out.println("its your turn!! Please input your move");
-                                    String turnInput = sc.nextLine();
+                                    
 
-                                    //send move to server
-                                    //build socket packet 
-                                    SocketPacket moveResponse = new SocketPacket(new StringBuilder(turnInput), serverMessage.currentPlayer, 2);
-                                    out.writeObject(moveResponse);
-                                    out.flush();
+                                    //check for input validation 
+                                 
+                                    try {
+                                        String turnInput = sc.nextLine();
+                                        int input = Integer.parseInt(turnInput) - 1;
 
-                                    System.out.println("move sent");//test
-                                }
-                                else{
-                                    //message recieved but not the current player 
-                                    System.out.println("it is currently " + serverMessage.getCurrentPlayer() + " turn please wait");
-                                }
+                                        while (input < 0 || input > 4) {
+                                            System.out.println("Invalid card number");
+                                            //get player hand 
+                                            int handSize = serverMessage.getPlayerWithName(playerName).getHand().size();
+                                            System.out.print("Choose a card index (1-" + (handSize) + "): ");
+                                            turnInput = sc.nextLine();
+                                            input = Integer.parseInt(turnInput) - 1;
+                                            System.out.println("Card index: " + input);
+                                        }
+
+                                         //send move to server
+                                        //build socket packet 
+                                        SocketPacket moveResponse = new SocketPacket(new StringBuilder(input + ""), serverMessage.currentPlayer, 2, null);
+                                        out.writeObject(moveResponse);
+                                        out.flush();
+
+                                        } catch (InputMismatchException e) {
+                                            // TODO: handle exception
+                                            //invlaid input into a nextint with a String
+                                            
+                                        }
+
+                                
+
+                                        System.out.println("move sent");//test
+                                    }
+                                    else{
+                                        //message recieved but not the current player 
+                                        System.out.println("it is currently " + serverMessage.getCurrentPlayer() + " turn please wait");
+                                    }
 
                                 break;
                             default:
@@ -100,4 +125,10 @@ public class GameClient {
 
     }
 
+
+    // Clear the console screen
+    private static void clearConsole() {
+        System.out.print("\033[H\033[2J");  
+        System.out.flush();  
+    }
 }

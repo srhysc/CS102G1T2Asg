@@ -1,4 +1,5 @@
 import java.io.*;
+import java.net.Socket;
 import java.util.*;
 
 
@@ -53,11 +54,13 @@ public class GameLogic {
                 //player index 0 is alw the local host 
 
                 while (!deck.isEmpty()) {
-                    
+                    clearConsole();
                     StringBuilder menuMessage = new StringBuilder(); 
 
                     //build the message to be sent to the players
                     menuMessage.append("--------------------\n");
+                    menuMessage.append("0. Deck num : " + deck.getSize() + "\n");
+                    menuMessage.append("1. Parade: " + Parade.getParadeRow() + "\n");
                     menuMessage.append("Current player: " + currentPlayer.getName() + "\n");
                     menuMessage.append("Collected Cards: " + currentPlayer.getCollected() + "\n");
                     menuMessage.append("Your hand: " + currentPlayer.getHandWithIndex() + "\n");
@@ -74,7 +77,7 @@ public class GameLogic {
                         if(player.getOutputSteam() != null){
                             ObjectOutputStream o = player.getOutputSteam();
 
-                            SocketPacket sp = new SocketPacket(menuMessage, currentPlayer.getName(),1);
+                            SocketPacket sp = new SocketPacket(menuMessage, currentPlayer.getName(),1, playerList);
 
                             o.writeObject(sp);  //test it is this guys turns
                             o.flush();
@@ -104,10 +107,32 @@ public class GameLogic {
 
                     //System.out.println("Current player" + currentPlayer.getName());
                     //after all the instructions have been written to the players wait for current players turn 
+                    int moveIndex = 0;
                     if (currentPlayer.getInputSteam() == null){
                         System.out.println("Please enter the move");
-                        String inputChoice = sc.nextLine();
-                        SocketPacket sp = new SocketPacket(new StringBuilder("player " + currentPlayer.getName() + " made the move " + inputChoice), currentPlayer.getName(), 0);
+
+                        while(true){
+                            //System.out.print("Choose a card index (1-" + currentPlayer.getHand().size() + "): ");
+                            String input = sc.nextLine(); // Read input as a string to validate
+
+                            try{
+                                moveIndex = Integer.parseInt(input) - 1;
+
+                                if(moveIndex >= 0 && moveIndex < currentPlayer.getHand().size()){
+                                    break;// valid input 
+                                }
+                                else{
+                                    System.out.println("Invalid card number");
+                                }
+                            }
+                            catch(NumberFormatException | InputMismatchException e){//user puts in alphabetical 
+                                System.out.println("Invalid card number");
+                            }
+                        }
+
+                        //input validation to make sure that input choice is numeric and less not less than 0 or not more than 4
+
+                        SocketPacket sp = new SocketPacket(new StringBuilder("player " + currentPlayer.getName() + " made the move " + moveIndex), currentPlayer.getName(), 0, playerList);
                         broadcastToAll(playerList, sp);
                     }
                     else{  
@@ -116,13 +141,47 @@ public class GameLogic {
 
                         //read the move 
                         if (moveResponse.getMessageType() == 2){
-                            SocketPacket sp = new SocketPacket(new StringBuilder("player " + currentPlayer.getName() + " made the move " + moveResponse.getSb().toString()), currentPlayer.getName(), 0);
+
+                            //input validation was done in the client side
+                            moveIndex = Integer.parseInt(moveResponse.getSb().toString());
+
+                            SocketPacket sp = new SocketPacket(new StringBuilder("player " + currentPlayer.getName() + " made the move " + moveResponse.getSb().toString()), currentPlayer.getName(), 0, playerList);
                             broadcastToAll(playerList, sp);
                         }
                         
                     }
-                    
-                    System.out.println("turn done");
+
+                    //recieve move and play 
+                    Card playedCard = currentPlayer.playCard(moveIndex);
+                    ArrayList<Card> takenCards = new ArrayList<>(Parade.removeCards(playedCard));
+                    Parade.addCard(playedCard);
+
+                    // Resolve parade rules
+                    currentPlayer.addToCollected(takenCards);
+                    SocketPacket sp = new SocketPacket(new StringBuilder("player " + currentPlayer.getName() + " took " + takenCards), currentPlayer.getName(), 0, playerList);
+                    broadcastToAll(playerList, sp);
+
+                    // Draw a new card
+                    currentPlayer.addToHand(deck.drawCard());
+
+                    for (Player player : playerList) {
+                        if (player.checkColours()) {
+                            hasAllColours = true;
+                            firstPlayerWithAllColours = player.getName();
+                            break;
+                        }
+                    }
+                    if (hasAllColours) {
+
+                        StringBuilder lastRoundAnnouncement = new StringBuilder();
+                        lastRoundAnnouncement.append("\n\n " + firstPlayerWithAllColours + " has all 6 colours \n Commencing last round \n");
+                        SocketPacket lastRoundPacket = new SocketPacket(lastRoundAnnouncement, currentPlayer.getName(), 0,playerList);
+                        broadcastToAll(playerList, lastRoundPacket);
+
+                        // Next player's turn
+                        turnManager.nextTurn();
+                        break;
+                    }
                     
                     // Switch to next player
                     turnManager.nextTurn();
@@ -308,5 +367,9 @@ public class GameLogic {
         Game.main(null);
     }
     
-    
+    // Clear the console screen
+    private static void clearConsole() {
+        System.out.print("\033[H\033[2J");  
+        System.out.flush();  
+    }
 }

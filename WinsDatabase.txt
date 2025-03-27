@@ -1,2 +1,5 @@
+Player: a, Wins: 2
+Player: CPU1, Wins: 1
 Player: jordan, Wins: 4
 Player: poopy, Wins: 1
+Player: asfas, Wins: 1

@@ -10,39 +10,45 @@ public class Scoring {
 
         // Allow each player to discard two cards
         for (Player player : players) {
-            System.out.println(player.getName() + ", here are your cards in hand:");
-            ArrayList<Card> hand = player.getHand();
-            for (int i = 0; i < hand.size(); i++) {
-                System.out.println((i + 1) + ": " + hand.get(i).getDetails());
+            if (player instanceof ComputerPlayer) {
+                ComputerPlayer cPlayer = (ComputerPlayer) player;
+                cPlayer.discardTwoCards();
+            } else {
+                System.out.println(player.getName() + ", here are your cards in hand:");
+                ArrayList<Card> hand = player.getHand();
+                for (int i = 0; i < hand.size(); i++) {
+                    System.out.println((i + 1) + ": " + hand.get(i).getDetails());
+                }
+
+                System.out.println();
+
+                // Discard first card
+                int firstCardIndex = getValidCardIndex(sc, hand.size(), "Choose the number of the 1st card to discard: ");
+                Card discardedFirstCard = hand.remove(firstCardIndex);
+                System.out.println("\n You discarded: " + discardedFirstCard.getDetails());
+
+                // Update display after first discard
+                for (int i = 0; i < hand.size(); i++) {
+                    System.out.println((i + 1) + ": " + hand.get(i).getDetails());
+                }
+
+                System.out.println();
+
+                // Discard second card
+                int secondCardIndex = getValidCardIndex(sc, hand.size(), "Choose the number of the 2nd card to discard: ");
+                Card discardedSecondCard = hand.remove(secondCardIndex);
+                System.out.println("\n You discarded: " + discardedSecondCard.getDetails() + "\n");
+
+                // Add remaining cards to front //im not sure this is correct
+                player.addToCollected(hand);
+                // while (!hand.isEmpty()) {
+                // player.addToCollected(hand);
+
+                // System.out.println("stuck");
+
+                // System.out.println("test ");
             }
-
-            System.out.println();
-
-            // Discard first card
-            int firstCardIndex = getValidCardIndex(sc, hand.size(), "Choose the number of the 1st card to discard: ");
-            Card discardedFirstCard = hand.remove(firstCardIndex);
-            System.out.println("\n You discarded: " + discardedFirstCard.getDetails());
-
-            // Update display after first discard
-            for (int i = 0; i < hand.size(); i++) {
-                System.out.println((i + 1) + ": " + hand.get(i).getDetails());
-            }
-
-            System.out.println();
-
-            // Discard second card
-            int secondCardIndex = getValidCardIndex(sc, hand.size(), "Choose the number of the 2nd card to discard: ");
-            Card discardedSecondCard = hand.remove(secondCardIndex);
-            System.out.println("\n You discarded: " + discardedSecondCard.getDetails() + "\n");
-
-            // Add remaining cards to front //im not sure this is correct
-            player.addToCollected(hand);
-            // while (!hand.isEmpty()) {
-            // player.addToCollected(hand);
-
-            // System.out.println("stuck");
-
-            // System.out.println("test ");
+            
         }
 
         // Determine majority for each colour, I used HashMaps cos its much more
@@ -120,6 +126,7 @@ public class Scoring {
 
             player.setScore(score);
             System.out.println(player.getName() + "'s total score: " + score);
+            System.out.println(player.getName() + "'s number of cards: " + player.getHand().size());
 
             // winner is the one with the lower score or if equal score then smaller hand
             if (score < lowestScore) {
@@ -133,6 +140,8 @@ public class Scoring {
                 }
             }
         }
+        
+        System.out.println();
 
         if (winner != null) {
             System.out.println("The winner is: " + winner.getName() + " with a score of " + winner.getScore());

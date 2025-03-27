@@ -93,7 +93,7 @@ public class GameLogic {
                                 System.out.println("its players " + currentPlayer + " turn now please wait!");
                             }
                             else{
-                                System.out.println("its ur turn ");
+                                System.out.println("its your turn ");
                                 System.err.println(menuMessage.toString());
                                 // SocketPacket sp = new SocketPacket(new StringBuilder(menuMessage), currentPlayer.getName());
                                 // broadcastToAll(playerList, sp);
@@ -196,8 +196,8 @@ public class GameLogic {
             System.out.println("\n" + currentPlayer.getName() + "'s turn!");
             if (currentPlayer instanceof ComputerPlayer) {
 
-                System.out.println("Collected Cards: " + currentPlayer.getCollected());
-                System.out.println(currentPlayer.getName() + "'s hand: " + currentPlayer.getHandWithIndex());
+                // System.out.println("Collected Cards: " + currentPlayer.getCollected());
+                // System.out.println(currentPlayer.getName() + "'s hand: " + currentPlayer.getHandWithIndex());
                 Card playedCard = ((ComputerPlayer) currentPlayer).playComputerMove(Parade.getParadeRow());
                 ArrayList<Card> takenCards = Parade.removeCards(playedCard);
                 Parade.addCard(playedCard);

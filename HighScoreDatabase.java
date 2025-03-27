@@ -60,7 +60,30 @@ public class HighScoreDatabase {
         // Sort the list based on wins in descending order
         sortedScores.sort((hs1, hs2) -> Integer.compare(hs2.getWins(), hs1.getWins()));
     
-        // Print the sorted high scores
-        sortedScores.forEach(System.out::println);
+        // ANSI escape codes for colors
+        String gold = "\033[0;33m";   // Gold color
+        String silver = "\033[0;97m"; // Silver color
+        String bronze = "\033[0;38;5;130m"; // Bronze color
+        String reset = "\033[0m"; // Reset color to default
+    
+        // Display the top 3 winners in gold, silver, and bronze
+        for (int i = 0; i < sortedScores.size(); i++) {
+            HighScore highScore = sortedScores.get(i);
+    
+            if (i == 0) {
+                // Gold for the 1st place
+                System.out.println(gold + "First!! " + highScore + reset);
+            } else if (i == 1) {
+                // Silver for the 2nd place
+                System.out.println(silver + "Second!! " + highScore + reset);
+            } else if (i == 2) {
+                // Bronze for the 3rd place
+                System.out.println(bronze + "Third!! " + highScore + reset);
+            } else {
+                // Display the rest normally
+                System.out.println(highScore);
+            }
+        }
     }
+    
 }

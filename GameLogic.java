@@ -39,6 +39,8 @@ public class GameLogic {
         Player currentPlayer = playerList.get(turnManager.getCurrentPlayer());
         // to manage player disconnects
         while (!GameServer.playersSockets.isEmpty()) {
+            
+          
 
             try {
 
@@ -86,6 +88,7 @@ public class GameLogic {
 
                             if (player != currentPlayer) {
                                 System.out.println("its players " + currentPlayer + " turn now please wait!");
+                                
                             } else {
                                 System.out.println("its your turn ");
                                 System.err.println(menuMessage.toString());
@@ -101,11 +104,13 @@ public class GameLogic {
                     // players turn
                     int moveIndex = 0;
                     if (currentPlayer.getInputSteam() == null) {
+                        
                         System.out.println("Please enter the move");
 
                         while (true) {
                             // System.out.print("Choose a card index (1-" + currentPlayer.getHand().size() +
                             // "): ");
+                            
                             String input = sc.nextLine(); // Read input as a string to validate
 
                             try {
@@ -130,8 +135,13 @@ public class GameLogic {
                         broadcastToAll(playerList, sp);
                     } else {
                         // here is the recieveng socket packet from the player
-                        SocketPacket moveResponse = (SocketPacket) currentPlayer.getInputSteam().readObject();
 
+                        
+                        SocketPacket moveResponse = (SocketPacket) currentPlayer.getInputSteam().readObject();
+                        
+                        flushInputBuffer();
+                        
+                        
                         // read the move
                         if (moveResponse.getMessageType() == 2) {
 
@@ -376,5 +386,17 @@ public class GameLogic {
     private static void clearConsole() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
+    }
+
+    //to deal with players entering values when it isnt their turn 
+    public static void flushInputBuffer() {
+        try {
+            // Check if there is input available in the buffer
+            while (System.in.available() > 0) {
+                System.in.read(); // Read and discard the input
+            }
+        } catch (IOException e) {
+            System.err.println("Error while flushing input buffer: " + e.getMessage());
+        }
     }
 }

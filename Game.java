@@ -37,12 +37,12 @@ public class Game {
         System.out.println("2. Settings");
         System.out.println("3. Help");
         System.out.println("4. Hall of Fame");
-        System.out.print("Enter your choice: ");
         int userChoice = 0;
         Scanner sc = new Scanner(System.in);
-    
+
         while (!(userChoice >= 1 && userChoice <= 4)) {
             try {
+                System.out.print("Enter your choice: ");
                 String userInput = sc.nextLine();
                 userChoice = Integer.parseInt(userInput);
                 if (userChoice < 1 || userChoice > 4) {
@@ -51,7 +51,7 @@ public class Game {
 
             } catch (NumberFormatException e) {
                 System.out.println("Invalid option ! Please choose again");
-            } 
+            }
 
         }
 
@@ -61,7 +61,7 @@ public class Game {
                 startGame();
                 break;
 
-            case(4): 
+            case (4):
                 System.out.println();
                 highScore.displayHighScores();
                 break;
@@ -69,13 +69,13 @@ public class Game {
     }
 
     public void selectHumanPlayers() {
-        
+
         Scanner sc = new Scanner(System.in);
-        System.out.print("Select the number of players (from 2 to 6): ");
         int noOfPlayers = 0;
 
         while (!(noOfPlayers >= 2 && noOfPlayers <= 6)) {
             try {
+                System.out.print("Select the number of players (from 2 to 6): ");
                 String numberChosen = sc.nextLine();
                 noOfPlayers = Integer.parseInt(numberChosen);
                 if (noOfPlayers < 2) {
@@ -86,7 +86,7 @@ public class Game {
 
             } catch (NumberFormatException e) {
                 System.out.println("Invalid option ! Please choose again");
-            } 
+            }
 
         }
         if (noOfPlayers == 2) {
@@ -104,12 +104,10 @@ public class Game {
             currentNumber++;
             noOfPlayers--;
         }
-        
-        
+
         turnManager = new TurnManager(playerList.size());
 
-        GameLogic.playTurn(deck,playerList,turnManager,isTwoPlayerGame);
-       
+        GameLogic.playTurn(deck, playerList, turnManager, isTwoPlayerGame);
 
     }
 
@@ -141,19 +139,19 @@ public class Game {
             this.setDifficulty(Difficulty.MEDIUM);
         } else if (levelNo == 3) {
             this.setDifficulty(Difficulty.HARD);
-        } 
-        
+        }
+
     }
 
     public void selectAiPlayers() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Your name: ");
         String Human = sc.nextLine();
-        System.out.print("Select the number of AI players (from 1 to 5): ");
         int noOfAIPlayers = 0;
 
         while (!(noOfAIPlayers >= 1 && noOfAIPlayers <= 5)) {
             try {
+                System.out.print("Select the number of AI players (from 1 to 5): ");
                 String noOfAIPlayersChosen = sc.nextLine();
                 noOfAIPlayers = Integer.parseInt(noOfAIPlayersChosen);
                 if (noOfAIPlayers < 1) {
@@ -161,10 +159,10 @@ public class Game {
                 } else if (noOfAIPlayers > 5) {
                     System.out.println("Too many AI players, unable to start game ! Please choose again");
                 }
-               
+
             } catch (NumberFormatException e) {
                 System.out.println("Invalid option ! Please choose again");
-            } 
+            }
 
         }
         if (noOfAIPlayers == 1) {
@@ -174,7 +172,7 @@ public class Game {
         }
 
         playerList = new ArrayList<>();
-        playerList.add(new Player(Human)); 
+        playerList.add(new Player(Human));
         int currentNumber = 1;
         while (noOfAIPlayers > 0) {
             String aiName = "CPU" + Integer.toString(currentNumber);
@@ -194,12 +192,12 @@ public class Game {
         System.out.println("1. Local Play");
         System.out.println("2. Play vs AI");
         System.out.println("3. Play Online");
-        System.out.print("Choose game style: ");
         int styleNumber = 0;
         Scanner sc1 = new Scanner(System.in);
 
         while (!(styleNumber >= 1 && styleNumber <= 3)) {
             try {
+                System.out.print("Choose game style: ");
                 String chosenStyle = sc1.nextLine();
                 styleNumber = Integer.parseInt(chosenStyle);
                 if (styleNumber < 1 || styleNumber > 3) {
@@ -217,22 +215,22 @@ public class Game {
                 System.out.println();
                 selectHumanPlayers();
                 break;
-            case(2):
+            case (2):
                 System.out.println();
                 aiDifficultyLevel();
                 selectAiPlayers();
                 break;
-            case(3):
+            case (3):
                 multiplayerMenu();
                 System.out.println();
                 break;
-                
+
         }
     }
 
-    public void multiplayerMenu(){
+    public void multiplayerMenu() {
 
-        //chose between host or client
+        // chose between host or client
         System.out.println("===== Host or Join on LAN =====");
         System.out.println("1. Host");
         System.out.println("2. Join");
@@ -256,25 +254,23 @@ public class Game {
         }
 
         switch (menuChoice) {
-            case (1): //run host game server 
+            case (1): // run host game server
                 System.out.println();
                 this.online = true;
-                
-                new GameServer().startServer(deck); //give the entire game object
+
+                new GameServer().startServer(deck); // give the entire game object
                 break;
-            case(2): //run client game server
+            case (2): // run client game server
                 this.online = true;
                 System.out.println();
                 new GameClient().startClient();
-                //String[] arguments = {"localhost", "12345"};
-                //setUpClient(arguments);
-                
-                
-                //new GameClient().startClient(arguments);
+                // String[] arguments = {"localhost", "12345"};
+                // setUpClient(arguments);
+
+                // new GameClient().startClient(arguments);
         }
 
     }
-
 
     public static void checkGameEnd(boolean allColoursCollected) {
         // if (allColoursCollected || ) {
@@ -287,17 +283,17 @@ public class Game {
         boolean gameEnd = false;
 
         // for (Player player : playerList) {
-        //     if (player.allColoursCollected()) {
-        //     gameEnd = true;
-        //     break;
+        // if (player.allColoursCollected()) {
+        // gameEnd = true;
+        // break;
         // }
         // }
 
         // if (gameEnd || deck.getCards() == 0) {
-        //     System.out.println("This is the last round!");
-        //     playTurn(); // Last Round to end up with 4 cards, I need to see how the play
-        //     // turn is being handled
-        //     return true;
+        // System.out.println("This is the last round!");
+        // playTurn(); // Last Round to end up with 4 cards, I need to see how the play
+        // // turn is being handled
+        // return true;
         // }
 
         return false;
@@ -306,16 +302,15 @@ public class Game {
     public void endGame() {
         System.out.println("\nGame Over! Calculating scores...");
         // for (Player player : playerList) {
-        //     int score = ScoringSystem.calculateScore(player);
-        //     System.out.println(player.getName() + "1's final score: " + score);
+        // int score = ScoringSystem.calculateScore(player);
+        // System.out.println(player.getName() + "1's final score: " + score);
         // }
         Scoring.calculateScores(playerList, this.isTwoPlayerGame());
 
+        // bring back to main menu
 
-        //bring back to main menu 
-        
         printMenu();
-        
+
     }
 
     public static void main(String[] args) {
@@ -325,7 +320,7 @@ public class Game {
         // // playerList.add(new Player("Charlie"));
 
         Game game = new Game(playerList);
-       
+
         game.printMenu();
 
     }

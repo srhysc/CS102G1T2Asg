@@ -57,7 +57,7 @@ public class Scoring {
         for (Player player : players) {
             Map<String, Integer> colourCounts = new HashMap<>();
 
-            for (Card card : player.getHand()) {
+            for (Card card : player.getCollected()) {
                 String colour = card.getColour();
                 // Check if map already has colour
                 if (colourCounts.containsKey(colour)) {
@@ -82,7 +82,7 @@ public class Scoring {
                 int countForPlayer = 0;
 
                 // Count how many cards of this colour the player has
-                for (Card card : player.getHand()) {
+                for (Card card : player.getCollected()) {
                     if (card.getColour().equals(colour)) {
                         countForPlayer++;
                     }
@@ -100,7 +100,7 @@ public class Scoring {
 
                 if (hasMajority) {
                     // Flip all cards of this colour face down
-                    for (Card card : player.getHand()) {
+                    for (Card card : player.getCollected()) {
                         if (card.getColour().equals(colour)) {
                             card.setFaceDown(true);
                         }
@@ -115,8 +115,10 @@ public class Scoring {
 
         for (Player player : players) {
             int score = 0;
-
-            for (Card card : player.getHand()) {
+// System.out.println(player.getName());
+            for (Card card : player.getCollected()) {
+// System.out.println("Is card face down: " + card.isFaceDown());
+// System.out.println("Value: " + card.getValue());
                 if (card.isFaceDown()) {
                     score += 1; // Down cards count as 1 point
                 } else {
@@ -126,16 +128,17 @@ public class Scoring {
 
             player.setScore(score);
             System.out.println(player.getName() + "'s total score: " + score);
-            System.out.println(player.getName() + "'s number of cards: " + player.getHand().size());
+            System.out.println(player.getName() + "'s number of cards: " + player.getCollected().size());
+            // System.out.println(player.getCollected());
 
             // winner is the one with the lower score or if equal score then smaller hand
             if (score < lowestScore) {
                 lowestScore = score;
                 winner = player;
             } else if (score == lowestScore) {
-                if (winner != null && player.getHand().size() < winner.getHand().size()) {
+                if (winner != null && player.getCollected().size() < winner.getCollected().size()) {
                     winner = player;
-                } else if (winner != null && player.getHand().size() == winner.getHand().size()) {
+                } else if (winner != null && player.getCollected().size() == winner.getCollected().size()) {
                     winner = null; // Everyone loses
                 }
             }

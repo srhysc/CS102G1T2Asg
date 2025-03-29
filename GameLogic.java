@@ -313,30 +313,38 @@ public class GameLogic {
 
     public static void lastRound(Deck deck, ArrayList<Player> playerList, TurnManager turnManager,
             boolean isTwoPlayerGame) {
-        for (int i = 0; i < playerList.size() - 1; i++) {
+        for (int i = 0; i < playerList.size(); i++) {
             Player currentPlayer = playerList.get(turnManager.getCurrentPlayer());
             System.out.println("\n" + currentPlayer.getName() + "'s turn!");
             System.out.println("Deck num : " + deck.getSize());
             System.out.println("Parade: " + Parade.getParadeRow());
-            System.out.println("Collected Cards: " + currentPlayer.getCollected());
-            System.out.println("Your hand: " + currentPlayer.getHandWithIndex());
 
             // Player chooses a card to play
-            System.out.print("Choose a card index (1-" + (currentPlayer.getHand().size()) + "): ");
-            int cardIndex = sc.nextInt() - 1;
-            while (cardIndex < 0 || cardIndex > 4) {
-                System.out.println("Invalid card number");
+            if (currentPlayer instanceof ComputerPlayer) {
+                Card playedCard = ((ComputerPlayer) currentPlayer).playComputerMove(Parade.getParadeRow());
+                ArrayList<Card> takenCards = Parade.removeCards(playedCard);
+                Parade.addCard(playedCard);
+                currentPlayer.addToCollected(takenCards);
+                System.out.println(currentPlayer.getName() + " took: " + takenCards);
+            } else {
+                System.out.println("Collected Cards: " + currentPlayer.getCollected());
+                System.out.println("Your hand: " + currentPlayer.getHandWithIndex());
                 System.out.print("Choose a card index (1-" + (currentPlayer.getHand().size()) + "): ");
-                cardIndex = sc.nextInt() - 1;
-                System.out.println("Card index: " + cardIndex);
-            }
-            Card playedCard = currentPlayer.playCard(cardIndex);
-            ArrayList<Card> takenCards = new ArrayList<>(Parade.removeCards(playedCard));
-            Parade.addCard(playedCard);
+                int cardIndex = sc.nextInt() - 1;
+                while (cardIndex < 0 || cardIndex > 4) {
+                    System.out.println("Invalid card number");
+                    System.out.print("Choose a card index (1-" + (currentPlayer.getHand().size()) + "): ");
+                    cardIndex = sc.nextInt() - 1;
+                    System.out.println("Card index: " + cardIndex);
+                }
+                Card playedCard = currentPlayer.playCard(cardIndex);
+                ArrayList<Card> takenCards = new ArrayList<>(Parade.removeCards(playedCard));
+                Parade.addCard(playedCard);
 
-            // Resolve parade rules
-            currentPlayer.addToCollected(takenCards);
-            System.out.println("You took: " + takenCards);
+                // Resolve parade rules
+                currentPlayer.addToCollected(takenCards);
+                System.out.println("You took: " + takenCards);
+            }           
 
             // Draw a new card
             currentPlayer.addToHand(deck.drawCard());

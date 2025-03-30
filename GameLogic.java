@@ -119,10 +119,10 @@ public class GameLogic {
                                 if (moveIndex >= 0 && moveIndex < currentPlayer.getHand().size()) {
                                     break;// valid input
                                 } else {
-                                    System.out.println("Invalid card number");
+                                    System.out.println("Invalid card number! Please choose again");
                                 }
                             } catch (NumberFormatException | InputMismatchException e) {// user puts in alphabetical
-                                System.out.println("Invalid card number");
+                                System.out.println("Invalid card number! Please choose again");
                             }
                         }
 

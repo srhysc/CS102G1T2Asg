@@ -46,11 +46,11 @@ public class Game {
                 String userInput = sc.nextLine();
                 userChoice = Integer.parseInt(userInput);
                 if (userChoice < 1 || userChoice > 4) {
-                    System.out.println("Invalid option ! Please choose again");
+                    System.out.println("Invalid option! Please choose again");
                 }
 
             } catch (NumberFormatException e) {
-                System.out.println("Invalid option ! Please choose again");
+                System.out.println("Invalid option! Please choose again");
             }
 
         }
@@ -79,13 +79,13 @@ public class Game {
                 String numberChosen = sc.nextLine();
                 noOfPlayers = Integer.parseInt(numberChosen);
                 if (noOfPlayers < 2) {
-                    System.out.println("Too little players, unable to start game ! Please choose again");
+                    System.out.println("Too little players, unable to start game! Please choose again");
                 } else if (noOfPlayers > 6) {
-                    System.out.println("Too many players, unable to start game ! Please choose again");
+                    System.out.println("Too many players, unable to start game! Please choose again");
                 }
 
             } catch (NumberFormatException e) {
-                System.out.println("Invalid option ! Please choose again");
+                System.out.println("Invalid option! Please choose again");
             }
 
         }
@@ -116,20 +116,21 @@ public class Game {
         System.out.println("1. Easy");
         System.out.println("2. Intermediate");
         System.out.println("3. Difficult");
+        System.out.println("4. Back");
         System.out.print("Choose Difficulty Level: ");
         Scanner sc = new Scanner(System.in);
         int levelNo = 0;
 
-        while (!(levelNo >= 1 && levelNo <= 3)) {
+        while (!(levelNo >= 1 && levelNo <= 4)) {
             try {
                 String chosenLevelNo = sc.nextLine();
                 levelNo = Integer.parseInt(chosenLevelNo);
-                if (levelNo < 1 || levelNo > 3) {
-                    System.out.println("Invalid difficulty level ! Please choose again");
+                if (levelNo < 1 || levelNo > 4) {
+                    System.out.println("Invalid difficulty level! Please choose again");
                 }
 
             } catch (NumberFormatException e) {
-                System.out.println("Invalid difficulty level ! Please choose again");
+                System.out.println("Invalid difficulty level! Please choose again");
             }
 
         }
@@ -139,6 +140,8 @@ public class Game {
             this.setDifficulty(Difficulty.MEDIUM);
         } else if (levelNo == 3) {
             this.setDifficulty(Difficulty.HARD);
+        } else if (levelNo == 4) {
+            startGame();
         }
 
     }
@@ -155,13 +158,13 @@ public class Game {
                 String noOfAIPlayersChosen = sc.nextLine();
                 noOfAIPlayers = Integer.parseInt(noOfAIPlayersChosen);
                 if (noOfAIPlayers < 1) {
-                    System.out.println("Too little AI players, unable to start game ! Please choose again");
+                    System.out.println("Too little AI players, unable to start game! Please choose again");
                 } else if (noOfAIPlayers > 5) {
-                    System.out.println("Too many AI players, unable to start game ! Please choose again");
+                    System.out.println("Too many AI players, unable to start game! Please choose again");
                 }
 
             } catch (NumberFormatException e) {
-                System.out.println("Invalid option ! Please choose again");
+                System.out.println("Invalid option! Please choose again");
             }
 
         }
@@ -192,20 +195,21 @@ public class Game {
         System.out.println("1. Local Play");
         System.out.println("2. Play vs AI");
         System.out.println("3. Play Online");
+        System.out.println("4. Back");
         int styleNumber = 0;
         Scanner sc1 = new Scanner(System.in);
 
-        while (!(styleNumber >= 1 && styleNumber <= 3)) {
+        while (!(styleNumber >= 1 && styleNumber <= 4)) {
             try {
                 System.out.print("Choose game style: ");
                 String chosenStyle = sc1.nextLine();
                 styleNumber = Integer.parseInt(chosenStyle);
-                if (styleNumber < 1 || styleNumber > 3) {
+                if (styleNumber < 1 || styleNumber > 4) {
                     System.out.println("Invalid game style! Please choose again");
                 }
 
             } catch (NumberFormatException e) {
-                System.out.println("Invalid game style ! Please choose again");
+                System.out.println("Invalid game style! Please choose again");
             }
 
         }
@@ -224,6 +228,8 @@ public class Game {
                 multiplayerMenu();
                 System.out.println();
                 break;
+            case (4):
+                printMenu();
 
         }
     }
@@ -231,24 +237,25 @@ public class Game {
     public void multiplayerMenu() {
 
         // chose between host or client
-        System.out.println("===== Host or Join on LAN =====");
+        System.out.println("==== Host or Join on LAN ====");
         System.out.println("1. Host");
         System.out.println("2. Join");
+        System.out.println("3. Back");
         System.out.print("Choose option: ");
 
         int menuChoice = 0;
         Scanner sc1 = new Scanner(System.in);
 
-        while (!(menuChoice >= 1 && menuChoice <= 2)) {
+        while (!(menuChoice >= 1 && menuChoice <= 3)) {
             try {
                 String chosenStyle = sc1.nextLine();
                 menuChoice = Integer.parseInt(chosenStyle);
-                if (menuChoice < 1 || menuChoice > 2) {
+                if (menuChoice < 1 || menuChoice > 3) {
                     System.out.println("Invalid game style! Please choose again");
                 }
 
             } catch (NumberFormatException e) {
-                System.out.println("Invalid game style ! Please choose again");
+                System.out.println("Invalid game style! Please choose again");
             }
 
         }
@@ -268,6 +275,8 @@ public class Game {
                 // setUpClient(arguments);
 
                 // new GameClient().startClient(arguments);
+            case(3):
+                startGame();
         }
 
     }

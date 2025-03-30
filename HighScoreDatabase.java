@@ -84,6 +84,7 @@ public class HighScoreDatabase {
                 System.out.println(highScore);
             }
         }
+
     }
     
 }

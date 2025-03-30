@@ -55,7 +55,7 @@ public class GameClient {
                                             int input = Integer.parseInt(turnInput) - 1;
     
                                             while (input < 0 || input > 4) {
-                                                System.out.println("Invalid card number");
+                                                System.out.println("Invalid card number!");
                                                 //get player hand 
                                                 int handSize = serverMessage.getPlayerWithName(playerName).getHand().size();
                                                 System.out.print("Choose a card index (1-" + (handSize) + "): ");
@@ -72,7 +72,7 @@ public class GameClient {
                                             break;
                                             } catch (Exception e) {
                                                 // TODO: handle exception
-                                                System.out.println("Invalid card number try again");
+                                                System.out.println("Invalid card number! Please try again");
                                             }
                                         
     

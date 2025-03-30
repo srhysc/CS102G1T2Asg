@@ -17,11 +17,11 @@ public class GameServer {
         try (ServerSocket serverSocket = new ServerSocket(PORT); ) {
             
             System.out.println("Server started on port ");
-            System.out.println("Please enter your name");
+            System.out.print("Enter your name: ");
             String ServerPLayerName = sc.nextLine();
             multiplayerPlayerList.add(new Player(ServerPLayerName, null, null));
 
-            System.out.println("Please enter how many players will play (2-6)");
+            System.out.println("Select the number of players (2-6): ");
             int numberOfPlayers = sc.nextInt();
             sc.nextLine();
 
@@ -75,7 +75,7 @@ public class GameServer {
         }
 
         //start the game
-        System.out.println("online starting now");
+        System.out.println("Online starting now");
         GameLogic.playOnlineTurn(deck, multiplayerPlayerList, turnManager, isTwoPlayerGame, outputs, inputs, sc );
 
 

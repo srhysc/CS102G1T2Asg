@@ -87,10 +87,10 @@ public class GameLogic {
                         } else {// local
 
                             if (player != currentPlayer) {
-                                System.out.println("its players " + currentPlayer + " turn now please wait!");
+                                System.out.println("It's players " + currentPlayer + " turn now. Please wait!");
                                 
                             } else {
-                                System.out.println("its your turn ");
+                                System.out.println("It's your turn ");
                                 System.err.println(menuMessage.toString());
                                 // SocketPacket sp = new SocketPacket(new StringBuilder(menuMessage),
                                 // currentPlayer.getName());
@@ -130,7 +130,7 @@ public class GameLogic {
                         // than 0 or not more than 4
 
                         SocketPacket sp = new SocketPacket(
-                                new StringBuilder("player " + currentPlayer.getName() + " made the move " + moveIndex),
+                                new StringBuilder("Player " + currentPlayer.getName() + " made the move " + moveIndex),
                                 currentPlayer.getName(), 0, playerList);
                         broadcastToAll(playerList, sp);
                     } else {
@@ -148,7 +148,7 @@ public class GameLogic {
                             // input validation was done in the client side
                             moveIndex = Integer.parseInt(moveResponse.getSb().toString());
 
-                            SocketPacket sp = new SocketPacket(new StringBuilder("player " + currentPlayer.getName()
+                            SocketPacket sp = new SocketPacket(new StringBuilder("Player " + currentPlayer.getName()
                                     + " made the move " + moveResponse.getSb().toString()), currentPlayer.getName(), 0,
                                     playerList);
                             broadcastToAll(playerList, sp);
@@ -164,7 +164,7 @@ public class GameLogic {
                     // Resolve parade rules
                     currentPlayer.addToCollected(takenCards);
                     SocketPacket sp = new SocketPacket(
-                            new StringBuilder("player " + currentPlayer.getName() + " took " + takenCards),
+                            new StringBuilder("Player " + currentPlayer.getName() + " took " + takenCards),
                             currentPlayer.getName(), 0, playerList);
                     broadcastToAll(playerList, sp);
 
@@ -280,7 +280,7 @@ public class GameLogic {
                 System.out.print("Choose a card index (1-" + (currentPlayer.getHand().size()) + "): ");
                 int cardIndex = sc.nextInt() - 1;
                 while (cardIndex < 0 || cardIndex > 4) {
-                    System.out.println("Invalid card number");
+                    System.out.println("Invalid card number! Please choose again");
                     System.out.print("Choose a card index (1-" + (currentPlayer.getHand().size()) + "): ");
                     cardIndex = sc.nextInt() - 1;
                     System.out.println("Card index: " + cardIndex);
@@ -342,7 +342,7 @@ public class GameLogic {
                 System.out.print("Choose a card index (1-" + (currentPlayer.getHand().size()) + "): ");
                 int cardIndex = sc.nextInt() - 1;
                 while (cardIndex < 0 || cardIndex > 4) {
-                    System.out.println("Invalid card number");
+                    System.out.println("Invalid card number! Please choose again");
                     System.out.print("Choose a card index (1-" + (currentPlayer.getHand().size()) + "): ");
                     cardIndex = sc.nextInt() - 1;
                     System.out.println("Card index: " + cardIndex);

@@ -30,9 +30,12 @@ public class Game {
         this.turnManager = new TurnManager(playerList.size());
         this.scanner = new Scanner(System.in);
     }
-
+    
+    // start menu display
     public void printMenu() {
-        System.out.println("===== Menu =====");
+        System.out.println("========================");
+        System.out.println("          MENU          ");
+        System.out.println("========================");
         System.out.println("1. Start Game");
         System.out.println("2. Settings");
         System.out.println("3. Help");
@@ -42,7 +45,7 @@ public class Game {
 
         while (!(userChoice >= 1 && userChoice <= 4)) {
             try {
-                System.out.print("Enter your choice: ");
+                System.out.print("Enter your choice (1-4): ");
                 String userInput = sc.nextLine();
                 userChoice = Integer.parseInt(userInput);
                 if (userChoice < 1 || userChoice > 4) {
@@ -55,19 +58,20 @@ public class Game {
 
         }
 
+        GameClient.clearConsole();
+
         switch (userChoice) {
             case (1):
-                System.out.println();
                 startGame();
                 break;
 
             case (4):
-                System.out.println();
                 highScore.displayHighScores();
                 break;
         }
     }
 
+    // choosing number of HUMAN players and name
     public void selectHumanPlayers() {
 
         Scanner sc = new Scanner(System.in);
@@ -75,7 +79,7 @@ public class Game {
 
         while (!(noOfPlayers >= 2 && noOfPlayers <= 6)) {
             try {
-                System.out.print("Select the number of players (from 2 to 6): ");
+                System.out.print("Select the number of players (2-6): ");
                 String numberChosen = sc.nextLine();
                 noOfPlayers = Integer.parseInt(numberChosen);
                 if (noOfPlayers < 2) {
@@ -98,8 +102,31 @@ public class Game {
         playerList = new ArrayList<>();
         int currentNumber = 1;
         while (noOfPlayers > 0) {
-            System.out.print("Player " + currentNumber + "'s name: ");
-            String playerNames = sc.nextLine();
+            System.out.print("Enter player " + currentNumber + "'s name: ");
+            String playerNames = sc.nextLine().trim();
+            boolean alreadyExists = false;
+
+            for (Player player : playerList) {
+                if (player.getName().equalsIgnoreCase(playerNames)) {
+                    alreadyExists = true;
+                    break;
+                }
+            }
+            
+            while (alreadyExists) {
+                System.out.println("That name is already taken! Please choose a different name");
+                System.out.print("Enter player " + currentNumber + "'s name: ");
+                playerNames = sc.nextLine().trim();
+
+                alreadyExists = false; 
+                for (Player player : playerList) {
+                    if (player.getName().equalsIgnoreCase(playerNames)) {
+                        alreadyExists = true;
+                        break;
+                    }
+                }
+            } 
+
             playerList.add(new Player(playerNames));
             currentNumber++;
             noOfPlayers--;
@@ -111,13 +138,16 @@ public class Game {
 
     }
 
+    // choosing difficulty level for AI game style
     public void aiDifficultyLevel() {
-        System.out.println("===== Difficulty Level =====");
+        System.out.println("========================");
+        System.out.println("    DIFFICULTY LEVEL    ");
+        System.out.println("========================");
         System.out.println("1. Easy");
         System.out.println("2. Intermediate");
         System.out.println("3. Difficult");
         System.out.println("4. Back");
-        System.out.print("Choose Difficulty Level: ");
+        System.out.print("Enter your choice (1-4): ");
         Scanner sc = new Scanner(System.in);
         int levelNo = 0;
 
@@ -134,6 +164,8 @@ public class Game {
             }
 
         }
+        GameClient.clearConsole();
+
         if (levelNo == 1) {
             this.setDifficulty(Difficulty.EASY);
         } else if (levelNo == 2) {
@@ -146,15 +178,16 @@ public class Game {
 
     }
 
+    // choosing number of AI players
     public void selectAiPlayers() {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Your name: ");
+        System.out.print("Enter your name: ");
         String Human = sc.nextLine();
         int noOfAIPlayers = 0;
 
         while (!(noOfAIPlayers >= 1 && noOfAIPlayers <= 5)) {
             try {
-                System.out.print("Select the number of AI players (from 1 to 5): ");
+                System.out.print("Select the number of AI players (1-5): ");
                 String noOfAIPlayersChosen = sc.nextLine();
                 noOfAIPlayers = Integer.parseInt(noOfAIPlayersChosen);
                 if (noOfAIPlayers < 1) {
@@ -190,8 +223,11 @@ public class Game {
         GameLogic.playTurn(deck, playerList, turnManager, isTwoPlayerGame);
     }
 
+    // choosing game style
     public void startGame() {
-        System.out.println("===== Game styles =====");
+        System.out.println("=========================");
+        System.out.println("       GAME STYLES       ");
+        System.out.println("=========================");
         System.out.println("1. Local Play");
         System.out.println("2. Play vs AI");
         System.out.println("3. Play Online");
@@ -201,7 +237,7 @@ public class Game {
 
         while (!(styleNumber >= 1 && styleNumber <= 4)) {
             try {
-                System.out.print("Choose game style: ");
+                System.out.print("Enter your choice (1-4): ");
                 String chosenStyle = sc1.nextLine();
                 styleNumber = Integer.parseInt(chosenStyle);
                 if (styleNumber < 1 || styleNumber > 4) {
@@ -214,13 +250,13 @@ public class Game {
 
         }
 
+        GameClient.clearConsole();
+
         switch (styleNumber) {
             case (1):
-                System.out.println();
                 selectHumanPlayers();
                 break;
             case (2):
-                System.out.println();
                 aiDifficultyLevel();
                 selectAiPlayers();
                 break;
@@ -237,11 +273,13 @@ public class Game {
     public void multiplayerMenu() {
 
         // chose between host or client
-        System.out.println("==== Host or Join on LAN ====");
+        System.out.println("=============================");
+        System.out.println("     HOST OR JOIN ON LAN     ");
+        System.out.println("=============================");
         System.out.println("1. Host");
-        System.out.println("2. Join");
+        System.out.println("2. Join on LAN");
         System.out.println("3. Back");
-        System.out.print("Choose option: ");
+        System.out.print("Enter your choice (1-3):");
 
         int menuChoice = 0;
         Scanner sc1 = new Scanner(System.in);
@@ -260,6 +298,7 @@ public class Game {
 
         }
 
+        GameClient.clearConsole();
         switch (menuChoice) {
             case (1): // run host game server
                 System.out.println();

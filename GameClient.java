@@ -45,7 +45,7 @@ public class GameClient {
                                 //check if the client is the current player 
                                 if(serverMessage.getCurrentPlayer().equals(playerName)){
                                     //if it is ask for their input 
-                                    System.out.println("its your turn!! Please input your move");
+                                    System.out.println("Its your turn!! Please input your move");
                                     
 
                                     //check for input validation 
@@ -55,7 +55,7 @@ public class GameClient {
                                             int input = Integer.parseInt(turnInput) - 1;
     
                                             while (input < 0 || input > 4) {
-                                                System.out.println("Invalid card number!");
+                                                System.out.println("Invalid card number! Please choose again");
                                                 //get player hand 
                                                 int handSize = serverMessage.getPlayerWithName(playerName).getHand().size();
                                                 System.out.print("Choose a card index (1-" + (handSize) + "): ");
@@ -72,7 +72,7 @@ public class GameClient {
                                             break;
                                             } catch (Exception e) {
                                                 // TODO: handle exception
-                                                System.out.println("Invalid card number! Please try again");
+                                                System.out.println("Invalid card number! Please choose again");
                                             }
                                         
     
@@ -133,7 +133,7 @@ public class GameClient {
 
 
     // Clear the console screen
-    private static void clearConsole() {
+    public static void clearConsole() {
         System.out.print("\033[H\033[2J");  
         System.out.flush();  
     }

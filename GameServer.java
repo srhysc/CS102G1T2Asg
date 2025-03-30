@@ -11,11 +11,12 @@ public class GameServer {
     private static List<ObjectOutputStream> outputs = new ArrayList<>();
     private static List<ObjectInputStream> inputs = new ArrayList<>();
     private boolean isTwoPlayerGame = false;
+    public static ServerSocket serverSocket;
 
     public void startServer(Deck deck){
         Scanner sc = new Scanner(System.in);
-        try (ServerSocket serverSocket = new ServerSocket(PORT); ) {
-            
+        try {
+            serverSocket = new ServerSocket(PORT);
             System.out.println("Server started on port ");
             System.out.print("Enter your name: ");
             String ServerPLayerName = sc.nextLine();

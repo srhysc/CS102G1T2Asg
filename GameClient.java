@@ -44,6 +44,11 @@ public class GameClient {
 
                                 //check if the client is the current player 
                                 if(serverMessage.getCurrentPlayer().equals(playerName)){
+
+                                    
+
+
+
                                     //if it is ask for their input 
                                     System.out.println("Its your turn!! Please input your move");
                                     
@@ -90,6 +95,58 @@ public class GameClient {
                                 }
 
                                 break;
+
+                            case 3 :
+                                System.out.println("===============\n [GameOver] \n" + serverMessage.getSb().toString());
+
+                                System.out.println("press enter to quit or when your host quits you will be returned to main menu");
+                                Game.main(null);
+
+
+                                break;
+
+                            case 4 : 
+                                System.out.println("===============\n [GameOver] \n" + serverMessage.getSb().toString());
+                                
+                                    while(true){
+                                        try {
+
+                                            //get hand
+                                            ArrayList<Card> hand = serverMessage.getPlayerWithName(playerName).getHand();
+
+
+                                            int firstCardIndex = Scoring.getValidCardIndex(sc, hand.size(), "Choose the number of the 1st card to discard: ");
+                                            int secondCardIndex = Scoring.getValidCardIndex(sc, hand.size(), "Choose the number of the 2nd card to discard: ");
+                
+                                            if(firstCardIndex != secondCardIndex){
+                                                Card discardedFirstCard = hand.remove(firstCardIndex);
+                                                Card discardedSecondCard = hand.remove(secondCardIndex);
+                                                 //send move to server
+                                                //build socket packet 
+
+                                                SocketPacket moveResponse = new SocketPacket(new StringBuilder(firstCardIndex+","+secondCardIndex), serverMessage.currentPlayer, 2, null);
+                                                out.writeObject(moveResponse);
+                                                out.flush();
+                                                break;
+                                                
+                                            }
+                                            else{
+                                                System.out.println("Please do not choose 2 of the same index");
+                                                throw new InputMismatchException();
+                                            }
+    
+                                            
+                                            } catch (Exception e) {
+                                                // TODO: handle exception
+                                                System.out.println("Invalid card number! Please choose again");
+                                            }
+                                    
+                                            
+                                        }
+
+
+
+                                break;
                             default:
                                 break;
                         }
@@ -115,6 +172,7 @@ public class GameClient {
                 }
                 catch(ClassNotFoundException | EOFException e){
                     System.out.println("Error reading data from server or server closed connection");
+                    Game.main(null);
                     break;
                 }
             }

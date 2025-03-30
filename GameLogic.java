@@ -199,6 +199,8 @@ public class GameLogic {
                     continue;
                 }
 
+                //online last round
+                onlineLastRound(deck, playerList, turnManager, isTwoPlayerGame, outputs, inputs, sc);
             }
             // manage player disconnects
             catch (IOException | ClassNotFoundException e) {
@@ -217,6 +219,7 @@ public class GameLogic {
                 // If no players left, end the game
                 if (GameServer.playersSockets.isEmpty()) {
                     System.out.println("All players disconnected. Ending game.");
+                    Game.main(null);
                     break;
                 }
 
@@ -242,6 +245,202 @@ public class GameLogic {
                 System.err.println(sp.getSb().toString());
             }
         }
+    }
+
+    public static void onlineLastRound(Deck deck, ArrayList<Player> playerList, TurnManager turnManager, boolean isTwoPlayerGame,
+     List<ObjectOutputStream> outputs, List<ObjectInputStream> inputs, Scanner sc) throws IOException, ClassNotFoundException{
+        Player currentPlayer = playerList.get(turnManager.getCurrentPlayer());
+
+        while(true){
+            try {
+                //last round but structured for socket lan game
+                for (int i = 0; i < playerList.size(); i++) {
+                    currentPlayer = playerList.get(turnManager.getCurrentPlayer());
+                    System.out.println("\n" + currentPlayer.getName() + "'s turn!");
+                    System.out.println("Deck num : " + deck.getSize());
+                    System.out.println("Parade: " + Parade.getParadeRow());
+    
+                    //build move request
+                    StringBuilder moveRequest = new StringBuilder();
+    
+                    moveRequest.append("\nCollectted Cards: " + currentPlayer.getCollected());
+                    moveRequest.append("\n Your hand: " + currentPlayer.getHandWithIndex());
+                    moveRequest.append("Choose a card index (1-" + (currentPlayer.getHand().size()) + "): ");
+    
+                    SocketPacket sp = new SocketPacket(moveRequest, currentPlayer.getName() , 2, playerList);
+    
+                    broadcastToAll(playerList, sp);
+    
+                    //handle input 
+                    //if current player is the local host
+                    if (currentPlayer.getInputSteam() == null){
+                        int cardIndex = sc.nextInt() - 1;
+                        while (cardIndex < 0 || cardIndex > 4) {
+                            System.out.println("Invalid card number! Please choose again");
+                            System.out.print("Choose a card index (1-" + (currentPlayer.getHand().size()) + "): ");
+                            cardIndex = sc.nextInt() - 1;
+                            System.out.println("Card index: " + cardIndex);
+                        }
+                        Card playedCard = currentPlayer.playCard(cardIndex);
+                        ArrayList<Card> takenCards = new ArrayList<>(Parade.removeCards(playedCard));
+                        Parade.addCard(playedCard);
+    
+                        // Resolve parade rules
+                        currentPlayer.addToCollected(takenCards);
+                        System.out.println("You took: " + takenCards);
+                    }
+                    else{
+                        //online player
+    
+                        SocketPacket moveResponse = (SocketPacket) currentPlayer.getInputSteam().readObject();
+                                
+                        flushInputBuffer();
+                        
+                        int moveIndex = 0;
+                        // read the move
+                        if (moveResponse.getMessageType() == 2) {
+    
+                            // input validation was done in the client side
+                            moveIndex = Integer.parseInt(moveResponse.getSb().toString());
+                            
+                            Card playedCard = currentPlayer.playCard(moveIndex);
+                            ArrayList<Card> takenCards = new ArrayList<>(Parade.removeCards(playedCard));
+                            Parade.addCard(playedCard);
+    
+                            // Resolve parade rules
+                            currentPlayer.addToCollected(takenCards);
+                            System.out.println("You took: " + takenCards);
+    
+    
+                            // SocketPacket sp = new SocketPacket(new StringBuilder("Player " + currentPlayer.getName()
+                            //         + " made the move " + moveResponse.getSb().toString()), currentPlayer.getName(), 0,
+                            //         playerList);
+                            // broadcastToAll(playerList, sp);
+                        }
+    
+    
+                    }
+    
+                    // Draw a new card
+                    currentPlayer.addToHand(deck.drawCard());
+    
+                    turnManager.nextTurn();
+    
+                }
+
+                //break when all turns played and go to end round
+                break;
+            } // manage player disconnects
+            catch (IOException | ClassNotFoundException e) {
+    
+                System.out.println("Player " + currentPlayer.getName() + " disconnected.");
+    
+                // Remove disconnected player
+                int currentPlayerIndex = playerList.indexOf(currentPlayer);
+                if (currentPlayerIndex > 0) { // Don't remove the server
+                    GameServer.playersSockets.remove(currentPlayerIndex);
+                    outputs.remove(currentPlayerIndex);
+                    inputs.remove(currentPlayerIndex);
+                    playerList.remove(currentPlayerIndex);
+                }
+    
+                // If no players left, end the game
+                if (GameServer.playersSockets.isEmpty()) {
+                    System.out.println("All players disconnected. Ending game.");
+                    Game.main(null);
+                    break;
+                    
+                }
+    
+                // Adjust current player index
+                turnManager.nextTurn();
+                currentPlayer = playerList.get(turnManager.getCurrentPlayer());
+                // currentPlayer = currentPlayer % (GameServer.playersSockets.size() + 1);
+            }
+        }
+        
+        
+        endGameOnline(playerList, isTwoPlayerGame, turnManager);
+
+
+    }
+
+    public static void endGameOnline(ArrayList<Player> playerList, boolean isTwoPlayerGame, TurnManager turnManager) throws IOException, ClassNotFoundException {
+        System.out.println("\nGame Over! Calculating scores...");
+
+        //TODO ask the players to remove 2 cards each 
+
+        //build move request string
+        StringBuilder sb = new StringBuilder();
+        for(Player player : playerList){
+            //clear stringbuilder 
+            sb.setLength(0);
+
+            sb.append("\n" + player.getName() + ", here are the cards in hand: \n");
+            ArrayList<Card> hand = player.getHand();
+            for (int i = 0; i < hand.size(); i++) {
+                sb.append((i + 1) + ": " + hand.get(i).getDetails() + "\n");
+            }
+
+            //broadcast to discard first card 
+            sb.append("\n Please discard 2 cards\n");
+
+            SocketPacket sp = new SocketPacket(sb, player.getName(), 4, playerList);
+            broadcastToAll(playerList, sp);
+            //handle local or socket 
+
+            if(player.getInputSteam() == null){
+                int firstCardIndex = Scoring.getValidCardIndex(sc, hand.size(), "Choose the number of the 1st card to discard: ");
+                int secondCardIndex = Scoring.getValidCardIndex(sc, hand.size(), "Choose the number of the 2nd card to discard: ");
+                
+                while(true){
+                    if(firstCardIndex != secondCardIndex){
+                        Card discardedFirstCard = hand.remove(firstCardIndex);
+                        Card discardedSecondCard = hand.remove(secondCardIndex);
+                        player.addToCollected(hand);
+                        break;
+                    }
+                    else{
+                        System.out.println("Please do not choose 2 of the same index");
+                    }
+                }
+                
+                
+            }
+            else{
+                //this move reply should be in the form of "1,2"
+                SocketPacket moveResponse = (SocketPacket) player.getInputSteam().readObject();
+                        
+                flushInputBuffer();
+
+                //split 
+                String responseString = moveResponse.getSb().toString();
+                String[] responses = responseString.split(",");
+
+                Card discardedFirstCard = hand.remove(Integer.parseInt(responses[0]));
+                Card discardedSecondCard = hand.remove(Integer.parseInt(responses[1]));
+                
+                player.addToCollected(hand);
+
+            }
+
+
+        }
+
+        // Calculate scores and determine the winner
+        //Player winner = Scoring.calculateOnlineScores(playerList, isTwoPlayerGame);
+        SocketPacket sp = Scoring.calculateOnlineScores(playerList, isTwoPlayerGame);
+        System.out.println();
+        System.out.println(); 
+
+        broadcastToAll(playerList, sp);
+
+        System.out.println("Press enter to go back to main menu and close the server");
+
+        GameServer.serverSocket.close();
+        // Bring back to the main menu
+        Game.main(null);
+        
     }
 
     public static void playTurn(Deck deck, ArrayList<Player> playerList, TurnManager turnManager,
@@ -363,6 +562,8 @@ public class GameLogic {
         }
         endGame(playerList, isTwoPlayerGame);
     }
+
+
 
     public static void endGame(ArrayList<Player> playerList, boolean isTwoPlayerGame) {
         System.out.println("\nGame Over! Calculating scores...");

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 public class SocketPacket implements Serializable {
     public StringBuilder sb;
     public String currentPlayer; 
-    public static String[] messageTypeList = {"announcement", "moveRequest", "moveResponse", "gameOver"};
+    public static String[] messageTypeList = {"announcement", "moveRequest", "moveResponse", "gameOver","remove2Cards"};
     public int messageType; 
     public ArrayList<Player> playerList;
 

@@ -1,48 +1,50 @@
 # CS102G1T2Asg - Parade Card Game
-Play a Parade Card game in `Local` mode, `VS AI` mode or `Online`!! Up to 6 players
+Experience the thrill of the **Parade Card Game** in three exciting modes: **Local Play**, **VS AI**, and **Online Multiplayer**! Compete with up to 6 players and prove your skills.
 
-# Getting Started:
-All files are already compiled in the classes folder. Just type `run` in the terminal while you are in `CS102G1T2Asg` directory in order to run the game
+## Getting Started
+All necessary files have been precompiled and are located in the `Classes` folder. To launch the game, simply navigate to the `CS102G1T2Asg` directory and enter the following command in your terminal:
 
-# 3 Game Modes
-All three game modes will have the same prompt, EITHER to input the number of players 
-> Select the number of players (2-6): 
+```
+run
+```
 
-OR to input the player's name
-> Enter <player> name : 
+## Game Modes
+Each game mode follows a similar setup process. You will be prompted to either:
+- Enter the number of players:
+  > Select the number of players (2-6):
+- Provide the player's name:
+  > Enter <player> name:
+- Or both, depending on the selected mode.
 
-OR BOTH
+### Local Play
+Play with friends in **Local Play Mode** by entering the number of players and assigning unique names to each participant. Duplicate player names are *not allowed*.
 
-## Local Play
-When prompted, enter the number of players and name of each player. Do note that users with the same name are *NOT ALLOWED*
+### Play vs AI
+Challenge AI opponents with adjustable difficulty levels—including the **hardest setting, if you dare**! Compete against up to **five AI players** at once.
 
-## Play vs AI
-Choose your desired difficulty (Hardest if you dare!!) and choose to fight up to 5 AI players at once!!
+### Online Play
+Engage in **Online Multiplayer Mode**, where you can either **host a game** or **join a local network (LAN) session**.
 
-## Online Play
-There are two options for you to run online play, `Host` or `Join on LAN`
+#### Host
+As the host, a default port (`1234`) will be assigned. Simply specify the number of players to create a game lobby.
 
-### Host 
-A default port will be given (1234) to you so all you have to do is to input the amount of players you wish to play with in a lobby
+#### Join on LAN
+Players can join a LAN session **only if a server is already active**. If no host is detected, the player will be redirected to the **Main Menu**.
 
-### Join on LAN
-*Note:* A player can only join on LAN if a server is created. Without a server hosted, the player will be brought back to the `Main Menu`
+## Tracking Wins and Scores
+All past victories are recorded in the **Hall of Fame**, allowing players to track their achievements and compete for the top ranks.
 
-# Recording of wins and scores
-All past winners will be recorded in `Hall of Fame` 
+## Hall of Fame
+Check out the **Hall of Fame** to view previous champions and see if you have what it takes to surpass them!
 
-# Hall of Fame
-Do check out our past winners and see if you can rack up more wins than them!!
+## Contributors
+This project was developed by:
+- **Rhys**
+- **Charissa**
+- **Qing Wen**
+- **Jordan**
+- **Ethan**
+- **Hayyun**
 
-## Contributed by 
-Ryhs
-Charissa
-Qing Wen
-Jordan
-Ethan 
-Hayyun
-
-
-
-
+Enjoy the game and may the best player win!
 

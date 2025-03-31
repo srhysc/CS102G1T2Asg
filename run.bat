@@ -1,1 +1,1 @@
-java -cp Classes Game
+java -cp Classes game/Game

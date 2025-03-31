@@ -1,6 +1,13 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import game.Game;
+import game.TurnManager;
+import entities.Card;
+import entities.Parade;
+import entities.Player;
+import entities.comp.Difficulty;
+
 public class ComputerPlayerTest {
     static ArrayList<Player> playerList = new ArrayList<>();
     private static Deck deck;

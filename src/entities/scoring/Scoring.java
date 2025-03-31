@@ -38,6 +38,16 @@ public class Scoring {
         for (Player player : players) {
             if (player instanceof ComputerPlayer) {
                 ComputerPlayer cPlayer = (ComputerPlayer) player;
+                System.out.print(cPlayer.getName() + " is discarding 2 cards");
+                for (int i = 0; i < 3; i++) {
+                try {
+                    Thread.sleep(500);  // half second delay for each . 
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+                System.out.print(".");
+                }
+                System.out.println();
                 cPlayer.discardTwoCards();
             } else {
                 System.out.println(player.getName() + ", here are your cards in hand:");

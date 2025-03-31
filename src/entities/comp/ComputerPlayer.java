@@ -40,8 +40,18 @@ public class ComputerPlayer extends Player {
         }
         getHand().remove(chosenCard);
         // parade.add(chosenCard); 
+        System.out.print(getName() + " is thinking");
+        for (int i = 0; i < 3; i++) {
+            try {
+                Thread.sleep(500);  // half second delay for each . by pausing the execution
+            } catch (InterruptedException e) { // when another thread interrupts the sleeping thread
+                Thread.currentThread().interrupt();
+            }
+            System.out.print(".");
+        }
+        System.out.println();  
         System.out.println(getName() + " played:" + chosenCard);
-        return chosenCard; 
+        return chosenCard;  
     }
 
     public Card chooseRandomCard() {

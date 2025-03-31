@@ -164,7 +164,6 @@ public class Game {
             }
 
         }
-        GameClient.clearConsole();
 
         if (levelNo == 1) {
             this.setDifficulty(Difficulty.EASY);
@@ -175,7 +174,7 @@ public class Game {
         } else if (levelNo == 4) {
             startGame();
         }
-
+        GameClient.clearConsole();
     }
 
     // choosing number of AI players

@@ -44,12 +44,12 @@ public class GameClient {
                                 break;
                             case 1 : //moveRequest
                                 clearConsole();
-                                //show the move request (probably the menu)
-                                System.out.println("\n =============== \n [Move Request] \n" + serverMessage.getSb().toString());
+                                
 
                                 //check if the client is the current player 
                                 if(serverMessage.getCurrentPlayer().equals(playerName)){
-
+                                    //show the move request (probably the menu)
+                                    System.out.println("\n =============== \n [Move Request] \n" + serverMessage.getSb().toString());
                                     
 
 
@@ -80,11 +80,16 @@ public class GameClient {
                                             out.writeObject(moveResponse);
                                             out.flush();
                                             break;
-                                            } catch (Exception e) {
-                                                // TODO: handle exception
-                                                System.out.println("Invalid card number! Please choose again");
-                                            }
-                                        
+                                        } catch(SocketException | EOFException e){
+                                            System.out.println("Error reading data from server or server closed connection");
+                                            Game.main(null);
+                                            break;
+                                        }catch (Exception e) {
+                                            // TODO: handle exception
+                                            System.out.println("Invalid card number! Please choose again");
+                                            
+                                        }
+                                    
     
                                     
     
@@ -95,6 +100,8 @@ public class GameClient {
                                     
                                     
                                 else{
+                                    //show the move request (probably the menu)
+                                    System.out.println("\n =============== \n [Waiting for " + serverMessage.getCurrentPlayer() + "'s Move]"+ " \n" + serverMessage.getSb().toString());
                                     //message recieved but not the current player 
                                     System.out.println("it is currently " + serverMessage.getCurrentPlayer() + " turn please wait");
                                 }
@@ -111,7 +118,7 @@ public class GameClient {
                                 break;
 
                             case 4 : 
-                                System.out.println("===============\n [GameOver] \n" + serverMessage.getSb().toString());
+                                System.out.println("===============\n [Final Move Request] \n" + serverMessage.getSb().toString());
                                 
                                     while(true){
                                         try {
@@ -126,7 +133,7 @@ public class GameClient {
                                             if(firstCardIndex != secondCardIndex){
                                                 Card discardedFirstCard = hand.remove(firstCardIndex);
                                                 Card discardedSecondCard = hand.remove(secondCardIndex);
-                                                 //send move to server
+                                                //send move to server
                                                 //build socket packet 
 
                                                 SocketPacket moveResponse = new SocketPacket(new StringBuilder(firstCardIndex+","+secondCardIndex), serverMessage.currentPlayer, 2, null);
@@ -141,10 +148,15 @@ public class GameClient {
                                             }
     
                                             
-                                            } catch (Exception e) {
-                                                // TODO: handle exception
-                                                System.out.println("Invalid card number! Please choose again");
-                                            }
+                                           } catch(SocketException | EOFException e){
+                                            System.out.println("Error reading data from server or server closed connection");
+                                            Game.main(null);
+                                            break;
+                                        }catch (Exception e) {
+                                            // TODO: handle exception
+                                            System.out.println("Invalid card number! Please choose again");
+                                            
+                                        }
                                     
                                             
                                         }

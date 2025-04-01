@@ -94,11 +94,14 @@ public class GameLogic {
                         } else {// local
 
                             if (player != currentPlayer) {
-                                System.out.println("It's players " + currentPlayer + " turn now. Please wait!");
+
+
+                                System.out.println(menuMessage.toString());
+                                System.out.println("It's players " + currentPlayer.getName() + " turn now. Please wait!");
                                 
                             } else {
                                 System.out.println("It's your turn ");
-                                System.err.println(menuMessage.toString());
+                                System.out.println(menuMessage.toString());
                                 // SocketPacket sp = new SocketPacket(new StringBuilder(menuMessage),
                                 // currentPlayer.getName());
                                 // broadcastToAll(playerList, sp);
@@ -222,7 +225,6 @@ public class GameLogic {
                     inputs.remove(currentPlayerIndex);
                     playerList.remove(currentPlayerIndex);
                 }
-
                 // If no players left, end the game
                 if (GameServer.playersSockets.isEmpty()) {
                     System.out.println("All players disconnected. Ending game.");
@@ -263,16 +265,17 @@ public class GameLogic {
                 //last round but structured for socket lan game
                 for (int i = 0; i < playerList.size(); i++) {
                     currentPlayer = playerList.get(turnManager.getCurrentPlayer());
-                    System.out.println("\n" + currentPlayer.getName() + "'s turn!");
-                    System.out.println("Deck num : " + deck.getSize());
-                    System.out.println("Parade: " + Parade.getParadeRow());
+                    
     
                     //build move request
                     StringBuilder moveRequest = new StringBuilder();
-    
+                    moveRequest.append("\n" + currentPlayer.getName() + "'s turn!");
+                    moveRequest.append("\n Final Round!!");
+                    moveRequest.append("\n Deck num : " + deck.getSize());
+                    moveRequest.append( "\n Parade: " + Parade.getParadeRow());
                     moveRequest.append("\nCollectted Cards: " + currentPlayer.getCollected());
                     moveRequest.append("\n Your hand: " + currentPlayer.getHandWithIndex());
-                    moveRequest.append("Choose a card index (1-" + (currentPlayer.getHand().size()) + "): ");
+                    moveRequest.append("\n Choose a card index (1-" + (currentPlayer.getHand().size()) + "): ");
     
                     SocketPacket sp = new SocketPacket(moveRequest, currentPlayer.getName() , 2, playerList);
     

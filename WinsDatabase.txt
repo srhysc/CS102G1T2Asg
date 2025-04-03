@@ -1,5 +1,6 @@
 Player: a, Wins: 2
-Player: B, Wins: 1
+Player: A, Wins: 2
+Player: B, Wins: 4
 Player: Cheesecake, Wins: 1
 Player: Ethan, Wins: 2
 Player: poopy, Wins: 1

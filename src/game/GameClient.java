@@ -37,7 +37,7 @@ public class GameClient {
                         //check the message type first 
 
                         GameLogic.flushInputBuffer();
-                        
+                        System.out.println("reiceived smth!");
                         switch (serverMessage.getMessageType()){ 
                             case 0 : //announcement
                                 System.out.println("===============\n [Announcement] \n" + serverMessage.getSb().toString());
@@ -109,23 +109,26 @@ public class GameClient {
                                 break;
 
                             case 3 :
+                                clearConsole() ;
                                 System.out.println("===============\n [GameOver] \n" + serverMessage.getSb().toString());
 
                                 System.out.println("press enter to quit or when your host quits you will be returned to main menu");
+                                sc.nextLine();
                                 Game.main(null);
 
 
                                 break;
 
                             case 4 : 
-                                System.out.println("===============\n [Final Move Request] \n" + serverMessage.getSb().toString());
+                                clearConsole();
                                 
+                                if(serverMessage.getCurrentPlayer().equals(playerName)){
                                     while(true){
                                         try {
-
+                                            System.out.println("===============\n [Final Move Request] \n" + serverMessage.getSb().toString());
                                             //get hand
                                             ArrayList<Card> hand = serverMessage.getPlayerWithName(playerName).getHand();
-
+                                            System.out.println("Please discard 2 cards");
 
                                             int firstCardIndex = Scoring.getValidCardIndex(sc, hand.size(), "Choose the number of the 1st card to discard: ");
                                             int secondCardIndex = Scoring.getValidCardIndex(sc, hand.size(), "Choose the number of the 2nd card to discard: ");
@@ -159,12 +162,24 @@ public class GameClient {
                                         }
                                     
                                             
-                                        }
+                                    }
+                                }
+                                else{
+                                      //show the move request (probably the menu)
+                                      System.out.println("\n =============== \n [Waiting for " + serverMessage.getCurrentPlayer() + "'s Move]"+ " \n" + serverMessage.getSb().toString());
+                                      //message recieved but not the current player 
+                                      System.out.println("it is currently " + serverMessage.getCurrentPlayer() + " turn please wait");
+                                }
+
+                                    
 
 
 
                                 break;
                             default:
+                                
+                                System.out.println(serverMessage.getMessageType());
+                                System.out.println("Unknown message type: " + serverMessage.getSb().toString());
                                 break;
                         }
 

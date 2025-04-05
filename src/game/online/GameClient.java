@@ -1,7 +1,8 @@
-package game;
-import game.online.SocketPacket;
+package game.online;
 import entities.Card;
 import entities.scoring.Scoring;
+import game.GameLogic;
+import game.Game;
 
 import java.io.*;
 import java.net.*;

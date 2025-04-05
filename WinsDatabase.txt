@@ -7,8 +7,5 @@ Player: poopy, Wins: 1
 Player: asfas, Wins: 1
 Player: 1, Wins: 1
 Player: joran, Wins: 1
-Player: CPU3, Wins: 1
-Player: CPU2, Wins: 2
-Player: CPU1, Wins: 1
 Player: jordan, Wins: 5
 Player: Hayyun, Wins: 1

@@ -46,7 +46,9 @@ public class HighScoreDatabase {
     // Update a player's score
     public void updateHighScore(String playerName) {
         HighScore highScore = highScores.get(playerName);
-        if (highScore != null) {
+        if (playerName.contains("CPU")) {
+            return;
+        } else if (highScore != null) {
             highScore.incrementWins();
         } else {
             highScores.put(playerName, new HighScore(playerName, 1));

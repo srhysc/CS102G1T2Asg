@@ -1,10 +1,13 @@
 package game;
-import java.util.*;
-
-import entities.*;
+import entities.Deck;
+import entities.Parade;
+import entities.Player;
 import entities.comp.*;
 import entities.scoring.*;
 import game.online.*;
+import java.io.File;
+import java.util.*;
+import javax.sound.sampled.*;
 
 public class Game {
     static ArrayList<Player> playerList = new ArrayList<>();
@@ -16,6 +19,8 @@ public class Game {
     private Difficulty difficulty;
     private boolean isTwoPlayerGame;
     private HighScoreDatabase highScore = new HighScoreDatabase();
+    private static FloatControl volumeControl;
+    private static Clip clip;
 
     public boolean isTwoPlayerGame() {
         return isTwoPlayerGame;
@@ -43,7 +48,7 @@ public class Game {
         System.out.println("          MENU          ");
         System.out.println("========================");
         System.out.println("1. Start Game");
-        System.out.println("2. Settings");
+        System.out.println("2. Settings (Volume Control)");
         System.out.println("3. Help");
         System.out.println("4. Hall of Fame");
         int userChoice = 0;
@@ -70,7 +75,8 @@ public class Game {
             case (1):
                 startGame();
                 break;
-
+            case (2):
+                volumeMenu();
             case (4):
                 highScore.displayHighScores();
                 while (userChoice != 1) {
@@ -290,6 +296,45 @@ public class Game {
         }
     }
 
+    public void playSound(String audiofile) {
+        try {
+            File file = new File("resources/" + audiofile + ".wav"); // relative path
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
+            clip = AudioSystem.getClip();
+            clip.open(audioStream);
+            clip.start();
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void volumeMenu() {
+
+        volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+        Scanner sc = new Scanner(System.in);
+        String input;
+        float currentVolume = volumeControl.getValue(); // Default volume level
+
+        System.out.println("Volume control: Type '+' to increase, '-' to decrease, 'q' to quit volume menu.");
+        while (true) {
+            input = sc.nextLine();
+            if (input.equals("+")) {
+                currentVolume = Math.min(currentVolume + 2.0f, volumeControl.getMaximum());
+                volumeControl.setValue(currentVolume);
+                System.out.println("Increased volume to: " + currentVolume);
+            } else if (input.equals("-")) {
+                currentVolume = Math.max(currentVolume - 2.0f, volumeControl.getMinimum());
+                volumeControl.setValue(currentVolume);
+                System.out.println("Decreased volume to: " + currentVolume);
+            } else if (input.equals("q")) {
+                printMenu();
+            } else {
+                System.out.println("Invalid input. Use '+', '-', or 'q'.");
+            }
+        }
+    }
+
     public void multiplayerMenu() {
 
         // chose between host or client
@@ -389,6 +434,7 @@ public class Game {
 
         Game game = new Game(playerList);
 
+        game.playSound("kahoot");
         game.printMenu();
 
     }

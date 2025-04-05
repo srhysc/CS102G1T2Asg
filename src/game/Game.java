@@ -73,6 +73,21 @@ public class Game {
 
             case (4):
                 highScore.displayHighScores();
+                while (userChoice != 1) {
+                    try {
+                        System.out.println("Press 1 to go back to menu");
+                        String userInput = sc.nextLine();
+                        userChoice = Integer.parseInt(userInput);
+                        if (userChoice != 1) {
+                            System.out.println("Invalid option! Please choose again");
+                        }
+        
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid option! Please choose again");
+                    }
+        
+                }
+                printMenu();
                 break;
         }
     }

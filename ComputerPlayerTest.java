@@ -1,6 +1,13 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import game.Game;
+import game.TurnManager;
+import entities.Card;
+import entities.Parade;
+import entities.Player;
+import entities.comp.Difficulty;
+
 public class ComputerPlayerTest {
     static ArrayList<Player> playerList = new ArrayList<>();
     private static Deck deck;
@@ -120,9 +127,9 @@ public class ComputerPlayerTest {
                 if (cardIndex >= 0 && cardIndex < currentPlayer.getHand().size()) {
                     break;
                 }
-                System.out.println("Invalid selection. Try again.");
+                System.out.println("Invalid selection! Please choose again");
             } catch (Exception e) {
-                System.out.println("Invalid input. Enter a number.");
+                System.out.println("Invalid input! Please enter a number");
                 scanner.next(); // Clear invalid input
             }
         }

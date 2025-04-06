@@ -1,1 +1,1 @@
-javac -d Classes Game.java
+javac -d classes -cp "src" src/game/Game.java

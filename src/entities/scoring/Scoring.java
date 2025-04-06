@@ -32,7 +32,6 @@ import entities.comp.ComputerPlayer;
  * Depends on:
  * - {@link Player} – represents each player in the game.
  * - {@link Card} – represents a card in the game (with color, value, and flipped state).
- * - {@link CardColor} – enum of all card colors, used to check for majorities.
  * - {@link SocketPacket} – used to send scoring results in online games.
  *
  * Assumes that all normal gameplay (drawing, playing cards, etc.) is finished.

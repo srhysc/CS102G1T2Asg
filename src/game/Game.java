@@ -237,10 +237,28 @@ public class Game {
         playerList.add(new Player(Human));
         int currentNumber = 1;
         while (noOfAIPlayers > 0) {
-            String aiName = "CPU" + Integer.toString(currentNumber);
-            ComputerPlayer ai = new ComputerPlayer(aiName);
-            ai.setGameDifficulty(difficulty);
-            playerList.add(ai);
+            if (ComputerPlayer.getGameDifficulty() == Difficulty.HARD) { // 40% chance YL, 40% Jason, 20% Bunny
+                double rand = Math.random();
+                String result;
+                if (rand < 0.4) {
+                    result = "AI Yeow Leong";
+                } else if (rand < 0.8) {
+                    result = "AI Jason Chan";
+                } else {
+                    result = "AI VeryEvilCuteBunny";
+                }
+                String aiName = result;
+                ComputerPlayer ai = new ComputerPlayer(aiName);
+                ai.setGameDifficulty(difficulty);
+                playerList.add(ai);
+            } else {
+                String aiName = "CPU" + Integer.toString(currentNumber);
+                ComputerPlayer ai = new ComputerPlayer(aiName);
+                ai.setGameDifficulty(difficulty);
+                playerList.add(ai);
+            }
+            
+            
             currentNumber++;
             noOfAIPlayers--;
         }

@@ -1,0 +1,1 @@
+javadoc -d docs -sourcepath src -subpackages entities:game

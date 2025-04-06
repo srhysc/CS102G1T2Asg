@@ -3,22 +3,48 @@ import entities.Card;
 import entities.Player;
 import java.util.*; 
 
+/**
+ * ComputerPlayer represents an AI Player in Parade
+ * ComputerPlayer extends the Player Class and implements decision making based on the different difficulty levels
+ */
+
 public class ComputerPlayer extends Player {
 
     private static Difficulty gameDifficulty;
 
+    /**
+     * Constructs a new ComputerPlayer with the specified name.
+     * 
+     * @param name The name of the computer player
+     */
     public ComputerPlayer(String name) {
         super(name);
     }
 
+    /**
+     * Sets the difficulty level for all computer players.
+     * 
+     * @param difficulty The difficulty level to set (EASY, MEDIUM, HARD)
+     */
     public static void setGameDifficulty(Difficulty difficulty) {
         gameDifficulty = difficulty; 
     }
 
+    /**
+     * Returns the current difficulty level for computer players.
+     * 
+     * @return The current difficulty level
+     */
     public static Difficulty getGameDifficulty() {
         return gameDifficulty; 
     }
 
+    /**
+     * Decides on the computer's move based on the current difficulty level with a delay.
+     * 
+     * @param parade The current state of the parade (list of cards)
+     * @return The card chosen to play, or null if the player's hand is empty
+     */
     public Card playComputerMove(ArrayList <Card> parade){
         if (super.getHand().isEmpty()) {
             return null; 
@@ -113,11 +139,24 @@ public class ComputerPlayer extends Player {
     //     return result;
     // }
 
+    /**
+     * Selects a random card from the player's hand.
+     * Used for EASY difficulty or when MEDIUM difficulty selects a random strategy.
+     * 
+     * @return A randomly selected card from the player's hand
+     */
     public Card chooseRandomCard() {
         Random random = new Random(); 
         return getHand().get(random.nextInt(getHand().size())); 
     }
 
+    /**
+     * Selects the best card to play from the player's hand based on a penalty calculation algorithm.
+     * Used for HARD difficulty or when MEDIUM difficulty selects the smart strategy.
+     * 
+     * @param parade The current state of the parade (list of cards)
+     * @return The card with the lowest calculated penalty
+     */
     public Card chooseBestCard(ArrayList <Card> parade) {
         ArrayList<Card> hand = getHand(); 
         Card bestCard = null; 
@@ -134,9 +173,16 @@ public class ComputerPlayer extends Player {
         return bestCard != null ? bestCard : hand.get(0); 
     }
 
+    /**
+     * Calculates a penalty score for playing a specific card with the current parade state.
+     * Lower penalty scores indicate better moves.
+     * 
+     * @param card The card to evaluate
+     * @param parade The current state of the parade (list of cards)
+     * @return The calculated penalty score for playing the card
+     */
     private int calculatePenalty(Card card, ArrayList <Card> parade) {
         int penalty = 0; 
-        //ArrayList <Card> parade = Parade.getParadeRow(); 
         for (Card c : parade) {
             if (c.getColour().equals(card.getColour())) {
                 penalty += 2; 
@@ -148,6 +194,12 @@ public class ComputerPlayer extends Player {
         return penalty; 
     }
 
+    /**
+     * Implements the end-game strategy for discarding two cards at the final stage of the game
+     * The strategy prioritizes discarding cards of colors not in the player's collection, then cards with higher values.
+     * 
+     * @return A list containing the two cards to discard
+     */
     public List<Card> discardTwoCards() {
         ArrayList<Card> hand = getHand();
         if (hand.size() != 4) {

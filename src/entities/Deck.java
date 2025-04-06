@@ -1,9 +1,26 @@
 package entities;
 import java.util.*;
 
+/**
+ * Represents a standard deck of cards used in the game.
+ * The deck contains 66 cards total — 6 colours, each with values from 0 to 10.
+ * You can shuffle the deck, draw cards, and check how many are left.
+ *
+ * <p>Example usage:</p>
+ * <pre>
+ *     Deck deck = new Deck();
+ *     Card topCard = deck.drawCard();
+ *     System.out.println("Drew: " + topCard);
+ * </pre>
+ */
 public class Deck {
     private List<Card> cards;
 
+    /**
+     * Constructor for Deck.
+     * Builds a full deck of 66 cards (6 colours × 11 values),
+     * then shuffles it straight away.
+     */
     public Deck(){
     
             //deck requirements are 
@@ -23,19 +40,35 @@ public class Deck {
             shuffle();
         }
 
+    /**
+     * Shuffles the deck randomly using Java's built-in shuffle method.
+     */
     public void shuffle() {
         Collections.shuffle(cards);
     }
 
+    /**
+     * Draws (removes and returns) the top card of the deck.
+     * If the deck is empty, returns null.
+     *
+     * @return the top card or null if there are no cards left.
+     */
     public Card drawCard() {
         return cards.isEmpty() ? null : cards.remove(0);
     }
 
+    /**
+     * Returns how many cards are currently left in the deck.
+     */
     public int getSize(){
         return this.cards.size();
     }
 
-    // ✅ Fix: Added isEmpty() method
+    /**
+     * Checks if the deck is empty.
+     *
+     * @return true if there are no cards left, false otherwise.
+     */
     public boolean isEmpty() {
         return cards.isEmpty();
     }

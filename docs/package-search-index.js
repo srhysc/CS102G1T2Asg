@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"entities"},{"l":"entities.comp"},{"l":"entities.scoring"},{"l":"game"},{"l":"game.online"}];updateSearchResults();

@@ -11,6 +11,33 @@ import java.util.Scanner;
 
 import entities.comp.ComputerPlayer;
 
+/**
+ * Handles the end-of-game scoring logic for both local and online games.
+ *
+ * This class takes care of all the steps needed to finish a game and figure out how many
+ * points each player has earned. It includes things like asking players to discard cards,
+ * flipping majority card sets face-down for their respective players, figuring out who has the 
+ * most of each card color, and calculating final scores.
+ *
+ * There are two main entry points:
+ * - {@code calculateScores(List<Player> players)} is used in local games.
+ * - {@code calculateScoresOnline(List<Player> players)} is used in online games,
+ *   and returns a {@link SocketPacket} so results can be sent to each player.
+ *
+ * Key things this class does:
+ * - Ask each player to discard two cards from their hand.
+ * - Tally up all collected cards and award bonuses for majorities by color.
+ * - Count up everyone's points and print them out (or send them over the network).
+ *
+ * Depends on:
+ * - {@link Player} – represents each player in the game.
+ * - {@link Card} – represents a card in the game (with color, value, and flipped state).
+ * - {@link CardColor} – enum of all card colors, used to check for majorities.
+ * - {@link SocketPacket} – used to send scoring results in online games.
+ *
+ * Assumes that all normal gameplay (drawing, playing cards, etc.) is finished.
+ * This class just wraps up the round and tells everyone how they did.
+ */
 public class Scoring {
     /**
      * 
@@ -119,6 +146,21 @@ public class Scoring {
         }
     }
 
+    /**
+     * Determines which player has the majority for each card colour.
+     * <p>
+     * This method loops through all players and counts how many of each colour card
+     * they've collected. For each colour, the highest count found becomes the "majority"
+     * for that colour. If multiple players have the same number, it still counts as a majority,
+     * but this method just returns the highest value – not who owns it.
+     * <p>
+     * For figuring out who should have their cards flipped down later in the scoring phase.
+     *
+     * @param players          the list of all players in the current game
+     * @param isTwoPlayerGame  true if it's a 2-player game (majority is calculated with a 2 card surplus)
+     * @return a map where the key is a colour (String) and the value is the highest number of cards
+     *         any player has for that colour
+     */
     public static Map<String, Integer> determineMajorities(ArrayList<Player> players, boolean isTwoPlayerGame) {
         // Determine majority for each colour, I used HashMaps cos its much more
         // efficient than counting with ArrayList and a switch statement
@@ -152,8 +194,8 @@ public class Scoring {
     /**
      * 
      * Flips cards face down for players who have majority in any colour.
-     * In 2-player games, a player needs 2+ of a colour and to match or beat
-     * the other player. In bigger games, they just need the highest count.
+     * In 2-player games, a player needs 2+ of a colour to gain majority.
+     * Otherwise, they just need the highest count.
      * 
      * @param players          list of players
      * @param isTwoPlayerGame  special case rules if true
@@ -201,7 +243,7 @@ public class Scoring {
      * 
      * Calculates everyone's score, prints it, and figures out the winner.
      * Cards flipped face down only count as 1 point. If scores are tied,
-     * whoever has fewer cards wins. If that's tied too—no winner!
+     * whoever has fewer cards wins. If that's tied, there is no winner.
      * 
      * @param players         list of players
      * @param isTwoPlayerGame true if 2-player rules should apply

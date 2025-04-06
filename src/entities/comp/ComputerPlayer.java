@@ -51,51 +51,52 @@ public class ComputerPlayer extends Player {
         }
         System.out.println();  
         System.out.println(getName() + " played:" + chosenCard);
-<<<<<<< HEAD
-=======
+        String colour = "\u001B[38;5;146m"; // Violet-ish  colour
+        String reset = "\u001B[0m";
+        String phrase = "";
         if (super.getName() == "AI Yeow Leong") {
             double rand = Math.random();
             if (rand < 0.2) {
-                System.out.println("Let's C... you are losing!");
+                phrase = "Let's C... you are losing!";
             } else if (rand < 0.4) {
-                System.out.println("I have 25 years experience!");
+                phrase = "I have 25 years experience!";
             } else if (rand < 0.6) {
-                System.out.println("I have been playing Parade since Parade 1.0, before you were born!");
+                phrase = "I have been playing Parade since Parade 1.0, before you were born!";
             } else if (rand < 0.8) {
-                System.out.println("Look Ma! I'm dominating!");
+                phrase = "Look Ma! I'm dominating!";
             } else if (rand < 0.9) {
-                System.out.println("Your laptop feels my aura! That's why your cards are bad!");
+                phrase = "Your laptop feels my aura! That's why your cards are bad!";
             } else {
-                System.out.println("**Gasp** MAGIC... Yeow Leong the magician!");
+                phrase = "**Gasp** MAGIC... Yeow Leong the magician!";
             }
         } else if (super.getName() == "AI Jason Chan") {
             double rand = Math.random();
             if (rand < 0.2) {
-                System.out.println("Don't reply to this move unless you have any questions");
+                phrase = "Don't reply to this move unless you have any questions";
             } else if (rand < 0.4) {
-                System.out.println("I've done this before so you should follow me!");
+                phrase = "I've done this before so you should follow me!";
             } else if (rand < 0.6) {
-                System.out.println("I will be revealing secrets that you will NOT find anywhere else...");
+                phrase = "I will be revealing secrets that you will NOT find anywhere else...";
             } else if (rand < 0.8) {
-                System.out.println("My grades in Australia were higher than A+ in SMU!");
+                phrase = "My grades in Australia were higher than A+ in SMU!";
             } else {
-                System.out.println("Can students claim bragging rights and outsmart a prof?");
+                phrase = "Can students claim bragging rights and outsmart a prof?";
             }
         } else if (super.getName() == "AI VeryEvilCuteBunny") {
             double rand = Math.random();
             if (rand < 0.2) {
-                System.out.println("What did the bunny say? I'm winning!");
+                phrase = "What did the bunny say? I'm winning!";
             } else if (rand < 0.4) {
-                System.out.println("The bunny... you will see me sooner or later...");
+                phrase = "The bunny... you will see me sooner or later...";
             } else if (rand < 0.6) {
-                System.out.println("So What does this mean?");
+                phrase = "So What does this mean?";
             } else if (rand < 0.8) {
-                System.out.println("Hello, hello, r u OK?!");
+                phrase = "Hello, hello, r u OK?!";
             } else {
-                System.out.println("blah.");
+                phrase = "blah.";
             }
         }
->>>>>>> 29bf6f7c43ad92270e1c061b7fea090769dd807e
+        System.out.println(colour + phrase + reset);
         return chosenCard;  
     }
 

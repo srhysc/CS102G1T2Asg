@@ -1,4 +1,5 @@
 package game;
+
 import entities.Deck;
 import entities.Parade;
 import entities.Player;
@@ -41,7 +42,7 @@ public class Game {
         this.turnManager = new TurnManager(playerList.size());
         this.scanner = new Scanner(System.in);
     }
-    
+
     // start menu display
     public void printMenu() {
         System.out.println("========================");
@@ -87,11 +88,11 @@ public class Game {
                         if (userChoice != 1) {
                             System.out.println("Invalid option! Please choose again");
                         }
-        
+
                     } catch (NumberFormatException e) {
                         System.out.println("Invalid option! Please choose again");
                     }
-        
+
                 }
                 printMenu();
                 break;
@@ -139,20 +140,20 @@ public class Game {
                     break;
                 }
             }
-            
+
             while (alreadyExists) {
                 System.out.println("That name is already taken! Please choose a different name");
                 System.out.print("Enter player " + currentNumber + "'s name: ");
                 playerNames = sc.nextLine().trim();
 
-                alreadyExists = false; 
+                alreadyExists = false;
                 for (Player player : playerList) {
                     if (player.getName().equalsIgnoreCase(playerNames)) {
                         alreadyExists = true;
                         break;
                     }
                 }
-            } 
+            }
 
             playerList.add(new Player(playerNames));
             currentNumber++;
@@ -237,12 +238,13 @@ public class Game {
         playerList.add(new Player(Human));
         int currentNumber = 1;
         while (noOfAIPlayers > 0) {
-            if (ComputerPlayer.getGameDifficulty() == Difficulty.HARD) { // 40% chance YL, 40% Jason, 20% Bunny
-                double rand = Math.random();
+
+            if (ComputerPlayer.getGameDifficulty() == Difficulty.HARD && currentNumber == 2) {
+                double prof_chance = Math.random(); // 40% chance YL, 40% Jason, 20% Bunny
                 String result;
-                if (rand < 0.4) {
+                if (prof_chance < 0.4) {
                     result = "AI Yeow Leong";
-                } else if (rand < 0.8) {
+                } else if (prof_chance < 0.8) {
                     result = "AI Jason Chan";
                 } else {
                     result = "AI VeryEvilCuteBunny";
@@ -257,13 +259,12 @@ public class Game {
                 ai.setGameDifficulty(difficulty);
                 playerList.add(ai);
             }
-            
-            
+
             currentNumber++;
             noOfAIPlayers--;
         }
         turnManager = new TurnManager(playerList.size());
-        System.out.println(playerList);
+        //System.out.println(playerList);
         GameLogic.playTurn(deck, playerList, turnManager, isTwoPlayerGame);
     }
 
@@ -397,7 +398,7 @@ public class Game {
                 // setUpClient(arguments);
 
                 // new GameClient().startClient(arguments);
-            case(3):
+            case (3):
                 startGame();
         }
 

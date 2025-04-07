@@ -289,6 +289,20 @@ public class Scoring {
 
         if (winner != null) {
             System.out.println("The winner is: " + winner.getName() + " with a score of " + winner.getScore());
+
+            String colour = "\u001B[38;5;146m"; // Violet-ish colour
+            String reset = "\u001B[0m";
+            if (winner.getName().equals("AI Yeow Leong")) {
+                System.out.println(colour + "I won!" + reset);
+                System.out.println(colour + "I won!" + reset);
+                System.out.println(colour + "I won!" + reset);
+            } else if (winner.getName().equals("AI Jason Chan")) {
+                System.out
+                        .println(colour + "Now you know why I have been rated as the top 2% of profs at SMU!" + reset);
+            } else {
+                System.out.println(colour + "Hello, hello, I won!" + reset);
+
+            }
         } else {
             System.out
                     .println("Sometimes it is not about the game but the friends we made along the way, YOU ALL LOST!");
@@ -348,20 +362,8 @@ public class Scoring {
 
         if (winner != null) {
 
-            returnSB.append("The winner is: " + winner.getName() + " with a score of " + winner.getScore());
-            String colour = "\u001B[38;5;146m"; // Violet-ish colour
-            String reset = "\u001B[0m";
-            if (winner.getName().equals("AI Yeow Leong")) {
-                System.out.println(colour + "I won!" + reset);
-                System.out.println(colour + "I won!" + reset);
-                System.out.println(colour + "I won!" + reset);
-            } else if (winner.getName().equals("AI Jason Chan")) {
-                System.out
-                        .println(colour + "Now you know why I have been rated as the top 2% of profs at SMU!" + reset);
-            } else {
-                System.out.println(colour + "Hello, hello, I won!" + reset);
-
-            }
+            returnSB.append("\n The winner is: " + winner.getName() + " with a score of " + winner.getScore());
+            
             HighScoreDatabase highScoreDatabase = new HighScoreDatabase();
             highScoreDatabase.updateHighScore(winner.getName());
 

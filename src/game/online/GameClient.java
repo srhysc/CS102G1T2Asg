@@ -27,7 +27,7 @@ public class GameClient {
             String hostIP = "";
             Socket socket = null;
             while(true){
-                System.out.print("please enter the host IP");
+                System.out.print("please enter the host IP : ");
                 hostIP = sc.nextLine();
 
                 System.out.println("Attempting to connect to server!! ");
@@ -35,6 +35,7 @@ public class GameClient {
                 try {
                     socket = new Socket();
                     socket.connect(new InetSocketAddress(hostIP, PORT), 4000); // 5000ms timeout
+                    System.out.println("Connected! ");
                     break;
                 } catch (Exception e) {
                     System.out.print("\n" + e.getMessage());
@@ -42,16 +43,15 @@ public class GameClient {
                 }
             }
             
-            
+            System.out.println("Please wait the Host is still setting up the server!");
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
 
-            System.out.println("Please wait the Host is still setting up the server!");
+            
 
 
             // Receive prompt for player name
-            System.out.println(in.readObject());
-            System.out.print("Enter your name: ");
+            System.out.print(in.readObject());
             String playerName = sc.nextLine();
             out.writeObject(playerName);
             out.flush();

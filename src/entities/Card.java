@@ -106,8 +106,8 @@ public class Card implements Serializable{
         return getcolorCode() + colour + " " + value + reset;  // Reset color after printing
     }
 
-    public static void main(String[] args) {
-        Card c = new Card("red", 2);
-        System.out.println(c);
-    }
+    // public static void main(String[] args) {
+    //     Card c = new Card("red", 2);
+    //     System.out.println(c);
+    // }
 }

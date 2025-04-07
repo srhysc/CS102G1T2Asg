@@ -42,6 +42,7 @@ public class GameLogic {
 
         initalizeGame(deck, playerList);
 
+        
         boolean hasAllColours = false;
         String firstPlayerWithAllColours = null;
 

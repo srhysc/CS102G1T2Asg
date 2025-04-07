@@ -24,13 +24,29 @@ public class GameClient {
             
             )
         {
+            String hostIP = "";
+            Socket socket = null;
+            while(true){
+                System.out.print("please enter the host IP");
+                hostIP = sc.nextLine();
 
-            System.out.print("please enter the host IP");
-            String hostIP = sc.nextLine();
+                System.out.println("Attempting to connect to server!! ");
+    
+                try {
+                    socket = new Socket();
+                    socket.connect(new InetSocketAddress(hostIP, PORT), 4000); // 5000ms timeout
+                    break;
+                } catch (Exception e) {
+                    System.out.print("\n" + e.getMessage());
+                    System.out.println(" : The ip address may not be valid please try again!");
+                }
+            }
             
-            Socket socket = new Socket(hostIP, PORT);
+            
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+
+            System.out.println("Please wait the Host is still setting up the server!");
 
 
             // Receive prompt for player name

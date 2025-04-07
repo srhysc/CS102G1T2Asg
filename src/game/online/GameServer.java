@@ -24,7 +24,7 @@ public class GameServer {
             String serverIP = getServerIPAddress();
             System.out.println("Server started on port " + serverSocket.getLocalPort());
 
-            InetAddress localHostAddress = InetAddress.getLocalHost();
+           
             System.out.println("your ip for friends to connect is " + serverIP) ;
             System.out.print("Enter your name: ");
             String ServerPLayerName = sc.nextLine();
@@ -36,7 +36,7 @@ public class GameServer {
 
             //menu for server
             clearConsole();
-            displayLobby(multiplayerPlayerList, sc);
+            displayLobby(multiplayerPlayerList, sc, serverIP);
 
             Boolean confirmLobby = false;
 
@@ -67,7 +67,7 @@ public class GameServer {
 
                 // Update the lobby display and ask for confirmation
                 clearConsole();
-                confirmLobby = displayLobby(multiplayerPlayerList, sc);
+                confirmLobby = displayLobby(multiplayerPlayerList, sc, serverIP);
             }
                 
 
@@ -85,7 +85,7 @@ public class GameServer {
 
         //start the game
         System.out.println("Online starting now");
-        GameLogic.playOnlineTurn(deck, multiplayerPlayerList, turnManager, isTwoPlayerGame, outputs, inputs, sc );
+        OnlineGameLogic.playOnlineTurn(deck, multiplayerPlayerList, turnManager, isTwoPlayerGame, outputs, inputs, sc );
 
 
 
@@ -99,9 +99,10 @@ public class GameServer {
     }
 
     // Display lobby with multiple lines
-    private static boolean displayLobby(ArrayList<Player> playerList, Scanner sc) {
+    private static boolean displayLobby(ArrayList<Player> playerList, Scanner sc, String ipAddress) {
         System.out.println("========================");
         System.out.println("       GAME LOBBY       ");
+        System.out.println("IP: " + ipAddress);
         System.out.println("========================");
 
         // Display the list of players
@@ -123,15 +124,7 @@ public class GameServer {
         System.out.println("========================");
         return true;
 
-        // Ask the server host to confirm the lobby
-        // if (playerList.size() >= 2) {
-        //     System.out.println("Press Enter to wait for more players, or type 'start' to begin the game:");
-        //     String input = sc.nextLine();
-        //     return input.equalsIgnoreCase("start");
-        // } else {
-        //     System.out.println("Not enough players to start the game. Waiting for more players...");
-        //     return false;
-        // }
+        
     }
 
     private static String getServerIPAddress() {

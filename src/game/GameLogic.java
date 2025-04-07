@@ -305,6 +305,9 @@ public class GameLogic {
                         System.out.println("You took: " + takenCards);
                     }
                     else{
+
+                        System.out.println("\n Please wait for your turn!");
+
                         //online player
     
                         SocketPacket moveResponse = (SocketPacket) currentPlayer.getInputSteam().readObject();
@@ -396,6 +399,9 @@ public class GameLogic {
                     currentPlayer = playerList.get(turnManager.getCurrentPlayer());
                     
                     sb.setLength(0);
+
+                    clearConsole();
+
                     
                     sb.append("\n" + currentPlayer.getName() + ", here are the cards in hand: \n");
                     ArrayList<Card> hand = currentPlayer.getHand();
@@ -437,6 +443,8 @@ public class GameLogic {
                         
                     }
                     else{
+
+                        System.out.println("\n Please wait for your turn!");
                         //this move reply should be in the form of "1,2"
                         SocketPacket moveResponse = (SocketPacket) currentPlayer.getInputSteam().readObject();
                         

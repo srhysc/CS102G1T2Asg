@@ -328,7 +328,7 @@ public class Scoring {
             }
 
             player.setScore(score);
-            returnSB.append("\n " + player.getName() + "'s total score is " + score + "with "
+            returnSB.append("\n " + player.getName() + "'s total score is " + score + " with "
                     + player.getCollected().size() + " collected");
 
             // winner is the one with the lower score or if equal score then smaller hand

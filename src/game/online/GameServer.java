@@ -19,8 +19,13 @@ public class GameServer {
     public void startServer(Deck deck){
         Scanner sc = new Scanner(System.in);
         try {
+
             serverSocket = new ServerSocket(PORT);
-            System.out.println("Server started on port ");
+            String serverIP = getServerIPAddress();
+            System.out.println("Server started on port " + serverSocket.getLocalPort());
+
+            InetAddress localHostAddress = InetAddress.getLocalHost();
+            System.out.println("your ip for friends to connect is " + serverIP) ;
             System.out.print("Enter your name: ");
             String ServerPLayerName = sc.nextLine();
             multiplayerPlayerList.add(new Player(ServerPLayerName, null, null));
@@ -127,6 +132,28 @@ public class GameServer {
         //     System.out.println("Not enough players to start the game. Waiting for more players...");
         //     return false;
         // }
+    }
+
+    private static String getServerIPAddress() {
+        try {
+            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+            while (interfaces.hasMoreElements()) {
+                NetworkInterface networkInterface = interfaces.nextElement();
+                if (networkInterface.isLoopback() || !networkInterface.isUp()) {
+                    continue; // Skip loopback and inactive interfaces
+                }
+                Enumeration<InetAddress> addresses = networkInterface.getInetAddresses();
+                while (addresses.hasMoreElements()) {
+                    InetAddress address = addresses.nextElement();
+                    if (address instanceof Inet4Address) { // Only return IPv4 addresses
+                        return address.getHostAddress();
+                    }
+                }
+            }
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+        return "Unable to determine IP address";
     }
 
 

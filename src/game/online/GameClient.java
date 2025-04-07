@@ -18,11 +18,21 @@ public class GameClient {
 
         try( // Connect to the server
             //local host and port are hardcoded right now
-            Socket socket = new Socket("localhost", PORT);
+
+            Scanner sc = new Scanner(System.in);
+
+            
+            )
+        {
+
+            System.out.print("please enter the host IP");
+            String hostIP = sc.nextLine();
+            
+            Socket socket = new Socket(hostIP, PORT);
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-            Scanner sc = new Scanner(System.in);)
-        {
+
+
             // Receive prompt for player name
             System.out.println(in.readObject());
             System.out.print("Enter your name: ");

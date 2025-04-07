@@ -412,11 +412,16 @@ public class GameLogic {
                     if(currentPlayer.getInputSteam() == null){
                         System.out.println("Please discard 2 cards");
         
-                        int firstCardIndex = Scoring.getValidCardIndex(sc, hand.size(), "Choose the number of the 1st card to discard: ");
-                        int secondCardIndex = Scoring.getValidCardIndex(sc, hand.size(), "Choose the number of the 2nd card to discard: ");
+                        
                         
                         while(true){
+
+                            int firstCardIndex = Scoring.getValidCardIndex(sc, hand.size(), "Choose the number of the 1st card to discard: ");
+                            int secondCardIndex = Scoring.getValidCardIndex(sc, hand.size(), "Choose the number of the 2nd card to discard: ");
+
+
                             if(firstCardIndex != secondCardIndex){
+                                
                                 Card discardedFirstCard = hand.remove(firstCardIndex);
                                 Card discardedSecondCard = hand.remove(secondCardIndex);
                                 currentPlayer.addToCollected(hand);
@@ -425,6 +430,7 @@ public class GameLogic {
                             }
                             else{
                                 System.out.println("Please do not choose 2 of the same index");
+                                continue;
                             }
                         }
                         
@@ -513,6 +519,7 @@ public class GameLogic {
             System.out.println("Parade: " + Parade.getParadeRow());
             if (currentPlayer instanceof ComputerPlayer) {
 
+                
                 // System.out.println("Collected Cards: " + currentPlayer.getCollected());
                 // System.out.println(currentPlayer.getName() + "'s hand: " +
                 // currentPlayer.getHandWithIndex());

@@ -1,4 +1,5 @@
 Player: a, Wins: 2
+<<<<<<< Updated upstream
 Player: A, Wins: 2
 Player: 1, Wins: 1
 Player: B, Wins: 4
@@ -6,6 +7,14 @@ Player: Cheesecake, Wins: 1
 Player: joran, Wins: 1
 Player: Ethan, Wins: 2
 Player: ok1, Wins: 1
+=======
+Player: A, Wins: 3
+Player: 1, Wins: 1
+Player: B, Wins: 5
+Player: Cheesecake, Wins: 1
+Player: joran, Wins: 1
+Player: Ethan, Wins: 2
+>>>>>>> Stashed changes
 Player: poopy, Wins: 1
 Player: jordan, Wins: 5
 Player: asfas, Wins: 1

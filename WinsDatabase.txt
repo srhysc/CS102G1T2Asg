@@ -7,6 +7,7 @@ Player: Ethan, Wins: 2
 Player: poopy, Wins: 1
 Player: asfas, Wins: 1
 Player: 1, Wins: 1
+Player: r, Wins: 1
 Player: joran, Wins: 1
 Player: ok1, Wins: 1
 Player: jordan, Wins: 5

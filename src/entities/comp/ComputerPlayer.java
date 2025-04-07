@@ -182,16 +182,25 @@ public class ComputerPlayer extends Player {
      * @return The calculated penalty score for playing the card
      */
     private int calculatePenalty(Card card, ArrayList <Card> parade) {
-        int penalty = 0; 
-        for (Card c : parade) {
-            if (c.getColour().equals(card.getColour())) {
-                penalty += 2; 
-            } else if (c.getValue() <= card.getValue()) {
-                penalty += 1; 
+        int penalty = 0;
+        // simulates a new parade with card added - "pretend to play"
+        ArrayList<Card> newParade = new ArrayList<>(parade);
+        newParade.add(card); 
+        int cardsToSkip = card.getValue();
+        
+        int skipIndex = newParade.size() - 1 - cardsToSkip;
+        // skipIndex should be >= 0; 
+        skipIndex = skipIndex > 0 ? skipIndex : 0;
+
+        // evaluate penalty for cards in front of the skipped section
+        for (int i = 0; i < skipIndex; i++) {
+            Card c = newParade.get(i);
+            if (c.getColour().equals(card.getColour()) || c.getValue() <= card.getValue()) {
+                penalty += c.getValue(); // total value of cards you will take
             }
         }
-        penalty += (10 - card.getValue()); // so that cards with lower value have higher penalty --> not best card
-        return penalty; 
+        return penalty;
+        
     }
 
     /**

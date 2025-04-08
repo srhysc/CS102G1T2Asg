@@ -134,6 +134,12 @@ public class Game {
             String playerNames = sc.nextLine().trim();
             boolean alreadyExists = false;
 
+            while (playerNames == "") {
+                System.out.println("Name cannot be blank");
+                System.out.print("Enter player " + currentNumber + "'s name: ");
+                playerNames = sc.nextLine();
+            }
+
             for (Player player : playerList) {
                 if (player.getName().equalsIgnoreCase(playerNames)) {
                     alreadyExists = true;

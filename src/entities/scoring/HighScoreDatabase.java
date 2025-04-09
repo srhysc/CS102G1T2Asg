@@ -2,6 +2,8 @@ package entities.scoring;
 import java.io.*;
 import java.util.*;
 
+import game.online.GameClient;
+
 /**
  * Manages the high score data for the game.
  * 
@@ -132,11 +134,14 @@ public class HighScoreDatabase {
         String silver = "\033[0;97m"; // Silver color
         String bronze = "\033[0;38;5;130m"; // Bronze color
         String reset = "\033[0m"; // Reset color to default
-    
+        
+        System.out.println("========================");
+        System.out.println("      HALL OF FAME      ");
+        System.out.println("========================");
         // Display the top 3 winners in gold, silver, and bronze
         for (int i = 0; i < sortedScores.size(); i++) {
             HighScore highScore = sortedScores.get(i);
-    
+            
             if (i == 0) {
                 // Gold for the 1st place
                 System.out.println(gold + "First!! " + highScore + reset);
@@ -149,6 +154,7 @@ public class HighScoreDatabase {
             } else {
                 // Display the rest normally
                 System.out.println(highScore);
+                
             }
         }
 

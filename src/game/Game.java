@@ -114,25 +114,35 @@ public class Game {
             case (2):
                 volumeMenu();
                 break;
+            // case (3):
+
             case (4):
                 highScore.displayHighScores();
-                while (userChoice != 1) {
-                    try {
-                        System.out.println("Press 1 to go back to menu");
-                        String userInput = sc.nextLine();
-                        userChoice = Integer.parseInt(userInput);
-                        if (userChoice != 1) {
-                            System.out.println("Invalid option! Please choose again");
-                        }
-
-                    } catch (NumberFormatException e) {
-                        System.out.println("Invalid option! Please choose again");
-                    }
-
-                }
-                printMenu();
+                
+                System.out.println();
+                promptReturnToMenu(sc);
                 break;
         }
+    }
+
+     /**
+     * Prompts the user to press 1 to return to the menu.
+     */
+    private void promptReturnToMenu(Scanner sc) {
+        int choice = 0;
+        while (choice != 1) {
+            System.out.print("Press 1 to go back to menu: ");
+            try {
+                choice = Integer.parseInt(sc.nextLine());
+                if (choice != 1) {
+                    System.out.println("Invalid option! Please choose again.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input! Please enter a number.");
+            }
+        }
+        GameClient.clearConsole();
+        printMenu();
     }
 
     /**
@@ -409,11 +419,13 @@ public class Game {
                 volumeControl.setValue(currentVolume);
                 System.out.println("Decreased volume to: " + currentVolume);
             } else if (input.equals("q")) {
+                GameClient.clearConsole();
                 printMenu();
             } else {
                 System.out.println("Invalid input. Use '+', '-', or 'q'.");
             }
         }
+
     }
 
     /**

@@ -14,24 +14,30 @@ import entities.comp.ComputerPlayer;
 /**
  * Handles the end-of-game scoring logic for both local and online games.
  *
- * This class takes care of all the steps needed to finish a game and figure out how many
- * points each player has earned. It includes things like asking players to discard cards,
- * flipping majority card sets face-down for their respective players, figuring out who has the 
+ * This class takes care of all the steps needed to finish a game and figure out
+ * how many
+ * points each player has earned. It includes things like asking players to
+ * discard cards,
+ * flipping majority card sets face-down for their respective players, figuring
+ * out who has the
  * most of each card color, and calculating final scores.
  *
  * There are two main entry points:
  * - {@code calculateScores(List<Player> players)} is used in local games.
- * - {@code calculateScoresOnline(List<Player> players)} is used in online games,
- *   and returns a {@link SocketPacket} so results can be sent to each player.
+ * - {@code calculateScoresOnline(List<Player> players)} is used in online
+ * games,
+ * and returns a {@link SocketPacket} so results can be sent to each player.
  *
  * Key things this class does:
  * - Ask each player to discard two cards from their hand.
  * - Tally up all collected cards and award bonuses for majorities by color.
- * - Count up everyone's points and print them out (or send them over the network).
+ * - Count up everyone's points and print them out (or send them over the
+ * network).
  *
  * Depends on:
  * - {@link Player} – represents each player in the game.
- * - {@link Card} – represents a card in the game (with color, value, and flipped state).
+ * - {@link Card} – represents a card in the game (with color, value, and
+ * flipped state).
  * - {@link SocketPacket} – used to send scoring results in online games.
  *
  * Assumes that all normal gameplay (drawing, playing cards, etc.) is finished.
@@ -149,15 +155,20 @@ public class Scoring {
      * Determines which player has the majority for each card colour.
      * <p>
      * This method loops through all players and counts how many of each colour card
-     * they've collected. For each colour, the highest count found becomes the "majority"
-     * for that colour. If multiple players have the same number, it still counts as a majority,
+     * they've collected. For each colour, the highest count found becomes the
+     * "majority"
+     * for that colour. If multiple players have the same number, it still counts as
+     * a majority,
      * but this method just returns the highest value – not who owns it.
      * <p>
-     * For figuring out who should have their cards flipped down later in the scoring phase.
+     * For figuring out who should have their cards flipped down later in the
+     * scoring phase.
      *
-     * @param players          the list of all players in the current game
-     * @param isTwoPlayerGame  true if it's a 2-player game (majority is calculated with a 2 card surplus)
-     * @return a map where the key is a colour (String) and the value is the highest number of cards
+     * @param players         the list of all players in the current game
+     * @param isTwoPlayerGame true if it's a 2-player game (majority is calculated
+     *                        with a 2 card surplus)
+     * @return a map where the key is a colour (String) and the value is the highest
+     *         number of cards
      *         any player has for that colour
      */
     public static Map<String, Integer> determineMajorities(ArrayList<Player> players, boolean isTwoPlayerGame) {
@@ -299,7 +310,7 @@ public class Scoring {
             } else if (winner.getName().equals("AI Jason Chan")) {
                 System.out
                         .println(colour + "Now you know why I have been rated as the top 2% of profs at SMU!" + reset);
-            } else {
+            } else if (winner.getName().equals("AI VeryEvilCuteBunny")) {
                 System.out.println(colour + "Hello, hello, I won!" + reset);
 
             }
@@ -363,7 +374,7 @@ public class Scoring {
         if (winner != null) {
 
             returnSB.append("\n The winner is: " + winner.getName() + " with a score of " + winner.getScore());
-            
+
             HighScoreDatabase highScoreDatabase = new HighScoreDatabase();
             highScoreDatabase.updateHighScore(winner.getName());
 
@@ -558,12 +569,41 @@ public class Scoring {
     public static int getValidCardIndex(Scanner sc, int maxSize, String prompt) {
         int index;
         do {
-            System.out.print(prompt);
-            index = sc.nextInt();
-            if (index < 1 || index > maxSize) {
-                System.out.println("Invalid choice! Please select a valid card number.");
+
+            while (true) {
+                System.out.print(prompt);
+
+                if (!sc.hasNextInt()) {
+                    sc.nextLine(); // clear the invalid input
+                    System.out.println("Card index must be a number");
+                    continue;
+                }
+
+                index = sc.nextInt();
+                sc.nextLine(); // clear the newline character after nextInt
+
+                if (index < 1 || index > maxSize) {
+                    System.out.println("Invalid choice! Please select a valid card number.");
+                    continue;
+                }
+
+                break; // valid input, exit loop
             }
+
         } while (index < 1 || index > maxSize);
         return index - 1; // we count from 0 while player counts from 1
     }
 }
+
+/* Original Piece of Code */
+// public static int getValidCardIndex(Scanner sc, int maxSize, String prompt) {
+// int index;
+// do {
+// System.out.print(prompt);
+// index = sc.nextInt();
+// if (index < 1 || index > maxSize) {
+// System.out.println("Invalid choice! Please select a valid card number.");
+// }
+// } while (index < 1 || index > maxSize);
+// return index - 1; // we count from 0 while player counts from 1
+// }

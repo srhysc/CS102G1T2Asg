@@ -51,14 +51,14 @@ public class Deck {
      * Draws (removes and returns) the top card of the deck.
      * If the deck is empty, returns null.
      *
-     * @return the top card or null if there are no cards left.
+     * @return The top card or null if there are no cards left
      */
     public Card drawCard() {
         return cards.isEmpty() ? null : cards.remove(0);
     }
 
     /**
-     * Returns how many cards are currently left in the deck.
+     * @return The number of cards that are currently left in the deck
      */
     public int getSize(){
         return this.cards.size();
@@ -67,7 +67,7 @@ public class Deck {
     /**
      * Checks if the deck is empty.
      *
-     * @return true if there are no cards left, false otherwise.
+     * @return True if there are no cards left, false otherwise
      */
     public boolean isEmpty() {
         return cards.isEmpty();

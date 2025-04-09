@@ -17,7 +17,7 @@ public class Parade {
      * Adds a card to the end of the Parade row.
      * Typically happens when a player plays a card on their turn.
      *
-     * @param card The card to be added to the parade.
+     * @param card The card to be added to the parade
      */
     public static void addCard(Card card) {
         paradeRow.add(card);
@@ -35,8 +35,8 @@ public class Parade {
      *
      * Those cards are then removed from the Parade and returned.
      *
-     * @param playedCard The card the player just added to the Parade.
-     * @return A list of cards that the player takes as a result.
+     * @param playedCard The card the player just added to the Parade
+     * @return A list of cards that the player takes as a result
      */
     public static ArrayList<Card> removeCards(Card playedCard) {
 
@@ -60,7 +60,7 @@ public class Parade {
     /**
      * Returns the current state of the Parade row.
      *
-     * @return The list of cards in the Parade.
+     * @return The list of cards in the Parade
      */
     public static ArrayList<Card> getParadeRow() {
         return paradeRow;

@@ -50,9 +50,9 @@ public class Scoring {
      * Players discard their cards, majority colours are worked out,
      * cards are flipped if needed, and scores are calculated and shown.
      * 
-     * @param players         all the players in the game
-     * @param isTwoPlayerGame true if it's a 2-player game, affects majority rules
-     * @return the player who won, or null if it's a tie
+     * @param players         All the players in the game
+     * @param isTwoPlayerGame True if it's a 2-player game, affects majority rules
+     * @return The player who won, or null if it's a tie
      */
     public static Player calculateScores(ArrayList<Player> players, boolean isTwoPlayerGame) {
         promptDiscard(players, isTwoPlayerGame);
@@ -68,9 +68,9 @@ public class Scoring {
      * Assumes discards already happened. It figures out majorities, flips cards,
      * then builds a packet with the results and winner info for the client.
      * 
-     * @param players         list of players still in the game
-     * @param isTwoPlayerGame whether it's a 2-player game (used for rules)
-     * @return a SocketPacket with game over message and scores
+     * @param players         List of players still in the game
+     * @param isTwoPlayerGame Whether it's a 2-player game (used for rules)
+     * @return A SocketPacket with game over message and scores
      */
     public static SocketPacket calculateOnlineScores(ArrayList<Player> players, boolean isTwoPlayerGame) {
         // online will pass the player list after the discard
@@ -89,8 +89,8 @@ public class Scoring {
      * For computer players, it auto-discards. For real players, it
      * prints the hand, takes input, and updates the cards.
      * 
-     * @param players         list of all current players
-     * @param isTwoPlayerGame whether or not it's a 2-player game
+     * @param players         List of all current players
+     * @param isTwoPlayerGame Whether or not it is a 2-player game
      */
     public static void promptDiscard(ArrayList<Player> players, boolean isTwoPlayerGame) {
         Scanner sc = new Scanner(System.in);

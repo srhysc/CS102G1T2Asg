@@ -4,8 +4,8 @@ import entities.Player;
 import java.util.*; 
 
 /**
- * ComputerPlayer represents an AI Player in Parade
- * ComputerPlayer extends the Player Class and implements decision making based on the different difficulty levels
+ * ComputerPlayer represents an AI Player in Parade.
+ * ComputerPlayer extends the Player Class and implements decision making based on the different difficulty levels.
  */
 
 public class ComputerPlayer extends Player {

@@ -10,6 +10,14 @@ import java.io.File;
 import java.util.*;
 import javax.sound.sampled.*;
 
+/**
+ * Represents the main controller for the game logic and flow.
+ * The Game class handles player setup (human and AI), game configuration
+ * (such as difficulty level and number of players), game progression,
+ * and end-of-game conditions. It also manages user interaction via menus,
+ * audio playback, and the main game loop.
+ */
+
 public class Game {
     static ArrayList<Player> playerList = new ArrayList<>();
     private Deck deck;
@@ -23,18 +31,11 @@ public class Game {
     private static FloatControl volumeControl;
     private static Clip clip;
 
-    public boolean isTwoPlayerGame() {
-        return isTwoPlayerGame;
-    }
-
-    public void setTwoPlayerGame(boolean isTwoPlayerGame) {
-        this.isTwoPlayerGame = isTwoPlayerGame;
-    }
-
-    public void setDifficulty(Difficulty difficulty) {
-        this.difficulty = difficulty;
-    }
-
+    /**
+     * Constructs a game.
+     *
+     * @param playList The list of players playing the game
+     */
     public Game(ArrayList<Player> playerList) {
         Game.playerList = playerList;
         this.deck = new Deck();
@@ -43,6 +44,40 @@ public class Game {
         this.scanner = new Scanner(System.in);
     }
 
+    /**
+     * Checks if there are a total of 2 players playing the game.
+     *
+     * @returns True if are only 2 players, false otherwise
+     */
+    public boolean isTwoPlayerGame() {
+        return isTwoPlayerGame;
+    }
+
+    
+    /**
+     * Sets the game mode to either two-player or other mode.
+     * 
+     * @param isTwoPlayerGame {@code true} if the game should be set to two-player mode;
+     *                        {@code false} otherwise
+     */
+    public void setTwoPlayerGame(boolean isTwoPlayerGame) {
+        this.isTwoPlayerGame = isTwoPlayerGame;
+    }
+
+    /**
+     * Sets the game difficulty level to either EASY, MEDIUM or HARD mode
+     * 
+     * @param difficulty {@code EASY} to set the game to easy mode;
+     *                   {@code MEDIUM} to set the game to medium mode;
+     *                   {@code HARD} to set the game to hard mode
+     */
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    /**
+     * Displays the main menu and processes user input to navigate to the selected option.
+     */
     // start menu display
     public void printMenu() {
         System.out.println("========================");
@@ -78,6 +113,7 @@ public class Game {
                 break;
             case (2):
                 volumeMenu();
+                break;
             case (4):
                 highScore.displayHighScores();
                 while (userChoice != 1) {
@@ -99,6 +135,10 @@ public class Game {
         }
     }
 
+    /**
+     * Allows the user to choose the number of human players (between 2 and 6) and enter a unique username for each player.
+     * Ensures that player names are not blank and there are no duplicates of existing names.
+     */
     // choosing number of HUMAN players and name
     public void selectHumanPlayers() {
 
@@ -172,13 +212,16 @@ public class Game {
 
     }
 
+    /**
+     * Allows the user to choose the difficulty level for the AI game style.
+     */
     // choosing difficulty level for AI game style
     public void aiDifficultyLevel() {
         System.out.println("========================");
         System.out.println("    DIFFICULTY LEVEL    ");
         System.out.println("========================");
         System.out.println("1. Easy");
-        System.out.println("2. Intermediate");
+        System.out.println("2. Medium");
         System.out.println("3. Difficult");
         System.out.println("4. Back");
         System.out.print("Enter your choice (1-4): ");
@@ -211,6 +254,9 @@ public class Game {
         GameClient.clearConsole();
     }
 
+    /**
+     * Allows the user to choose the number of AI players (between 1 and 5).
+     */
     // choosing number of AI players
     public void selectAiPlayers() {
         Scanner sc = new Scanner(System.in);
@@ -274,6 +320,9 @@ public class Game {
         GameLogic.playTurn(deck, playerList, turnManager, isTwoPlayerGame);
     }
 
+    /**
+     * Allows the user to choose the type of game styles.
+     */
     // choosing game style
     public void startGame() {
         System.out.println("=========================");
@@ -321,9 +370,13 @@ public class Game {
         }
     }
 
-    public void playSound(String audiofile) {
+    /**
+     * Plays the background music throughout the game.
+     * @param audioFile The music to be played
+     */
+    public void playSound(String audioFile) {
         try {
-            File file = new File("resources/" + audiofile + ".wav"); // relative path
+            File file = new File("resources/" + audioFile + ".wav"); // relative path
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
             clip = AudioSystem.getClip();
             clip.open(audioStream);
@@ -334,6 +387,9 @@ public class Game {
         }
     }
 
+    /**
+     * Allows user to control the volume of the background music.
+     */
     public void volumeMenu() {
 
         volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
@@ -360,6 +416,9 @@ public class Game {
         }
     }
 
+    /**
+     * Allows user to choose between Host or Client.
+     */
     public void multiplayerMenu() {
 
         // chose between host or client
@@ -437,6 +496,9 @@ public class Game {
         return false;
     }
 
+    /**
+     * Ends the game and starts calculating the scores of each player.
+     */
     public void endGame() {
         System.out.println("\nGame Over! Calculating scores...");
         // for (Player player : playerList) {

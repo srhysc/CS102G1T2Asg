@@ -20,9 +20,9 @@ public class Player implements Serializable {
 
 
     /**
-     * Constructor for local games.
+     * Constructs a new player with the given name.
      *
-     * @param name The player's name.
+     * @param name The player's name
      */
     public Player(String name) {
         this.name = name;
@@ -64,8 +64,8 @@ public class Player implements Serializable {
     /**
      * Removes a card from the hand by index and returns it.
      *
-     * @param index Index of the card to play.
-     * @return The card played.
+     * @param index Index of the card to play
+     * @return The card played
      */
     public Card playCard(int index) {
         return hand.remove(index);
@@ -75,7 +75,7 @@ public class Player implements Serializable {
      * Returns a string showing all cards in the hand, each with an index so players
      * can pick easily.
      *
-     * @return Formatted hand string.
+     * @return Formatted hand string
      */
     public String getHandWithIndex() {
         String formattedHand = "";
@@ -124,7 +124,7 @@ public class Player implements Serializable {
      * Checks if the player has collected at least one card from *each* of the six colours.
      * Used for ending the game.
      *
-     * @return true if the player has all 6 colours, false otherwise.
+     * @return True if the player has all 6 colours, false otherwise
      */
     public boolean checkColours(){
         boolean hasRed = false;

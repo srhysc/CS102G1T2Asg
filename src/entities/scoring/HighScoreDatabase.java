@@ -92,7 +92,7 @@ public class HighScoreDatabase {
      * 
      * Note: CPU players are ignored and will not have their scores updated.
      *
-     * @param playerName the name of the player whose score needs to be updated
+     * @param playerName The name of the player whose score needs to be updated
      */
     public void updateHighScore(String playerName) {
         HighScore highScore = highScores.get(playerName);

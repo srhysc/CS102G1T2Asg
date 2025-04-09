@@ -1,7 +1,7 @@
 package entities.scoring;
 /**
- * This class is just a simple tracker for player high scores.
- * Keeping count of how many times someone’s won.
+ * A simple tracker for player high scores.
+ * Keeps count of how many times someone has won.
  */
 public class HighScore {
     private String playerName;
@@ -10,8 +10,8 @@ public class HighScore {
     /**
      * Creates a new HighScore record for a player.
      *
-     * @param playerName The name of the player.
-     * @param wins How many wins the player has so far.
+     * @param playerName The name of the player
+     * @param wins How many wins the player has so far
      */
     public HighScore(String playerName, int wins) {
         this.playerName = playerName;

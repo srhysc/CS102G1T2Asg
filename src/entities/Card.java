@@ -61,7 +61,7 @@ public class Card implements Serializable{
     }
 
     /**
-     * Flips the card face down or up. (true for down, false for up)
+     * Flips the card face down or up. (true for down, false for up).
      */
     public void setFaceDown(boolean faceDown) {
         this.faceDown = faceDown;

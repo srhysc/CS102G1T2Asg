@@ -1,1 +1,1 @@
-javadoc -d docs -sourcepath src -subpackages entities:game
+javadoc -d doc -sourcepath src -subpackages entities:game

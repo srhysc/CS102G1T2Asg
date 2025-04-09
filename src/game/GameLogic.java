@@ -1,4 +1,5 @@
 package game;
+
 import game.online.SocketPacket;
 import entities.*;
 import entities.scoring.*;
@@ -34,15 +35,12 @@ public class GameLogic {
         System.out.println("game initalized");
     }
 
-   
-
     public static void playTurn(Deck deck, ArrayList<Player> playerList, TurnManager turnManager,
             boolean isTwoPlayerGame) {
         System.out.println("Starting Parade...");
 
         initalizeGame(deck, playerList);
 
-        
         boolean hasAllColours = false;
         String firstPlayerWithAllColours = null;
 
@@ -54,7 +52,6 @@ public class GameLogic {
             System.out.println("Parade: " + Parade.getParadeRow());
             if (currentPlayer instanceof ComputerPlayer) {
 
-                
                 Card playedCard = ((ComputerPlayer) currentPlayer).playComputerMove(Parade.getParadeRow());
                 ArrayList<Card> takenCards = Parade.removeCards(playedCard);
                 Parade.addCard(playedCard);
@@ -66,14 +63,41 @@ public class GameLogic {
                 System.out.println("Your hand: " + currentPlayer.getHandWithIndex());
 
                 // Player chooses a card to play
-                System.out.print("Choose a card index (1-" + (currentPlayer.getHand().size()) + "): ");
-                int cardIndex = sc.nextInt() - 1;
-                while (cardIndex < 0 || cardIndex > 4) {
-                    System.out.println("Invalid card number! Please choose again");
-                    System.out.print("Choose a card index (1-" + (currentPlayer.getHand().size()) + "): ");
+                int cardIndex = 0;
+                while (true) {
+                    System.out.print("Choose a card index (1-" + currentPlayer.getHand().size() + "): ");
+
+                    if (!sc.hasNextInt()) {
+                        sc.nextLine(); // clear the invalid input
+                        System.out.println("Card index must be a number");
+                        continue;
+                    }
+
                     cardIndex = sc.nextInt() - 1;
-                    System.out.println("Card index: " + cardIndex);
+                    sc.nextLine(); // clear the newline character after nextInt
+
+                    if (cardIndex < 0 || cardIndex >= currentPlayer.getHand().size()) {
+                        System.out.println("Invalid card number! Please choose again");
+                        continue;
+                    }
+
+                    break; // valid input, exit loop
                 }
+
+                /* Original piece of code */
+                // System.out.print("Choose a card index (1-" + currentPlayer.getHand().size() +
+                // "): ");
+                // int cardIndex = sc.nextInt() - 1;
+
+                // while (cardIndex < 0 || cardIndex > 4) {
+                // System.out.println("Invalid card number! Please choose again");
+                // System.out.print("Choose a card index (1-" + (currentPlayer.getHand().size())
+                // + "): ");
+
+                // cardIndex = sc.nextInt() - 1;
+                // // System.out.println("Card index: " + cardIndex);
+                // }
+
                 Card playedCard = currentPlayer.playCard(cardIndex);
                 ArrayList<Card> takenCards = new ArrayList<>(Parade.removeCards(playedCard));
                 Parade.addCard(playedCard);
@@ -128,14 +152,49 @@ public class GameLogic {
             } else {
                 System.out.println("Collected Cards: " + currentPlayer.getCollected());
                 System.out.println("Your hand: " + currentPlayer.getHandWithIndex());
-                System.out.print("Choose a card index (1-" + (currentPlayer.getHand().size()) + "): ");
-                int cardIndex = sc.nextInt() - 1;
-                while (cardIndex < 0 || cardIndex > 4) {
-                    System.out.println("Invalid card number! Please choose again");
-                    System.out.print("Choose a card index (1-" + (currentPlayer.getHand().size()) + "): ");
+
+                int cardIndex = 0;
+                while (true) {
+                    System.out.print("Choose a card index (1-" + currentPlayer.getHand().size() + "): ");
+
+                    if (!sc.hasNextInt()) {
+                        sc.nextLine(); // clear the invalid input
+                        System.out.println("Card index must be a number");
+                        continue;
+                    }
+
                     cardIndex = sc.nextInt() - 1;
-                    System.out.println("Card index: " + cardIndex);
+                    sc.nextLine(); // clear the newline character after nextInt
+
+                    if (cardIndex < 0 || cardIndex >= currentPlayer.getHand().size()) {
+                        System.out.println("Invalid card number! Please choose again");
+                        continue;
+                    }
+
+                    break; // valid input, exit loop
                 }
+                
+                /* Original code */
+                // System.out.print("Choose a card index (1-" + (currentPlayer.getHand().size()) + "): ");
+                // while (!sc.hasNextInt()) {
+                //     sc.nextLine();
+                //     System.out.println("Card index must be a number");
+                //     System.out.print("Choose a card index (1-" + (currentPlayer.getHand().size()) + "): ");
+                // }
+                // int cardIndex = sc.nextInt() - 1;
+                // while (cardIndex < 0 || cardIndex > 4) {
+                //     System.out.println("Invalid card number! Please choose again");
+                //     System.out.print("Choose a card index (1-" + (currentPlayer.getHand().size()) + "): ");
+                //     while (!sc.hasNextInt()) {
+                //         sc.nextLine();
+                //         System.out.println("Card index must be a number");
+                //         System.out.print("Choose a card index (1-" + (currentPlayer.getHand().size()) + "): ");
+                //     }
+                //     cardIndex = sc.nextInt() - 1;
+                //     System.out.println("Card index: " + cardIndex);
+                // }
+
+
                 Card playedCard = currentPlayer.playCard(cardIndex);
                 ArrayList<Card> takenCards = new ArrayList<>(Parade.removeCards(playedCard));
                 Parade.addCard(playedCard);
@@ -143,7 +202,7 @@ public class GameLogic {
                 // Resolve parade rules
                 currentPlayer.addToCollected(takenCards);
                 System.out.println("You took: " + takenCards);
-            }           
+            }
 
             // Draw a new card
             currentPlayer.addToHand(deck.drawCard());
@@ -152,8 +211,6 @@ public class GameLogic {
         }
         endGame(playerList, isTwoPlayerGame);
     }
-
-
 
     public static void endGame(ArrayList<Player> playerList, boolean isTwoPlayerGame) {
         System.out.println("\nGame Over! Calculating scores...");
@@ -179,7 +236,7 @@ public class GameLogic {
         System.out.flush();
     }
 
-    //to deal with players entering values when it isnt their turn 
+    // to deal with players entering values when it isnt their turn
     public static void flushInputBuffer() {
         try {
             // Check if there is input available in the buffer

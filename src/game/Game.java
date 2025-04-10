@@ -53,11 +53,11 @@ public class Game {
         return isTwoPlayerGame;
     }
 
-    
     /**
      * Sets the game mode to either two-player or other mode.
      * 
-     * @param isTwoPlayerGame {@code true} if the game should be set to two-player mode;
+     * @param isTwoPlayerGame {@code true} if the game should be set to two-player
+     *                        mode;
      *                        {@code false} otherwise
      */
     public void setTwoPlayerGame(boolean isTwoPlayerGame) {
@@ -76,7 +76,8 @@ public class Game {
     }
 
     /**
-     * Displays the main menu and processes user input to navigate to the selected option.
+     * Displays the main menu and processes user input to navigate to the selected
+     * option.
      */
     // start menu display
     public void printMenu() {
@@ -89,9 +90,8 @@ public class Game {
         System.out.println("4. Hall of Fame");
         int userChoice = 0;
         Scanner sc = new Scanner(System.in);
-
+        String userInput = null;
         while (!(userChoice >= 1 && userChoice <= 4) || userInput != "q") {
-            String userInput;
             try {
                 System.out.print("Enter your choice (1-4): ");
                 userInput = sc.nextLine();
@@ -111,7 +111,7 @@ public class Game {
         }
 
         GameClient.clearConsole();
-        if (userInput != "q") {    
+        if (userInput != "q") {
             switch (userChoice) {
                 case (1):
                     startGame();
@@ -120,18 +120,18 @@ public class Game {
                     volumeMenu();
                     break;
                 // case (3):
-    
+
                 case (4):
                     highScore.displayHighScores();
-                    
+
                     System.out.println();
                     promptReturnToMenu(sc);
                     break;
-        }
+            }
         }
     }
 
-     /**
+    /**
      * Prompts the user to press 1 to return to the menu.
      */
     private void promptReturnToMenu(Scanner sc) {
@@ -152,8 +152,10 @@ public class Game {
     }
 
     /**
-     * Allows the user to choose the number of human players (between 2 and 6) and enter a unique username for each player.
-     * Ensures that player names are not blank and there are no duplicates of existing names.
+     * Allows the user to choose the number of human players (between 2 and 6) and
+     * enter a unique username for each player.
+     * Ensures that player names are not blank and there are no duplicates of
+     * existing names.
      */
     // choosing number of HUMAN players and name
     public void selectHumanPlayers() {
@@ -332,7 +334,7 @@ public class Game {
             noOfAIPlayers--;
         }
         turnManager = new TurnManager(playerList.size());
-        //System.out.println(playerList);
+        // System.out.println(playerList);
         GameLogic.playTurn(deck, playerList, turnManager, isTwoPlayerGame);
     }
 
@@ -388,6 +390,7 @@ public class Game {
 
     /**
      * Plays the background music throughout the game.
+     * 
      * @param audioFile The music to be played
      */
 

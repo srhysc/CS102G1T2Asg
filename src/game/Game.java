@@ -119,8 +119,9 @@ public class Game {
                 case (2):
                     volumeMenu();
                     break;
-                // case (3):
-
+                case (3):
+                    helpMenu();
+                    break;
                 case (4):
                     highScore.displayHighScores();
 
@@ -129,6 +130,68 @@ public class Game {
                     break;
             }
         }
+    }
+
+    /**
+     * Displays the game instructions and rules for the Parade card game.
+     * 
+     * This help menu provides players with a detailed explanation of the game's
+     * objective, components, setup steps, gameplay mechanics, endgame conditions,
+     * and scoring rules. It also includes adjustments for two-player games.
+     * 
+     * Once the instructions are printed, the method returns the player to the main
+     * menu.
+     */
+    public void helpMenu() {
+        // Define the complete set of instructions using a multi-line string
+        String instructions = """
+                === Parade Card Game Instructions ===
+
+                Objective:
+                Get the lowest score by collecting as few points (cards) as possible.
+
+                Components:
+                - 66 cards in 6 colors (11 cards per color).
+                - Each color has cards numbered from 0 to 10.
+
+                Setup:
+                1. Shuffle all cards.
+                2. Deal 5 cards to each player (hand cards).
+                3. Place 6 cards face-up in a row to form the parade line.
+                4. Place the rest as a draw pile.
+
+                Gameplay (On Your Turn):
+                1. Play 1 card from your hand to the end of the parade line.
+                2. Count how many cards are in the parade line before your played card. Let’s say it’s X.
+                3. From the X cards before the played card, check if any must be taken:
+                   - A card must be taken if:
+                     - Its color matches the played card, or
+                     - Its value is less than or equal to the value of the played card.
+                4. Take all the matching cards (color or lower/equal value).
+                5. The remaining cards stay in the parade line.
+                6. Draw a new card from the draw pile (unless the pile is empty).
+
+                Endgame Trigger:
+                - When one player has no cards left in their hand, or
+                - The draw pile is depleted.
+                Then, each player plays all remaining hand cards (one per turn, no drawing).
+
+                Scoring:
+                1. Separate your collected cards by color.
+                2. In each color:
+                   - If you have the most cards of that color (alone or tied), each card in that color counts as 1 point.
+                   - Otherwise, add up the face values.
+                3. Add up all points across all colors.
+                4. Lowest score wins.
+
+                Optional (2-player game):
+                - Remove one color before starting.
+                """;
+
+        System.out.println(instructions);
+
+        // Return to the main menu after displaying instructions
+        printMenu();
     }
 
     /**

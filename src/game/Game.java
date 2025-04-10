@@ -5,8 +5,8 @@ import entities.Parade;
 import entities.Player;
 import entities.comp.*;
 import entities.scoring.*;
+import game.audio.SoundPlayer;
 import game.online.*;
-import java.io.File;
 import java.util.*;
 import javax.sound.sampled.*;
 
@@ -384,18 +384,6 @@ public class Game {
      * Plays the background music throughout the game.
      * @param audioFile The music to be played
      */
-    public void playSound(String audioFile) {
-        try {
-            File file = new File("resources/" + audioFile + ".wav"); // relative path
-            AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
-            clip = AudioSystem.getClip();
-            clip.open(audioStream);
-            clip.start();
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * Allows user to control the volume of the background music.
@@ -533,7 +521,7 @@ public class Game {
 
         Game game = new Game(playerList);
 
-        game.playSound("kahoot");
+        SoundPlayer.playSound("audio-editor-output");
         game.printMenu();
 
     }

@@ -90,13 +90,18 @@ public class Game {
         int userChoice = 0;
         Scanner sc = new Scanner(System.in);
 
-        while (!(userChoice >= 1 && userChoice <= 4)) {
+        while (!(userChoice >= 1 && userChoice <= 4) || userInput != "q") {
+            String userInput;
             try {
                 System.out.print("Enter your choice (1-4): ");
-                String userInput = sc.nextLine();
-                userChoice = Integer.parseInt(userInput);
-                if (userChoice < 1 || userChoice > 4) {
-                    System.out.println("Invalid option! Please choose again");
+                userInput = sc.nextLine();
+                if (userInput == "q") {
+                    break;
+                } else {
+                    userChoice = Integer.parseInt(userInput);
+                    if (userChoice < 1 || userChoice > 4) {
+                        System.out.println("Invalid option! Please choose again");
+                    }
                 }
 
             } catch (NumberFormatException e) {
@@ -106,22 +111,23 @@ public class Game {
         }
 
         GameClient.clearConsole();
-
-        switch (userChoice) {
-            case (1):
-                startGame();
-                break;
-            case (2):
-                volumeMenu();
-                break;
-            // case (3):
-
-            case (4):
-                highScore.displayHighScores();
-                
-                System.out.println();
-                promptReturnToMenu(sc);
-                break;
+        if (userInput != "q") {    
+            switch (userChoice) {
+                case (1):
+                    startGame();
+                    break;
+                case (2):
+                    volumeMenu();
+                    break;
+                // case (3):
+    
+                case (4):
+                    highScore.displayHighScores();
+                    
+                    System.out.println();
+                    promptReturnToMenu(sc);
+                    break;
+        }
         }
     }
 

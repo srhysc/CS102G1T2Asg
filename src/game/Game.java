@@ -89,9 +89,8 @@ public class Game {
         System.out.println("4. Hall of Fame");
         int userChoice = 0;
         Scanner sc = new Scanner(System.in);
-
+        String userInput;
         while (!(userChoice >= 1 && userChoice <= 4) || userInput != "q") {
-            String userInput;
             try {
                 System.out.print("Enter your choice (1-4): ");
                 userInput = sc.nextLine();

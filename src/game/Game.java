@@ -93,7 +93,7 @@ public class Game {
         String userInput = "a";
         while (!(userChoice >= 1 && userChoice <= 4) && !userInput.equals("q")) {
             try {
-                System.out.print("Enter your choice (1-4): ");
+                System.out.print("Enter your choice (1-4) or press q to quit: ");
                 userInput = sc.nextLine();
                 if (userInput.equals("q")) {
                     break;

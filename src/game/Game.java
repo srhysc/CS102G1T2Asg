@@ -90,12 +90,12 @@ public class Game {
         System.out.println("4. Hall of Fame");
         int userChoice = 0;
         Scanner sc = new Scanner(System.in);
-        String userInput = null;
-        while (!(userChoice >= 1 && userChoice <= 4) || userInput != "q") {
+        String userInput = "a";
+        while (!(userChoice >= 1 && userChoice <= 4) && !userInput.equals("q")) {
             try {
                 System.out.print("Enter your choice (1-4): ");
                 userInput = sc.nextLine();
-                if (userInput == "q") {
+                if (userInput.equals("q")) {
                     break;
                 } else {
                     userChoice = Integer.parseInt(userInput);
@@ -111,7 +111,7 @@ public class Game {
         }
 
         GameClient.clearConsole();
-        if (userInput != "q") {
+        if (!userInput.equals("q")) {
             switch (userChoice) {
                 case (1):
                     startGame();

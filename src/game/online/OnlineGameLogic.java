@@ -5,6 +5,7 @@ import entities.*;
 import entities.scoring.*;
 
 import java.io.*;
+import java.net.SocketException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -12,12 +13,61 @@ import game.Game;
 import game.GameLogic;
 import game.TurnManager;
 
+/**
+ * The OnlineGameLogic class contains the core game logic for managing an online multiplayer game.
+ * It handles player turns, game state updates, and communication between the server and clients.
+ *
+ * Key Responsibilities:
+ * - Manage the flow of the game, including player turns and game-ending conditions.
+ * - Handle player disconnections gracefully and adjust the game state accordingly.
+ * - Broadcast game updates and messages to all connected players.
+ * - Validate and process player inputs, both local and remote.
+ *
+ * Key Features:
+ * - Supports interactive gameplay for multiple players in an online environment.
+ * - Handles the final round and endgame logic, including score calculation.
+ * - Provides utility methods for broadcasting messages and managing player input.
+ * - Ensures synchronization between the server and clients during gameplay.
+ *
+ * Dependencies:
+ * - {@link Deck} – Represents the deck of cards used in the game.
+ * - {@link Player} – Represents each player in the game.
+ * - {@link TurnManager} – Manages the turn order of players.
+ * - {@link Parade} – Handles the parade row and card removal logic.
+ * - {@link Scoring} – Calculates scores and determines the winner.
+ * - {@link SocketPacket} – Used for communication between the server and clients.
+ *
+ * Assumptions:
+ * - The server is running and all players are connected before the game starts.
+ * - The game ends when all non-host players disconnect or the game logic concludes.
+ *
+ * Utility Methods:
+ * - {@code playOnlineTurn} – Manages the main game loop for online gameplay.
+ * - {@code onlineLastRound} – Handles the logic for the final round of the game.
+ * - {@code endGameOnline} – Processes the endgame logic, including discarding cards and scoring.
+ * - {@code broadcastToAll} – Sends messages or updates to all connected players.
+ * - {@code flushInputBuffer} – Clears any unwanted input from the buffer.
+ * - {@code handlePlayerDisconnection} – Handles the removal of disconnected players and adjusts the game state.
+ * - {@code buildMenuMessage} – Constructs the menu message displayed to players during their turn.
+ */
 
 public class OnlineGameLogic {
 
     private static final String colourRed = "\u001B[31m";
     private static final String reset = "\u001B[0m";
 
+
+    /**
+     * Retrieves the server's IP address for clients to connect.
+     * Iterates through the network interfaces to find the first active IPv4 address.
+     *
+     * Returns:
+     * - A {@link String} representing the server's IP address.
+     * - If no valid IP address is found, returns "Unable to determine IP address".
+     *
+     * Exceptions:
+     * - Handles {@link SocketException} for network interface errors.
+     */
     public static void playOnlineTurn(Deck deck, ArrayList<Player> playerList, TurnManager turnManager,
             boolean isTwoPlayerGame, List<ObjectOutputStream> outputs, List<ObjectInputStream> inputs, Scanner sc) {
 
@@ -144,7 +194,27 @@ public class OnlineGameLogic {
         }
 
         
-
+        /**
+         * Handles the logic for the final round of the game in an online multiplayer environment.
+         * Ensures all players take their final turns and resolves the game state.
+         *
+         * Responsibilities:
+         * - Broadcast final round announcements and updates to all players.
+         * - Process player moves during the final round.
+         * - Handle player disconnections gracefully and adjust the game state accordingly.
+         *
+         * Parameters:
+         * - {@code deck} – The {@link Deck} object representing the deck of cards used in the game.
+         * - {@code playerList} – A list of {@link Player} objects representing the players in the game.
+         * - {@code turnManager} – The {@link TurnManager} object managing the turn order.
+         * - {@code isTwoPlayerGame} – A boolean indicating whether the game is a two-player game.
+         * - {@code outputs} – A list of {@link ObjectOutputStream} objects for sending data to clients.
+         * - {@code inputs} – A list of {@link ObjectInputStream} objects for receiving data from clients.
+         * - {@code sc} – A {@link Scanner} object for reading user input.
+         *
+         * Exceptions:
+         * - Handles {@link IOException} and {@link ClassNotFoundException} for network communication errors.
+         */
         public static void onlineLastRound(Deck deck, ArrayList<Player> playerList, TurnManager turnManager,
                 boolean isTwoPlayerGame,
                 List<ObjectOutputStream> outputs, List<ObjectInputStream> inputs, Scanner sc)
@@ -247,7 +317,27 @@ public class OnlineGameLogic {
 
         }
 
-        //settles the removal of 2 cards 
+        /**
+         * Processes the endgame logic, including discarding cards and calculating scores.
+         * Handles the final actions for all players and determines the winner.
+         *
+         * Responsibilities:
+         * - Prompt players to discard two cards from their hand.
+         * - Broadcast endgame updates and final scores to all players.
+         * - Handle player disconnections gracefully and adjust the game state accordingly.
+         * - Transition back to the main menu after the game concludes.
+         *
+         * Parameters:
+         * - {@code playerList} – A list of {@link Player} objects representing the players in the game.
+         * - {@code isTwoPlayerGame} – A boolean indicating whether the game is a two-player game.
+         * - {@code turnManager} – The {@link TurnManager} object managing the turn order.
+         * - {@code outputs} – A list of {@link ObjectOutputStream} objects for sending data to clients.
+         * - {@code inputs} – A list of {@link ObjectInputStream} objects for receiving data from clients.
+         * - {@code sc} – A {@link Scanner} object for reading user input.
+         *
+         * Exceptions:
+         * - Handles {@link IOException} and {@link ClassNotFoundException} for network communication errors.
+         */
         public static void endGameOnline(ArrayList<Player> playerList, boolean isTwoPlayerGame, TurnManager turnManager,
                 List<ObjectOutputStream> outputs, List<ObjectInputStream> inputs , Scanner sc)
                 throws IOException, ClassNotFoundException {
@@ -368,7 +458,17 @@ public class OnlineGameLogic {
 
     }
 
-
+    /**
+     * Sends messages or updates to all connected players in the game.
+     * Ensures that all players receive the same game state and announcements.
+     *
+     * Parameters:
+     * - {@code playerList} – A list of {@link Player} objects representing the players in the game.
+     * - {@code sp} – A {@link SocketPacket} object containing the message or update to broadcast.
+     *
+     * Exceptions:
+     * - Handles {@link IOException} for network communication errors.
+     */
     public static void broadcastToAll(ArrayList<Player> playerList, SocketPacket sp) throws IOException {
         // broadcast move to all players
 
@@ -420,7 +520,13 @@ public class OnlineGameLogic {
 
     
 
-    //to deal with players entering values when it isnt their turn 
+    /**
+     * Clears any unwanted input from the input buffer to prevent accidental input values.
+     * Ensures that the input stream is clean before processing new input.
+     *
+     * Exceptions:
+     * - Handles {@link IOException} for input stream errors.
+     */
     public static void flushInputBuffer() {
         try {
             // Check if there is input available in the buffer
@@ -432,6 +538,20 @@ public class OnlineGameLogic {
         }
     }
 
+    /**
+     * Handles the removal of disconnected players and adjusts the game state accordingly.
+     * Ensures that the game continues with the remaining players or ends if all players disconnect.
+     *
+     * Parameters:
+     * - {@code currentPlayer} – The {@link Player} object representing the disconnected player.
+     * - {@code playerList} – A list of {@link Player} objects representing the players in the game.
+     * - {@code outputs} – A list of {@link ObjectOutputStream} objects for sending data to clients.
+     * - {@code inputs} – A list of {@link ObjectInputStream} objects for receiving data from clients.
+     *
+     * Returns:
+     * - {@code true} if the game should continue with the remaining players.
+     * - {@code false} if all players have disconnected and the game should end.
+     */
     private static boolean handlePlayerDisconnection(Player currentPlayer, ArrayList<Player> playerList, List<ObjectOutputStream> outputs, List<ObjectInputStream> inputs){
 
         System.out.println("Player " + currentPlayer.getName() + " disconnected.");
@@ -443,6 +563,7 @@ public class OnlineGameLogic {
             outputs.remove(currentPlayerIndex);
             inputs.remove(currentPlayerIndex);
             playerList.remove(currentPlayerIndex);
+            
             return true;
         }
         // If no players left, end the game
@@ -455,6 +576,17 @@ public class OnlineGameLogic {
         
     }
 
+    /**
+     * Constructs the menu message displayed to players during their turn.
+     * Includes information about the deck, parade, current player, collected cards, and hand.
+     *
+     * Parameters:
+     * - {@code deck} – The {@link Deck} object representing the deck of cards used in the game.
+     * - {@code currentPlayer} – The {@link Player} object representing the current player.
+     *
+     * Returns:
+     * - A {@link StringBuilder} object containing the constructed menu message.
+     */
     private static StringBuilder buildMenuMessage(Deck deck, Player currentPlayer) {
         StringBuilder menuMessage = new StringBuilder();
         menuMessage.append("--------------------\n");
@@ -468,6 +600,18 @@ public class OnlineGameLogic {
         return menuMessage;
     }
 
+    /**
+    * Validates the player's input for selecting a card during their turn.
+    * Ensures that the input is a valid card index within the player's hand.
+    *
+    * Parameters:
+    * - {@code input} – The player's input as a {@link String}.
+    * - {@code currentPlayer} – The {@link Player} object representing the current player.
+    *
+    * Returns:
+    * - {@code true} if the input is valid.
+    * - {@code false} if the input is invalid.
+    */
     private static boolean validateGameInput(String input, Player currentPlayer){
         int moveIndex = 0;
         Objects.requireNonNullElse(input, -1);
@@ -486,6 +630,17 @@ public class OnlineGameLogic {
         }
     }
 
+    /**
+     * Prompts the player to enter a valid move index and validates the input.
+     * Repeats the prompt until a valid input is provided.
+     *
+     * Parameters:
+     * - {@code sc} – A {@link Scanner} object for reading user input.
+     * - {@code currentPlayer} – The {@link Player} object representing the current player.
+     *
+     * Returns:
+     * - An integer representing the valid move index.
+     */
     private static int getValidMoveIndex(Scanner sc, Player currentPlayer){
         while (true) {
                             
@@ -502,7 +657,10 @@ public class OnlineGameLogic {
         }
     }
 
-    // Clear the console screen
+    /**
+     * Clears the console screen to improve readability during gameplay.
+     * Uses ANSI escape codes to reset the terminal display.
+     */
     private static void clearConsole() {
         System.out.print("\033[H\033[2J");
         System.out.flush();

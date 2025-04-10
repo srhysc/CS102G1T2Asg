@@ -10,19 +10,53 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * The GameClient class is responsible for managing the client-side logic of the online game.
+ * It handles connecting to the game server, sending and receiving data, and managing player interactions.
+ *
+ * Key Responsibilities:
+ * - Connect to the game server using the provided IP address and port.
+ * - Handle communication with the server, including sending player moves and receiving game updates.
+ * - Display game menus, announcements, and prompts to the player.
+ * - Validate player input and ensure proper communication with the server.
+ *
+ * Key Features:
+ * - Supports interactive gameplay for a single player in an online game.
+ * - Handles server disconnections gracefully and provides feedback to the player.
+ * - Displays game state updates, including other players' moves and announcements.
+ * - Allows the player to make moves, including discarding cards during the final round.
+ *
+ * Dependencies:
+ * - {@link SocketPacket} – Used for communication between the client and server.
+ * - {@link Scoring} – Handles input validation for card selection.
+ * - {@link GameLogic} – Provides utility methods for game logic, such as flushing input buffers.
+ *
+ * Assumptions:
+ * - The server is running and accessible at the provided IP address and port.
+ * - The player provides valid input when prompted.
+ * - The game ends when the server sends a "Game Over" message or the connection is closed.
+ */
 
 public class GameClient {
     private static final int PORT = 1234;
 
+    /**
+     * Starts the client-side logic for connecting to the game server and managing gameplay.
+     * Handles the connection setup, communication with the server, and player interactions.
+     *
+     * Responsibilities:
+     * - Connect to the server using the provided IP address and port.
+     * - Exchange player information with the server during the setup phase.
+     * - Process server messages and handle game events such as move requests and game-over notifications.
+     * - Validate player input and send moves to the server.
+     *
+     * Exceptions:
+     * - Handles {@link IOException} and {@link ClassNotFoundException} for network communication errors.
+     */
     public void startClient(){
 
         try( // Connect to the server
-            //local host and port are hardcoded right now
-
-            Scanner sc = new Scanner(System.in);
-
-            
-            )
+           Scanner sc = new Scanner(System.in);)
         {
 
             Object[] hostIPDetails = requestHostIP(sc);
@@ -215,24 +249,10 @@ public class GameClient {
                                 break;
                         }
 
-                        //System.out.println("Server: " + serverMessage.getSb().toString());
+                        
                     }
 
-                    // if (serverMessage.getCurrentPlayer().equals(playerName)){
-                    //     System.out.println("its your turn!!");
-
-                    //     String testInput = sc.nextLine();
-
-                    //     //send move to server
-                    //     out.writeObject(testInput);
-                    //     out.flush();
-                    //     System.out.println("move sent");
-
-
-                    // }
-                    // else{
-                    //     System.out.println("its "  + serverMessage.getCurrentPlayer() + " turn please wait");
-                    // }
+                
                 }
                 catch(ClassNotFoundException | EOFException e){
                     System.out.println("Error reading data from server or server closed connection");
@@ -254,12 +274,30 @@ public class GameClient {
     }
 
 
-    // Clear the console screen
+    /**
+     * Clears the console screen to improve readability during gameplay.
+     * Uses ANSI escape codes to reset the terminal display.
+     */
     public static void clearConsole() {
         System.out.print("\033[H\033[2J");  
         System.out.flush();  
     }
 
+    /**
+     * Prompts the user to enter the host IP address and attempts to connect to the server.
+     * Repeats the prompt until a valid connection is established.
+     *
+     * Parameters:
+     * - {@code sc} – A {@link Scanner} object for reading user input.
+     *
+     * Returns:
+     * - An {@code Object[]} containing:
+     *   - The host IP address as a {@link String}.
+     *   - The connected {@link Socket} object.
+     *
+     * Exceptions:
+     * - Handles connection errors and prompts the user to re-enter the IP address if the connection fails.
+     */
     private static Object[] requestHostIP(Scanner sc){
 
         System.out.println("========================");

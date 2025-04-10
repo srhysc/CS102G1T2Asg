@@ -356,13 +356,13 @@ public class OnlineGameLogic {
 
             broadcastToAll(playerList, sp);
 
-            System.out.println("returning to main menu....");
-
-
+            System.out.println("[Press enter to return to main menu]");
             flushInputBuffer();
-
             sc.nextLine();
+
             GameServer.serverSocket.close();
+
+            clearConsole();
             // Bring back to the main menu
             Game.main(null);
 
@@ -389,15 +389,22 @@ public class OnlineGameLogic {
                         break;
 
                     case 3: //game over
+
+                        System.out.println("========================");
+                        System.out.println("        GAME OVER       ");
+                        System.out.println("========================");
                         System.err.println(sp.getSb().toString());
                         break;
                 
                     default:
                         if (!(sp.getCurrentPlayer().equals(player.getName()))){
                             System.err.println(sp.getSb().toString());
-                            System.out.println("Please wait for your turn!");
+                            System.out.println("====================");
+                            System.out.println("[Waiting for " + sp.getCurrentPlayer() + "'s Move]");
                         }
                         else{
+                            System.out.println("====================");
+                            System.out.println("[Your Move]");
                             System.err.println(sp.getSb().toString());
                         }
                         break;

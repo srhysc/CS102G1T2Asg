@@ -24,38 +24,37 @@ public class GameClient {
             
             )
         {
-            String hostIP = "";
-            Socket socket = null;
-            while(true){
-                System.out.print("please enter the host IP : ");
-                hostIP = sc.nextLine();
 
-                System.out.println("Attempting to connect to server!! ");
-    
-                try {
-                    socket = new Socket();
-                    socket.connect(new InetSocketAddress(hostIP, PORT), 4000); // 5000ms timeout
-                    System.out.println("Connected! ");
-                    break;
-                } catch (Exception e) {
-                    System.out.print("\n" + e.getMessage());
-                    System.out.println(" : The ip address may not be valid please try again!");
-                }
-            }
-            
+            Object[] hostIPDetails = requestHostIP(sc);
+            String hostIP = (String) hostIPDetails[0];
+            Socket socket = (Socket) hostIPDetails[1];
+
+
             System.out.println("Please wait the Host is still setting up the server!");
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
 
+            // Receive prompt for player name
+            String playerName = "";
+            
+            
+            while (true) {
+                String nameRequest = (String) in.readObject();
+                if(!(nameRequest.equals("Success"))){
+                    System.out.println(nameRequest);
+                    playerName = sc.nextLine();
+                    out.writeObject(playerName);
+                    out.flush();
+                }
+                else{
+                    System.out.println("Connected to game server! Waiting for turns...");
+                    break;
+                }
+            }
             
 
-
-            // Receive prompt for player name
-            System.out.print(in.readObject());
-            String playerName = sc.nextLine();
-            out.writeObject(playerName);
-            out.flush();
-            System.out.println("Connected to game server! Waiting for turns...");
+            
+            
 
             while (true) {
                 try{
@@ -76,7 +75,7 @@ public class GameClient {
                                 //check if the client is the current player 
                                 if(serverMessage.getCurrentPlayer().equals(playerName)){
                                     //show the move request (probably the menu)
-                                    System.out.println("\n =============== \n [Move Request] \n" + serverMessage.getSb().toString());
+                                    System.out.println("\n =============== \n [Your Move] \n" + serverMessage.getSb().toString());
                                     
 
 
@@ -137,10 +136,16 @@ public class GameClient {
 
                             case 3 :
                                 clearConsole() ;
-                                System.out.println("===============\n [GameOver] \n" + serverMessage.getSb().toString());
+                                
 
-                                System.out.println("press enter to quit or when your host quits you will be returned to main menu");
+                                System.out.println("========================");
+                                System.out.println("        GAME OVER       ");
+                                System.out.println("========================");
+                                System.out.println(serverMessage.getSb().toString());
+
+                                System.out.println("press enter to return to main menu");
                                 sc.nextLine();
+                                clearConsole();
                                 Game.main(null);
 
 
@@ -254,4 +259,32 @@ public class GameClient {
         System.out.print("\033[H\033[2J");  
         System.out.flush();  
     }
+
+    private static Object[] requestHostIP(Scanner sc){
+
+        System.out.println("========================");
+        System.out.println("       Join Server      ");
+        System.out.println("========================");
+
+        while(true){
+
+            System.out.print("Please enter the host IP : ");
+            String hostIP = sc.nextLine();
+
+            System.out.println("Attempting to connect to server!! ");
+
+            try {
+                Socket socket = new Socket();
+                socket.connect(new InetSocketAddress(hostIP, PORT), 4000); // 4000ms timeout
+                System.out.println("Connected! ");
+                return new Object[]{hostIP, socket};
+                
+            } catch (Exception e) {
+                System.out.print("\n" + e.getMessage());
+                System.out.println(" : The ip address may not be valid please try again!");
+            }
+        }
+    }
+
+
 }

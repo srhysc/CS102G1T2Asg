@@ -10,6 +10,7 @@ public class GameServer {
     
     private static final int PORT = 1234;
     public static List<Socket> playersSockets = new ArrayList<>();
+    ArrayList<String> playerNames = new ArrayList<>();
     ArrayList<Player> multiplayerPlayerList = new ArrayList<>();
     private static List<ObjectOutputStream> outputs = new ArrayList<>();
     private static List<ObjectInputStream> inputs = new ArrayList<>();
@@ -25,9 +26,15 @@ public class GameServer {
             System.out.println("Server started on port " + serverSocket.getLocalPort());
 
            
-            System.out.println("your ip for friends to connect is " + serverIP) ;
+            
+
+            System.out.println("========================");
+            System.out.println("     Set up Server      ");
+            System.out.println("========================");
+            System.out.println("Your host IP is " + serverIP) ;
             System.out.print("Enter your name: ");
             String ServerPLayerName = sc.nextLine();
+            playerNames.add(ServerPLayerName);
             multiplayerPlayerList.add(new Player(ServerPLayerName, null, null));
 
             System.out.println("Select the number of players (2-6): ");
@@ -36,7 +43,7 @@ public class GameServer {
 
             //menu for server
             clearConsole();
-            displayLobby(multiplayerPlayerList, sc, serverIP);
+            displayLobby(multiplayerPlayerList, sc, serverIP, numberOfPlayers);
 
             Boolean confirmLobby = false;
 
@@ -49,25 +56,38 @@ public class GameServer {
                     ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
             
                     // Ask for the new player's name
-                    out.writeObject("Enter your name:");
+                    out.writeObject("Successful Connection! Please Enter your name:");
                     out.flush();
-            
-                    String playerName = (String) in.readObject();
-                    Player newPlayer = new Player(playerName, out, in);
-            
-                    // Add the new player to the list
-                    multiplayerPlayerList.add(newPlayer);
-                    playersSockets.add(clientSocket);
-                    outputs.add(out);
-                    inputs.add(in);
-            
+                    
+                    while(true){
+                        String playerName = (String) in.readObject();
+
+                        if(playerNames.contains(playerName)){
+                            out.writeObject("That name has been taken, try again! : ");
+                            out.flush();
+                        }
+                        else{
+                            out.writeObject("Success");
+                            out.flush();
+                            Player newPlayer = new Player(playerName, out, in);
+                            playerNames.add(playerName);
+
+                            // Add the new player to the list
+                            multiplayerPlayerList.add(newPlayer);
+                            playersSockets.add(clientSocket);
+                            outputs.add(out);
+                            inputs.add(in);
+                            break;
+                        }
+                    }
+                
                 } catch (SocketTimeoutException e) {
                     // No new connections, continue to check for server input
                 }
 
                 // Update the lobby display and ask for confirmation
                 clearConsole();
-                confirmLobby = displayLobby(multiplayerPlayerList, sc, serverIP);
+                confirmLobby = displayLobby(multiplayerPlayerList, sc, serverIP,numberOfPlayers);
             }
                 
 
@@ -79,16 +99,13 @@ public class GameServer {
         //done with players and confirmed lobby 
         TurnManager turnManager = new TurnManager(multiplayerPlayerList.size());
 
-        if (multiplayerPlayerList.size() > 1){
+        if (multiplayerPlayerList.size() == 2){
             isTwoPlayerGame = true;
         }
 
         //start the game
         System.out.println("Online starting now");
         OnlineGameLogic.playOnlineTurn(deck, multiplayerPlayerList, turnManager, isTwoPlayerGame, outputs, inputs, sc );
-
-
-
 
     }
 
@@ -99,7 +116,7 @@ public class GameServer {
     }
 
     // Display lobby with multiple lines
-    private static boolean displayLobby(ArrayList<Player> playerList, Scanner sc, String ipAddress) {
+    private static boolean displayLobby(ArrayList<Player> playerList, Scanner sc, String ipAddress, int maxSize) {
         System.out.println("========================");
         System.out.println("       GAME LOBBY       ");
         System.out.println("IP: " + ipAddress);
@@ -113,12 +130,9 @@ public class GameServer {
         }
 
         // Display waiting message
-        if (playerList.size() < 2) {
-            System.out.println("Waiting for more players... (" + playerList.size() + "/6)");
-        } else if (playerList.size() <= 6) {
-            System.out.println("You can start the game now or wait for more players. (" + playerList.size() + "/6)");
-        } else {
-            System.out.println("The lobby is full. You can start the game.");
+
+        if(playerList.size() < maxSize){
+            System.out.println("Waiting for more players... (" + playerList.size()+ "/" + maxSize + ")");
         }
 
         System.out.println("========================");
@@ -149,5 +163,5 @@ public class GameServer {
         return "Unable to determine IP address";
     }
 
-
+    
 }

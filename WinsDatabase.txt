@@ -1,6 +1,6 @@
 Player: a, Wins: 4
 Player: A, Wins: 6
-Player: B, Wins: 9
+Player: B, Wins: 10
 Player: Cheesecake, Wins: 1
 Player: C, Wins: 1
 Player: Ethan, Wins: 2

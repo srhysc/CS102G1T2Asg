@@ -8,7 +8,6 @@ import entities.scoring.*;
 import game.audio.SoundPlayer;
 import game.online.*;
 import java.util.*;
-import javax.sound.sampled.*;
 
 /**
  * Represents the main controller for the game logic and flow.
@@ -28,9 +27,6 @@ public class Game {
     private Difficulty difficulty;
     private boolean isTwoPlayerGame;
     private HighScoreDatabase highScore = new HighScoreDatabase();
-    private static FloatControl volumeControl;
-    private static Clip clip;
-
     /**
      * Constructs a game.
      *
@@ -117,7 +113,7 @@ public class Game {
                     startGame();
                     break;
                 case (2):
-                    volumeMenu();
+                    SoundPlayer.volumeMenu(this);
                     break;
                 case (3):
                     helpMenu();
@@ -457,36 +453,7 @@ public class Game {
      * @param audioFile The music to be played
      */
 
-    /**
-     * Allows user to control the volume of the background music.
-     */
-    public void volumeMenu() {
 
-        volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-        Scanner sc = new Scanner(System.in);
-        String input;
-        float currentVolume = volumeControl.getValue(); // Default volume level
-
-        System.out.println("Volume control: Type '+' to increase, '-' to decrease, 'q' to quit volume menu.");
-        while (true) {
-            input = sc.nextLine();
-            if (input.equals("+")) {
-                currentVolume = Math.min(currentVolume + 2.0f, volumeControl.getMaximum());
-                volumeControl.setValue(currentVolume);
-                System.out.println("Increased volume to: " + currentVolume);
-            } else if (input.equals("-")) {
-                currentVolume = Math.max(currentVolume - 2.0f, volumeControl.getMinimum());
-                volumeControl.setValue(currentVolume);
-                System.out.println("Decreased volume to: " + currentVolume);
-            } else if (input.equals("q")) {
-                GameClient.clearConsole();
-                printMenu();
-            } else {
-                System.out.println("Invalid input. Use '+', '-', or 'q'.");
-            }
-        }
-
-    }
 
     /**
      * Allows user to choose between Host or Client.

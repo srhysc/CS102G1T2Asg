@@ -18,10 +18,19 @@ public class HighScore {
         this.wins = wins;
     }
 
+    /**
+     * Get the name of the player.
+     * 
+     * @return The name of the player
+     */
     public String getPlayerName() {
         return playerName;
     }
 
+    /**
+     * Get the number of wins.
+     * @return The number of wins 
+     */
     public int getWins() {
         return wins;
     }
@@ -33,6 +42,11 @@ public class HighScore {
         this.wins++;
     }
 
+    /**
+     * Gives a String representation in the format Player: {playerName}, Wins: {wins}.
+     * 
+     * @return A String representation of the object
+     */
     @Override
     public String toString() {
         return "Player: " + playerName + ", Wins: " + wins;

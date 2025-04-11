@@ -30,6 +30,9 @@ public class HighScoreDatabase {
     private static final String FILE_NAME = "WinsDatabase.txt";
     private Map<String, HighScore> highScores = new HashMap<>();
 
+    /**
+     * Creates a HighScoreDatabase object that loads the high scores from the "WinsDatabase.txt" file.
+     */
     public HighScoreDatabase() {
         loadScores();
     }

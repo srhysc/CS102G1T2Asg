@@ -166,11 +166,13 @@ public class Player implements Serializable {
     }
 
     /**
-     * Returns a quick summary of the player — name, hand, and collected cards.
+     * Gives a String representation in the format {name} | Hand: {hand} + | Collected: {collected}
+     * 
+     * @return a quick summary of the player — name, hand, and collected cards.
      */
     @Override
     public String toString() {
-        return name + " | Hand: " + hand + " | Collected: " + collected;
+        return " | Player name: " + name + " | Hand: " + hand + " | Collected: " + collected;
     }
 
     // // Helper method to apply card formatting properly

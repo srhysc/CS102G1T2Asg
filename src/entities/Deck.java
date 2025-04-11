@@ -58,6 +58,8 @@ public class Deck {
     }
 
     /**
+     * Get the number of cards that are currently left in the deck.
+     * 
      * @return The number of cards that are currently left in the deck
      */
     public int getSize(){

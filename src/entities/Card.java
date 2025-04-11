@@ -27,6 +27,8 @@ public class Card implements Serializable{
 
     /**
      * Gets the value of the card (its points).
+     * 
+     * @return The value of the card
      */
     public int getValue() {
         return value;
@@ -34,6 +36,8 @@ public class Card implements Serializable{
 
     /**
      * Face down cards mean that they are the majority set so their values are not computed.
+     * 
+     * @return True if card is faced down, false otherwise
      */
     public boolean isFaceDown() {
         return faceDown;
@@ -48,28 +52,34 @@ public class Card implements Serializable{
 
     /**
      * Gets the colour of the card.
+     * 
+     * @return The colour of the card
      */
     public String getColour() {
         return colour;
     }
 
     /**
-    * Sets the card's colour (string format, like "red", "blue", etc.).
+    * Sets the card's colour. 
+    * @param colour The colour of the card in String format (eg. "red", "blue", etc.)
     */
     public void setColour(String colour) {
         this.colour = colour;
     }
 
     /**
-     * Flips the card face down or up. (true for down, false for up).
+     * Flips the card face down or up. 
+     * 
+     * @param faceDown True for down, false for up
      */
     public void setFaceDown(boolean faceDown) {
         this.faceDown = faceDown;
     }
 
     /**
-     * Returns the ANSI colour code for the card’s colour.
-     * Used for making console text coloured.
+     * Get the ANSI colour code for the card's colour. It is used for making console text coloured.
+     * @return The ANSI colour code for the card’s colour
+     * 
      */
     public String getcolorCode() {
         switch (colour.toLowerCase()) {
@@ -85,7 +95,8 @@ public class Card implements Serializable{
         return colorCode;
     }
     /**
-     * Returns a string with the card’s details (colour + value), 
+     * Gets the card's details.
+     * @return String format of the card’s details (colour + value), 
      * formatted with colour codes for console output.
      */
     public String getDetails() {

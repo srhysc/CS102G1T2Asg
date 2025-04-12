@@ -102,7 +102,7 @@ public class Scoring {
                 System.out.print(cPlayer.getName() + " is discarding 2 cards");
                 for (int i = 0; i < 3; i++) {
                     try {
-                        Thread.sleep(500); // half second delay for each .
+                        Thread.sleep(500); // half second delay for each
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                     }

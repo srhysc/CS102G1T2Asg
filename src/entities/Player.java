@@ -63,14 +63,6 @@ public class Player implements Serializable {
      */
     public void addToCollected(ArrayList<Card> cards) {
         collected.addAll(cards);
-
-        // Test for all 6 colours
-        // collected.add(new Card("Red ", 1));
-        // collected.add(new Card("Blue ", 1));
-        // collected.add(new Card("Purple ", 1));
-        // collected.add(new Card("Green ", 1));
-        // collected.add(new Card("Grey ", 1));
-        // collected.add(new Card("Orange ", 1));
     }
 
     /**
@@ -92,11 +84,9 @@ public class Player implements Serializable {
     public String getHandWithIndex() {
         String formattedHand = "";
         for (Card card : hand) {
-            // System.out.println(str);
             int idx = hand.indexOf(card) + 1;
             formattedHand += card + " (" + idx + ")" + " ";
         }
-        // System.out.println(formattedHand);
         return "[" + formattedHand + "]";
     }
 
@@ -202,12 +192,7 @@ public class Player implements Serializable {
             
         }
         
-        // System.out.println(hasRed);
-        // System.out.println(hasBlue);
-        // System.out.println(hasGreen);
-        // System.out.println(hasPurple);
-        // System.out.println(hasGrey);
-        // System.out.println(hasOrange);
+
         return hasRed && hasBlue && hasGreen && hasPurple && hasGrey && hasOrange;
     }
 
@@ -221,9 +206,5 @@ public class Player implements Serializable {
         return " | Player name: " + name + " | Hand: " + hand + " | Collected: " + collected;
     }
 
-    // // Helper method to apply card formatting properly
-    // public String formatCardList(List<Card> cards) {
-    //     return cards.stream().map(Card::toString).collect(Collectors.joining(" "));
-    // }
 
 }

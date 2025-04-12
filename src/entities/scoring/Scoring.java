@@ -14,7 +14,8 @@ import entities.comp.ComputerPlayer;
 /**
  * Handles the end-of-game scoring logic for both local and online games.
  *
- * The Scoring class takes care of all the steps needed to finish a game and figure out
+ * The Scoring class takes care of all the steps needed to finish a game and
+ * figure out
  * how many
  * points each player has earned. It includes things like asking players to
  * discard cards,
@@ -140,12 +141,7 @@ public class Scoring {
 
                 // Add remaining cards to front //im not sure this is correct
                 player.addToCollected(hand);
-                // while (!hand.isEmpty()) {
-                // player.addToCollected(hand);
 
-                // System.out.println("stuck");
-
-                // System.out.println("test ");
             }
 
         }
@@ -267,10 +263,7 @@ public class Scoring {
 
         for (Player player : players) {
             int score = 0;
-            // System.out.println(player.getName());
             for (Card card : player.getCollected()) {
-                // System.out.println("Is card face down: " + card.isFaceDown());
-                // System.out.println("Value: " + card.getValue());
                 if (card.isFaceDown()) {
                     score += 1; // Down cards count as 1 point
                 } else {
@@ -281,7 +274,6 @@ public class Scoring {
             player.setScore(score);
             System.out.println(player.getName() + "'s total score: " + score);
             System.out.println(player.getName() + "'s number of cards: " + player.getCollected().size());
-            // System.out.println(player.getCollected());
 
             // winner is the one with the lower score or if equal score then smaller hand
             if (score < lowestScore) {
@@ -341,10 +333,7 @@ public class Scoring {
 
         for (Player player : players) {
             int score = 0;
-            // System.out.println(player.getName());
             for (Card card : player.getCollected()) {
-                // System.out.println("Is card face down: " + card.isFaceDown());
-                // System.out.println("Value: " + card.getValue());
                 if (card.isFaceDown()) {
                     score += 1; // Down cards count as 1 point
                 } else {
@@ -594,16 +583,3 @@ public class Scoring {
         return index - 1; // we count from 0 while player counts from 1
     }
 }
-
-/* Original Piece of Code */
-// public static int getValidCardIndex(Scanner sc, int maxSize, String prompt) {
-// int index;
-// do {
-// System.out.print(prompt);
-// index = sc.nextInt();
-// if (index < 1 || index > maxSize) {
-// System.out.println("Invalid choice! Please select a valid card number.");
-// }
-// } while (index < 1 || index > maxSize);
-// return index - 1; // we count from 0 while player counts from 1
-// }

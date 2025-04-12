@@ -1,7 +1,6 @@
 package game;
 
 import entities.Deck;
-import entities.Parade;
 import entities.Player;
 import entities.comp.*;
 import entities.scoring.*;
@@ -21,13 +20,11 @@ import java.util.*;
 public class Game {
     static ArrayList<Player> playerList = new ArrayList<>();
     private Deck deck;
-    private Parade parade;
     private TurnManager turnManager;
-    private Scanner scanner;
-    private boolean online = false;
     private Difficulty difficulty;
     private boolean isTwoPlayerGame;
     private HighScoreDatabase highScore = new HighScoreDatabase();
+
     /**
      * Constructs a game.
      *
@@ -36,9 +33,7 @@ public class Game {
     public Game(ArrayList<Player> playerList) {
         Game.playerList = playerList;
         this.deck = new Deck();
-        // this.parade = Parade.Parade();
         this.turnManager = new TurnManager(playerList.size());
-        this.scanner = new Scanner(System.in);
     }
 
     /**
@@ -72,22 +67,23 @@ public class Game {
         this.difficulty = difficulty;
     }
 
-     /**
+    /**
      * Displays the main menu and processes user input to navigate to the selected
      * option.
      * <p>
      * The menu options are:
      * <ul>
-     *   <li>1. Start Game</li>
-     *   <li>2. Settings (Volume Control)</li>
-     *   <li>3. Help</li>
-     *   <li>4. Hall of Fame</li>
+     * <li>1. Start Game</li>
+     * <li>2. Settings (Volume Control)</li>
+     * <li>3. Help</li>
+     * <li>4. Hall of Fame</li>
      * </ul>
      * <p>
      * The user chooses an option by entering 1–4 or 'q' to exit the game.
-     * When the user enters an invalid input, the program will prompt them to 
+     * When the user enters an invalid input, the program will prompt them to
      * enter a valid choice.
-     * Once the input is validated, the corresponding method is called to proceed with the selected option.
+     * Once the input is validated, the corresponding method is called to proceed
+     * with the selected option.
      * 
      */
     // start menu display
@@ -194,9 +190,6 @@ public class Game {
                    - Otherwise, add up the face values.
                 3. Add up all points across all colors.
                 4. Lowest score wins.
-
-                Optional (2-player game):
-                - Remove one color before starting.
                 """;
 
         System.out.println(instructions);
@@ -207,7 +200,7 @@ public class Game {
 
     /**
      * Prompts the user to press 1 to return to the menu.
-     * When the user enters an invalid input, the program will prompt them 
+     * When the user enters an invalid input, the program will prompt them
      * to enter a valid choice.
      * 
      */
@@ -231,8 +224,8 @@ public class Game {
     /**
      * Allows the user to choose the number of human players (between 2 and 6) and
      * enter a unique username for each player.
-     * When the user enters an invalid input, the program will prompt them to enter 
-     * a valid choice. 
+     * When the user enters an invalid input, the program will prompt them to enter
+     * a valid choice.
      * Ensures that player names are not blank and there are no duplicates of
      * existing names.
      * 
@@ -315,16 +308,17 @@ public class Game {
      * <p>
      * The menu options are:
      * <ul>
-     *   <li>1. Easy</li>
-     *   <li>2. Medium</li>
-     *   <li>3. Difficult</li>
-     *   <li>4. Back</li>
+     * <li>1. Easy</li>
+     * <li>2. Medium</li>
+     * <li>3. Difficult</li>
+     * <li>4. Back</li>
      * </ul>
      * <p>
      * The user chooses an option by entering 1–4.
-     * When the user enters an invalid input, the program will prompt them to 
+     * When the user enters an invalid input, the program will prompt them to
      * enter a valid choice.
-     * Once the input is validated, the corresponding method is called to proceed with the selected option.
+     * Once the input is validated, the corresponding method is called to proceed
+     * with the selected option.
      * 
      */
     // choosing difficulty level for AI game style
@@ -428,7 +422,6 @@ public class Game {
             noOfAIPlayers--;
         }
         turnManager = new TurnManager(playerList.size());
-        // System.out.println(playerList);
         GameLogic.playTurn(deck, playerList, turnManager, isTwoPlayerGame);
     }
 
@@ -437,16 +430,17 @@ public class Game {
      * <p>
      * The menu options are:
      * <ul>
-     *   <li>1. Local Play</li>
-     *   <li>2. Play vs AI</li>
-     *   <li>3. Play Online</li>
-     *   <li>4. Back</li>
+     * <li>1. Local Play</li>
+     * <li>2. Play vs AI</li>
+     * <li>3. Play Online</li>
+     * <li>4. Back</li>
      * </ul>
      * <p>
      * The user chooses an option by entering 1–4.
-     * When the user enters an invalid input, the program will prompt them to 
+     * When the user enters an invalid input, the program will prompt them to
      * enter a valid choice.
-     * Once the input is validated, the corresponding method is called to proceed with the selected option.
+     * Once the input is validated, the corresponding method is called to proceed
+     * with the selected option.
      * 
      */
     // choosing game style
@@ -501,15 +495,16 @@ public class Game {
      * <p>
      * The menu options are:
      * <ul>
-     *   <li>1. Host</li>
-     *   <li>2. Join on LAN</li>
-     *   <li>3. Back</li>
+     * <li>1. Host</li>
+     * <li>2. Join on LAN</li>
+     * <li>3. Back</li>
      * </ul>
      * <p>
      * The user chooses an option by entering 1–3.
-     * When the user enters an invalid input, the program will prompt them to 
+     * When the user enters an invalid input, the program will prompt them to
      * enter a valid choice.
-     * Once the input is validated, the corresponding method is called to proceed with the selected option.
+     * Once the input is validated, the corresponding method is called to proceed
+     * with the selected option.
      * 
      */
     public void multiplayerMenu() {
@@ -544,62 +539,23 @@ public class Game {
         switch (menuChoice) {
             case (1): // run host game server
                 System.out.println();
-                this.online = true;
 
                 new GameServer().startServer(deck); // give the entire game object
                 break;
             case (2): // run client game server
-                this.online = true;
                 System.out.println();
                 new GameClient().startClient();
-                // String[] arguments = {"localhost", "12345"};
-                // setUpClient(arguments);
-
-                // new GameClient().startClient(arguments);
             case (3):
                 startGame();
         }
 
     }
 
-    // To check if this method is required
-    // public static void checkGameEnd(boolean allColoursCollected) {
-    //     // if (allColoursCollected || ) {
-    //     // this.playTurn();
-
-    //     // }
-    // }
-
-    // To check if this method is required
-    // public static boolean checkGameEnd() {
-    //     boolean gameEnd = false;
-
-    //     // for (Player player : playerList) {
-    //     // if (player.allColoursCollected()) {
-    //     // gameEnd = true;
-    //     // break;
-    //     // }
-    //     // }
-
-    //     // if (gameEnd || deck.getCards() == 0) {
-    //     // System.out.println("This is the last round!");
-    //     // playTurn(); // Last Round to end up with 4 cards, I need to see how the play
-    //     // // turn is being handled
-    //     // return true;
-    //     // }
-
-    //     return false;
-    // }
-
     /**
      * Ends the game and starts calculating the scores of each player.
      */
     public void endGame() {
         System.out.println("\nGame Over! Calculating scores...");
-        // for (Player player : playerList) {
-        // int score = ScoringSystem.calculateScore(player);
-        // System.out.println(player.getName() + "1's final score: " + score);
-        // }
         Scoring.calculateScores(playerList, this.isTwoPlayerGame());
 
         // bring back to main menu
@@ -610,6 +566,7 @@ public class Game {
 
     /**
      * The main entry point of Parade Game.
+     * 
      * @param args The command-line arguments (not used in this method)
      */
     public static void main(String[] args) {

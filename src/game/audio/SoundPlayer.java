@@ -25,7 +25,7 @@ import javax.sound.sampled.*;
  *     <li>Scanner for reading console input</li>
  *     <li>Classes from the game framework: Game and GameClient</li>
  * </ul>
- * </p>
+ *
  */
 public class SoundPlayer {
     private static Clip currentClip;

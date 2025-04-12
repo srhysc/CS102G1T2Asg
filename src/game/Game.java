@@ -75,22 +75,19 @@ public class Game {
      /**
      * Displays the main menu and processes user input to navigate to the selected
      * option.
-     * 
+     * <p>
      * The menu options are:
-     * 1. Start Game
-     * 2. Settings (Volume Control)
-     * 3. Help
-     * 4. Hall of Fame
-     * 
+     * <ul>
+     *   <li>1. Start Game</li>
+     *   <li>2. Settings (Volume Control)</li>
+     *   <li>3. Help</li>
+     *   <li>4. Hall of Fame</li>
+     * </ul>
+     * <p>
      * The user chooses an option by entering 1–4 or 'q' to exit the game.
      * When the user enters an invalid input, the program will prompt them to 
      * enter a valid choice.
-     * 
-     * Once a valid choice is made:
-     * - Option 1 starts the game.
-     * - Option 2 opens the volume menu.
-     * - Option 3 shows the help menu.
-     * - Option 4 shows high scores and prompts user to return to the MENU page.
+     * Once the input is validated, the corresponding method is called to proceed with the selected option.
      * 
      */
     // start menu display
@@ -315,20 +312,19 @@ public class Game {
 
     /**
      * Allows the user to choose the difficulty level for the AI game style.
-     * 
+     * <p>
      * The menu options are:
-     * 1. Easy
-     * 2. Medium
-     * 3. Difficult
-     * 
+     * <ul>
+     *   <li>1. Easy</li>
+     *   <li>2. Medium</li>
+     *   <li>3. Difficult</li>
+     *   <li>4. Back</li>
+     * </ul>
+     * <p>
      * The user chooses an option by entering 1–4.
-     * When the user enters an invalid input, the program will prompt them to enter a valid choice.
-     * 
-     * Once a valid choice is made:
-     * - Option 1 sets the game to EASY difficulty level.
-     * - Option 2 sets the game to MEDIUM difficulty level.
-     * - Option 3 sets the game to DIFFICULT difficulty level.
-     * - Option 4 directs the user back to the GAME STYLE page.
+     * When the user enters an invalid input, the program will prompt them to 
+     * enter a valid choice.
+     * Once the input is validated, the corresponding method is called to proceed with the selected option.
      * 
      */
     // choosing difficulty level for AI game style
@@ -438,18 +434,19 @@ public class Game {
 
     /**
      * Allows the user to choose the type of game styles.
-     * 
+     * <p>
      * The menu options are:
-     * 1. Local Play
-     * 2. Play vs AI
-     * 3. Play Online
-     * 4. Back
-     * 
+     * <ul>
+     *   <li>1. Local Play</li>
+     *   <li>2. Play vs AI</li>
+     *   <li>3. Play Online</li>
+     *   <li>4. Back</li>
+     * </ul>
+     * <p>
      * The user chooses an option by entering 1–4.
      * When the user enters an invalid input, the program will prompt them to 
      * enter a valid choice.
-     * The method validates the user's input and calls the corresponding method 
-     * based on the choice.
+     * Once the input is validated, the corresponding method is called to proceed with the selected option.
      * 
      */
     // choosing game style
@@ -501,17 +498,18 @@ public class Game {
 
     /**
      * Allows user to choose between Host or Client.
-     * 
+     * <p>
      * The menu options are:
-     * 1. Host
-     * 2. Join on LAN
-     * 4. Back
-     * 
+     * <ul>
+     *   <li>1. Host</li>
+     *   <li>2. Join on LAN</li>
+     *   <li>3. Back</li>
+     * </ul>
+     * <p>
      * The user chooses an option by entering 1–3.
      * When the user enters an invalid input, the program will prompt them to 
      * enter a valid choice.
-     * The method validates the user's input and calls the corresponding method 
-     * based on the choice.
+     * Once the input is validated, the corresponding method is called to proceed with the selected option.
      * 
      */
     public void multiplayerMenu() {

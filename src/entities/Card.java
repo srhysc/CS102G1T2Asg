@@ -51,7 +51,7 @@ public class Card implements Serializable{
     /**
      * Sets the value of the card.
      * 
-     * @return The value of the card
+     * @param value The value of the card
      */
     public void setValue(int value) {
         this.value = value;

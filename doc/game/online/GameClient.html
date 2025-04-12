@@ -92,30 +92,40 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">GameClient</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
-<div class="block">The GameClient class is responsible for managing the client-side logic of the online game.
- It handles connecting to the game server, sending and receiving data, and managing player interactions.
+<div class="block">The GameClient class is responsible for managing the client-side logic of the
+ online game.
+ It handles connecting to the game server, sending and receiving data, and
+ managing player interactions.
 
  Key Responsibilities:
  - Connect to the game server using the provided IP address and port.
- - Handle communication with the server, including sending player moves and receiving game updates.
- - Display game menus, announcements, and prompts to the player.
+ - Handle communication with the server, including sending player moves and
+ receiving game updates.
+ - Display game menus, announcements, and prompts from the host to the player.
  - Validate player input and ensure proper communication with the server.
 
  Key Features:
  - Supports interactive gameplay for a single player in an online game.
- - Handles server disconnections gracefully and provides feedback to the player.
- - Displays game state updates, including other players' moves and announcements.
- - Allows the player to make moves, including discarding cards during the final round.
+ - Handles server disconnections gracefully and provides feedback to the
+ player.
+ - Displays game state updates, including other players' moves and
+ announcements.
+ - Allows the player to make moves, including discarding cards during the
+ final round.
 
  Dependencies:
- - <a href="SocketPacket.html" title="class in game.online"><code>SocketPacket</code></a> – Used for communication between the client and server.
+ - <a href="SocketPacket.html" title="class in game.online"><code>SocketPacket</code></a> – Used for communication between the client and
+ server.
  - <a href="../../entities/scoring/Scoring.html" title="class in entities.scoring"><code>Scoring</code></a> – Handles input validation for card selection.
- - <a href="../GameLogic.html" title="class in game"><code>GameLogic</code></a> – Provides utility methods for game logic, such as flushing input buffers.
+ - <a href="../GameLogic.html" title="class in game"><code>GameLogic</code></a> – Provides utility methods for game logic, such as
+ flushing input buffers.
 
  Assumptions:
  - The server is running and accessible at the provided IP address and port.
  - The player provides valid input when prompted.
- - The game ends when the server sends a "Game Over" message or the connection is closed.</div>
+ - The game ends when the server sends a "Game Over" message or the connection
+ is closed.
+ - A player is only running one server on one computer</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -138,8 +148,8 @@ loadScripts(document, 'script');</script>
 <h2>Method Summary</h2>
 <div id="method-summary-table">
 <div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab1" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab1', 3)" class="table-tab">Static Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
-<div id="method-summary-table.tabpanel" role="tabpanel">
-<div class="summary-table three-column-summary" aria-labelledby="method-summary-table-tab0">
+<div id="method-summary-table.tabpanel" role="tabpanel" aria-labelledby="method-summary-table-tab0">
+<div class="summary-table three-column-summary">
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
@@ -151,7 +161,8 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#startClient()" class="member-name-link">startClient</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Starts the client-side logic for connecting to the game server and managing gameplay.</div>
+<div class="block">Starts the client-side logic for connecting to the game server and managing
+ gameplay.</div>
 </div>
 </div>
 </div>
@@ -188,17 +199,21 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="startClient()">
 <h3>startClient</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">startClient</span>()</div>
-<div class="block">Starts the client-side logic for connecting to the game server and managing gameplay.
- Handles the connection setup, communication with the server, and player interactions.
+<div class="block">Starts the client-side logic for connecting to the game server and managing
+ gameplay.
+ Handles the connection setup, communication with the server, and player
+ interactions.
 
  Responsibilities:
  - Connect to the server using the provided IP address and port.
  - Exchange player information with the server during the setup phase.
- - Process server messages and handle game events such as move requests and game-over notifications.
+ - Process server messages and handle game events such as move requests and
+ game-over notifications.
  - Validate player input and send moves to the server.
 
  Exceptions:
- - Handles <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link"><code>IOException</code></a> and <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/ClassNotFoundException.html" title="class or interface in java.lang" class="external-link"><code>ClassNotFoundException</code></a> for network communication errors.</div>
+ - Handles <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/IOException.html" title="class or interface in java.io" class="external-link"><code>IOException</code></a> and <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/ClassNotFoundException.html" title="class or interface in java.lang" class="external-link"><code>ClassNotFoundException</code></a> for network
+ communication errors.</div>
 </section>
 </li>
 <li>

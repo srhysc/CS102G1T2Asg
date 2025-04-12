@@ -78,9 +78,15 @@ public class GameServer {
             System.out.println("========================");
             System.out.println("Your host IP is " + serverIP) ;
             System.out.print("Enter your name: ");
-            String ServerPLayerName = sc.nextLine();
-            playerNames.add(ServerPLayerName);
-            multiplayerPlayerList.add(new Player(ServerPLayerName, null, null));
+            String ServerPlayerName = sc.nextLine().strip();//strip leading/trailing spaces
+
+            while (ServerPlayerName.isEmpty()) {
+                System.out.println("Name cannot be empty. Please enter a valid name:");
+                ServerPlayerName = sc.nextLine().strip();
+            }
+
+            playerNames.add(ServerPlayerName);
+            multiplayerPlayerList.add(new Player(ServerPlayerName, null, null));
 
             System.out.println("Select the number of players (2-6): ");
             int numberOfPlayers = sc.nextInt();
@@ -110,8 +116,13 @@ public class GameServer {
                         if(playerNames.contains(playerName)){ 
                             out.writeObject("That name has been taken, try again! : ");
                             out.flush();
+                        
+                        } 
+                        else if (playerName.strip().equals("")) {
+                            out.writeObject("Name cant be empty, try again! : ");
+                            out.flush();
                         }
-                        else{
+                        else {
                             out.writeObject("Success");
                             out.flush();
                             Player newPlayer = new Player(playerName, out, in);

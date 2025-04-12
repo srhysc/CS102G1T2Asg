@@ -97,13 +97,17 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">SocketPacket</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
 implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></span></div>
-<div class="block">Constructs a new SocketPacket object for communication between the server and clients.
+<div class="block">Constructs a new SocketPacket object for communication between the server and
+ clients.
 
  Parameters:
  - <code>sb</code> – A <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/StringBuilder.html" title="class or interface in java.lang" class="external-link"><code>StringBuilder</code></a> containing the message content.
- - <code>currentPlayer</code> – A <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link"><code>String</code></a> representing the name of the current player.
- - <code>messageType</code> – An integer representing the type of message (e.g., announcement, move request).
- - <code>playerList</code> – An <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/ArrayList.html" title="class or interface in java.util" class="external-link"><code>ArrayList</code></a> of <a href="../../entities/Player.html" title="class in entities"><code>Player</code></a> objects representing the players in the game.</div>
+ - <code>currentPlayer</code> – A <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link"><code>String</code></a> representing the name of the
+ current player.
+ - <code>messageType</code> – An integer representing the type of message (e.g.,
+ announcement, move request).
+ - <code>playerList</code> – An <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/ArrayList.html" title="class or interface in java.util" class="external-link"><code>ArrayList</code></a> of <a href="../../entities/Player.html" title="class in entities"><code>Player</code></a> objects
+ representing the players in the game.</div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -164,8 +168,8 @@ implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base
 <h2>Method Summary</h2>
 <div id="method-summary-table">
 <div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
-<div id="method-summary-table.tabpanel" role="tabpanel">
-<div class="summary-table three-column-summary" aria-labelledby="method-summary-table-tab0">
+<div id="method-summary-table.tabpanel" role="tabpanel" aria-labelledby="method-summary-table-tab0">
+<div class="summary-table three-column-summary">
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
@@ -323,7 +327,8 @@ implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base
 <div class="block">Updates the name of the current player associated with the SocketPacket.
 
  Parameters:
- - <code>currentPlayer</code> – A <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link"><code>String</code></a> representing the new current player name.</div>
+ - <code>currentPlayer</code> – A <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link"><code>String</code></a> representing the new current
+ player name.</div>
 </section>
 </li>
 <li>
@@ -333,7 +338,8 @@ implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base
 <div class="block">Retrieves the type of message stored in the SocketPacket.
 
  Returns:
- - An integer representing the message type (e.g., 0 for announcement, 1 for move request).</div>
+ - An integer representing the message type (e.g., 0 for announcement, 1 for
+ move request).</div>
 </section>
 </li>
 <li>
@@ -353,7 +359,8 @@ implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base
 <div class="block">Retrieves the list of players associated with the SocketPacket.
 
  Returns:
- - An <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/ArrayList.html" title="class or interface in java.util" class="external-link"><code>ArrayList</code></a> of <a href="../../entities/Player.html" title="class in entities"><code>Player</code></a> objects representing the players in the game.</div>
+ - An <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/ArrayList.html" title="class or interface in java.util" class="external-link"><code>ArrayList</code></a> of <a href="../../entities/Player.html" title="class in entities"><code>Player</code></a> objects representing the players in
+ the game.</div>
 </section>
 </li>
 <li>
@@ -363,10 +370,12 @@ implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base
 <div class="block">Retrieves a player object from the player list by their name.
 
  Parameters:
- - <code>name</code> – A <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link"><code>String</code></a> representing the name of the player to retrieve.
+ - <code>name</code> – A <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link"><code>String</code></a> representing the name of the player to
+ retrieve.
 
  Returns:
- - A <a href="../../entities/Player.html" title="class in entities"><code>Player</code></a> object matching the given name, or <code>null</code> if no player with the name is found.</div>
+ - A <a href="../../entities/Player.html" title="class in entities"><code>Player</code></a> object matching the given name, or <code>null</code> if no
+ player with the name is found.</div>
 </section>
 </li>
 <li>
@@ -376,7 +385,8 @@ implements <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base
 <div class="block">Updates the list of players associated with the SocketPacket.
 
  Parameters:
- - <code>playerList</code> – An <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/ArrayList.html" title="class or interface in java.util" class="external-link"><code>ArrayList</code></a> of <a href="../../entities/Player.html" title="class in entities"><code>Player</code></a> objects representing the new player list.</div>
+ - <code>playerList</code> – An <a href="https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/ArrayList.html" title="class or interface in java.util" class="external-link"><code>ArrayList</code></a> of <a href="../../entities/Player.html" title="class in entities"><code>Player</code></a> objects
+ representing the new player list.</div>
 </section>
 </li>
 </ul>

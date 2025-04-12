@@ -92,7 +92,7 @@ public class Game {
                 System.out.print("Enter your choice (1-4) or press q to quit: ");
                 userInput = sc.nextLine();
                 if (userInput.equals("q")) {
-                    break;
+                    System.exit(0);
                 } else {
                     userChoice = Integer.parseInt(userInput);
                     if (userChoice < 1 || userChoice > 4) {

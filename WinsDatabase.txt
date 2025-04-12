@@ -13,3 +13,4 @@ Player: joran, Wins: 1
 Player: ok1, Wins: 1
 Player: jordan, Wins: 5
 Player: Hayyun, Wins: 1
+Player: A , Wins: 1

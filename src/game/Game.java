@@ -31,7 +31,7 @@ public class Game {
     /**
      * Constructs a game.
      *
-     * @param playList The list of players playing the game
+     * @param playerList The list of players playing the game
      */
     public Game(ArrayList<Player> playerList) {
         Game.playerList = playerList;
@@ -44,7 +44,7 @@ public class Game {
     /**
      * Checks if there are a total of 2 players playing the game.
      *
-     * @returns True if are only 2 players, false otherwise
+     * @return True if are only 2 players, false otherwise
      */
     public boolean isTwoPlayerGame() {
         return isTwoPlayerGame;

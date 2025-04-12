@@ -14,12 +14,12 @@ import game.GameLogic;
 import game.TurnManager;
 
 /**
- * The OnlineGameLogic class contains the core game logic for managing an online multiplayer game.
+ * The OnlineGameLogic class manages the core game logic for an online multiplayer game.
  * It handles player turns, game state updates, and communication between the server and clients.
  *
  * Key Responsibilities:
  * - Manage the flow of the game, including player turns and game-ending conditions.
- * - Handle player disconnections gracefully and adjust the game state accordingly.
+ * - Handle player disconnections and adjust the game state accordingly.
  * - Broadcast game updates and messages to all connected players.
  * - Validate and process player inputs, both local and remote.
  *
@@ -35,20 +35,11 @@ import game.TurnManager;
  * - {@link TurnManager} – Manages the turn order of players.
  * - {@link Parade} – Handles the parade row and card removal logic.
  * - {@link Scoring} – Calculates scores and determines the winner.
- * - {@link SocketPacket} – Used for communication between the server and clients.
+ * - {@link SocketPacket} – Facilitates communication between the server and clients.
  *
  * Assumptions:
  * - The server is running and all players are connected before the game starts.
  * - The game ends when all non-host players disconnect or the game logic concludes.
- *
- * Utility Methods:
- * - {@code playOnlineTurn} – Manages the main game loop for online gameplay.
- * - {@code onlineLastRound} – Handles the logic for the final round of the game.
- * - {@code endGameOnline} – Processes the endgame logic, including discarding cards and scoring.
- * - {@code broadcastToAll} – Sends messages or updates to all connected players.
- * - {@code flushInputBuffer} – Clears any unwanted input from the buffer.
- * - {@code handlePlayerDisconnection} – Handles the removal of disconnected players and adjusts the game state.
- * - {@code buildMenuMessage} – Constructs the menu message displayed to players during their turn.
  */
 
 public class OnlineGameLogic {
@@ -58,15 +49,16 @@ public class OnlineGameLogic {
 
 
     /**
-     * Retrieves the server's IP address for clients to connect.
-     * Iterates through the network interfaces to find the first active IPv4 address.
+     * Manages the main game loop for online multiplayer gameplay.
+     * Handles player turns, game state updates, and game-ending conditions.
      *
-     * Returns:
-     * - A {@link String} representing the server's IP address.
-     * - If no valid IP address is found, returns "Unable to determine IP address".
-     *
-     * Exceptions:
-     * - Handles {@link SocketException} for network interface errors.
+     * @param deck           The {@link Deck} object representing the deck of cards used in the game.
+     * @param playerList     A list of {@link Player} objects representing the players in the game.
+     * @param turnManager    The {@link TurnManager} object managing the turn order.
+     * @param isTwoPlayerGame A boolean indicating whether the game is a two-player game.
+     * @param outputs        A list of {@link ObjectOutputStream} objects for sending data to clients.
+     * @param inputs         A list of {@link ObjectInputStream} objects for receiving data from clients.
+     * @param sc             A {@link Scanner} object for reading user input.
      */
     public static void playOnlineTurn(Deck deck, ArrayList<Player> playerList, TurnManager turnManager,
             boolean isTwoPlayerGame, List<ObjectOutputStream> outputs, List<ObjectInputStream> inputs, Scanner sc) {
@@ -84,58 +76,56 @@ public class OnlineGameLogic {
             boolean hasAllColours = false;
             String firstPlayerWithAllColours = null;
             Player currentPlayer = playerList.get(turnManager.getCurrentPlayer());
-           
-            while (!GameServer.playersSockets.isEmpty()) {
 
+            //Main game loop
+            while (!GameServer.playersSockets.isEmpty()) {
                 try { // to manage player disconnects
 
-                    //Ensure that on the new turn there are cards in the deck 
+                    //Loop while there are cards in the deck 
                     while (!deck.isEmpty()) {
                         clearConsole();
                         StringBuilder menuMessage = new StringBuilder();
 
-                        //display menu message to all
+                        //Broadcast the current game state to all
                         menuMessage = buildMenuMessage(deck, currentPlayer);
                         SocketPacket sp = new SocketPacket(menuMessage, currentPlayer.getName(), 1, playerList);
                         broadcastToAll(playerList, sp);
 
 
-                        //player input
+                        //Handle the current players input
                         if (currentPlayer.getInputSteam() == null) {
-                            
-                            moveIndex = getValidMoveIndex(sc, currentPlayer);  //get local player move 
+                            moveIndex = getValidMoveIndex(sc, currentPlayer);  //Get local player input
 
-                            //send movement announcement to all
+                            //broadcast movement announcement to all
                             sp = new SocketPacket(
                                 new StringBuilder("Player " + currentPlayer.getName() + " made the move " + moveIndex),
                                 currentPlayer.getName(),
                                 0,
                                 playerList
                             );
-
                             broadcastToAll(playerList, sp);
 
-
                         } else {
-                            SocketPacket moveResponse = (SocketPacket) currentPlayer.getInputSteam().readObject();  //wait and read online game input
-
+                            //remote player input 
+                            SocketPacket moveResponse = (SocketPacket) currentPlayer.getInputSteam().readObject();  
                             flushInputBuffer();  //prevent accidental input values
 
                             // broadcast player move
                             if (moveResponse.getMessageType() == 2) {
                                 moveIndex = Integer.parseInt(moveResponse.getSb().toString());
-                                
                             }
 
                         }
 
-                        // recieve move and play
+                        //Process players move
                         Card playedCard = currentPlayer.playCard(moveIndex);
                         ArrayList<Card> takenCards = new ArrayList<>(Parade.removeCards(playedCard));
                         Parade.addCard(playedCard);
 
-                        // Resolve parade rules
+                        // Resolve parade rules and update the collected cards
                         currentPlayer.addToCollected(takenCards);
+
+                        //Broadcast the move made
                         sp = new SocketPacket(
                                 new StringBuilder("Player " + currentPlayer.getName() + " took " + takenCards),
                                 currentPlayer.getName(), 0, playerList);
@@ -144,25 +134,8 @@ public class OnlineGameLogic {
                         // Draw a new card
                         currentPlayer.addToHand(deck.drawCard());
 
-                        //check for game ending situations 
-                        for (Player player : playerList) {
-                            if (player.checkColours()) {
-                                hasAllColours = true;
-                                firstPlayerWithAllColours = player.getName();
-                                break;
-                            }
-                        }
-                        if (hasAllColours) {
-
-                            StringBuilder lastRoundAnnouncement = new StringBuilder();
-                            lastRoundAnnouncement.append(
-                                    "\n\n " + firstPlayerWithAllColours + " has all 6 colours \n Commencing last round \n");
-                            SocketPacket lastRoundPacket = new SocketPacket(lastRoundAnnouncement, currentPlayer.getName(),
-                                    0, playerList);
-                            broadcastToAll(playerList, lastRoundPacket);
-
-                            // Next player's turn
-                            turnManager.nextTurn();
+                        //Check if any end game conditions are met
+                        if (checkGameEndingConditions(hasAllColours, firstPlayerWithAllColours, turnManager, playerList, currentPlayer)){
                             break;
                         }
 
@@ -195,32 +168,39 @@ public class OnlineGameLogic {
 
         
         /**
-         * Handles the logic for the final round of the game in an online multiplayer environment.
+         * Handles the logic for the final round of the game in an online multiplayer
+         * environment.
          * Ensures all players take their final turns and resolves the game state.
          *
          * Responsibilities:
          * - Broadcast final round announcements and updates to all players.
          * - Process player moves during the final round.
-         * - Handle player disconnections gracefully and adjust the game state accordingly.
+         * - Handle player disconnections gracefully and adjust the game state
+         * accordingly.
          *
-         * Parameters:
-         * - {@code deck} – The {@link Deck} object representing the deck of cards used in the game.
-         * - {@code playerList} – A list of {@link Player} objects representing the players in the game.
-         * - {@code turnManager} – The {@link TurnManager} object managing the turn order.
-         * - {@code isTwoPlayerGame} – A boolean indicating whether the game is a two-player game.
-         * - {@code outputs} – A list of {@link ObjectOutputStream} objects for sending data to clients.
-         * - {@code inputs} – A list of {@link ObjectInputStream} objects for receiving data from clients.
-         * - {@code sc} – A {@link Scanner} object for reading user input.
-         *
-         * Exceptions:
-         * - Handles {@link IOException} and {@link ClassNotFoundException} for network communication errors.
+         * @param deck            The {@link Deck} object representing the deck of cards
+         *                        used in the game.
+         * @param playerList      A list of {@link Player} objects representing the
+         *                        players in the game.
+         * @param turnManager     The {@link TurnManager} object managing the turn
+         *                        order.
+         * @param isTwoPlayerGame A boolean indicating whether the game is a two-player
+         *                        game.
+         * @param outputs         A list of {@link ObjectOutputStream} objects for
+         *                        sending data to clients.
+         * @param inputs          A list of {@link ObjectInputStream} objects for
+         *                        receiving data from clients.
+         * @param sc              A {@link Scanner} object for reading user input.
+         * @throws IOException            If a network communication error occurs.
+         * @throws ClassNotFoundException If an error occurs while reading player data.
          */
         public static void onlineLastRound(Deck deck, ArrayList<Player> playerList, TurnManager turnManager,
                 boolean isTwoPlayerGame,
                 List<ObjectOutputStream> outputs, List<ObjectInputStream> inputs, Scanner sc)
                 throws IOException, ClassNotFoundException {
             Player currentPlayer = playerList.get(turnManager.getCurrentPlayer());
-
+                    
+            //Loop through the final round
             while (!GameServer.playersSockets.isEmpty()) {
                 try {
                     
@@ -229,8 +209,6 @@ public class OnlineGameLogic {
 
                         // build final move request
                         StringBuilder moveRequest = new StringBuilder();
-                        
-                        
                         moveRequest.append("\n " + colourRed + "Final Round!!" + reset + "\n");
                         moveRequest.append(buildMenuMessage(deck, currentPlayer).toString());
 
@@ -240,42 +218,34 @@ public class OnlineGameLogic {
 
 
                         int moveIndex = 0;
-                        // handle input
-                        // if current player is the local host
+                        
+                        //Handle input for current player
                         if (currentPlayer.getInputSteam() == null) {
-
+                            //local player input
                             moveIndex = getValidMoveIndex(sc, currentPlayer);
 
-
                         } else {
-
-                            // online player
+                            // remote player input
                             SocketPacket moveResponse = (SocketPacket) currentPlayer.getInputSteam().readObject();
-
                             flushInputBuffer();
                             
-                            // read the move
+                            // validate and process the move
                             if (moveResponse.getMessageType() == 2) {
-
-                                // input validation was done in the client side
                                 moveIndex = Integer.parseInt(moveResponse.getSb().toString());
-
-
-                                
-
-                                
                             }
 
                         }
 
+                        //Process the move
                         Card playedCard = currentPlayer.playCard(moveIndex);
                         ArrayList<Card> takenCards = new ArrayList<>(Parade.removeCards(playedCard));
                         Parade.addCard(playedCard);
+
                         // Resolve parade rules
                         currentPlayer.addToCollected(takenCards);
-                        System.out.println("You took: " + takenCards);
+                        
 
-
+                        //broadcast the cards taken by the player
                         String takenCardsString = takenCards.stream().
                                                             map(card -> card.toString()).
                                                             collect(Collectors.joining(", "));
@@ -295,7 +265,7 @@ public class OnlineGameLogic {
 
                     }
 
-                    // break when all turns played and go to end round
+                    //End the final round and proceed to the end game
                     break;
                 } // manage player disconnects
                 catch (IOException | ClassNotFoundException e) {
@@ -327,27 +297,24 @@ public class OnlineGameLogic {
          * - Handle player disconnections gracefully and adjust the game state accordingly.
          * - Transition back to the main menu after the game concludes.
          *
-         * Parameters:
-         * - {@code playerList} – A list of {@link Player} objects representing the players in the game.
-         * - {@code isTwoPlayerGame} – A boolean indicating whether the game is a two-player game.
-         * - {@code turnManager} – The {@link TurnManager} object managing the turn order.
-         * - {@code outputs} – A list of {@link ObjectOutputStream} objects for sending data to clients.
-         * - {@code inputs} – A list of {@link ObjectInputStream} objects for receiving data from clients.
-         * - {@code sc} – A {@link Scanner} object for reading user input.
-         *
-         * Exceptions:
-         * - Handles {@link IOException} and {@link ClassNotFoundException} for network communication errors.
+         * @param playerList     A list of {@link Player} objects representing the players in the game.
+         * @param isTwoPlayerGame A boolean indicating whether the game is a two-player game.
+         * @param turnManager    The {@link TurnManager} object managing the turn order.
+         * @param outputs        A list of {@link ObjectOutputStream} objects for sending data to clients.
+         * @param inputs         A list of {@link ObjectInputStream} objects for receiving data from clients.
+         * @param sc             A {@link Scanner} object for reading user input.
+         * @throws IOException            If a network communication error occurs.
+         * @throws ClassNotFoundException If an error occurs while reading player data.
          */
         public static void endGameOnline(ArrayList<Player> playerList, boolean isTwoPlayerGame, TurnManager turnManager,
                 List<ObjectOutputStream> outputs, List<ObjectInputStream> inputs , Scanner sc)
                 throws IOException, ClassNotFoundException {
 
-            
-
             // build move request string
             StringBuilder sb = new StringBuilder();
             Player currentPlayer = playerList.get(turnManager.getCurrentPlayer());
-
+            
+            //End game loop
             while (true) {
                 try {
                     // last round but structured for socket lan game
@@ -355,9 +322,7 @@ public class OnlineGameLogic {
                         currentPlayer = playerList.get(turnManager.getCurrentPlayer());
 
                         sb = new StringBuilder();
-
                         clearConsole();
-
                         sb.append("\n" + currentPlayer.getName() + ", here are the cards in hand: \n");
 
                         ArrayList<Card> hand = currentPlayer.getHand();
@@ -370,11 +335,10 @@ public class OnlineGameLogic {
                         SocketPacket sp = new SocketPacket(sb, currentPlayer.getName(), 4, playerList);
                         broadcastToAll(playerList, sp);
 
-                        if (currentPlayer.getInputSteam() == null) {
+                        if (currentPlayer.getInputSteam() == null) { //local player
                             System.out.println("Please discard 2 cards");
 
                             while (true) {
-
                                 int firstCardIndex = Scoring.getValidCardIndex(sc, hand.size(),
                                         "Choose the number of the 1st card to discard: ");
                                 int secondCardIndex = Scoring.getValidCardIndex(sc, hand.size(),
@@ -398,10 +362,9 @@ public class OnlineGameLogic {
                                 }
                             }
 
-                        } else {
+                        } else { //remote player
 
-                           
-                            // this move reply should be in the form of "1,2"
+                            // The move reply comes in the form of "1,2"
                             SocketPacket moveResponse = (SocketPacket) currentPlayer.getInputSteam().readObject();
 
                             clearConsole();
@@ -462,17 +425,12 @@ public class OnlineGameLogic {
      * Sends messages or updates to all connected players in the game.
      * Ensures that all players receive the same game state and announcements.
      *
-     * Parameters:
-     * - {@code playerList} – A list of {@link Player} objects representing the players in the game.
-     * - {@code sp} – A {@link SocketPacket} object containing the message or update to broadcast.
-     *
-     * Exceptions:
-     * - Handles {@link IOException} for network communication errors.
+     * @param playerList A list of {@link Player} objects representing the players in the game.
+     * @param sp         A {@link SocketPacket} object containing the message or update to broadcast.
+     * @throws IOException If a network communication error occurs.
      */
     public static void broadcastToAll(ArrayList<Player> playerList, SocketPacket sp) throws IOException {
         // broadcast move to all players
-
-
         for (Player player : playerList) {
             if (player.getOutputSteam() != null) {
                 ObjectOutputStream o = player.getOutputSteam();
@@ -502,7 +460,7 @@ public class OnlineGameLogic {
                             System.out.println("====================");
                             System.out.println("[Waiting for " + sp.getCurrentPlayer() + "'s Move]");
                         }
-                        else{
+                        else {
                             System.out.println("====================");
                             System.out.println("[Your Move]");
                             System.err.println(sp.getSb().toString());
@@ -510,9 +468,6 @@ public class OnlineGameLogic {
                         break;
                 }
 
-               
-                
-                
             }
         }
     }
@@ -542,15 +497,12 @@ public class OnlineGameLogic {
      * Handles the removal of disconnected players and adjusts the game state accordingly.
      * Ensures that the game continues with the remaining players or ends if all players disconnect.
      *
-     * Parameters:
-     * - {@code currentPlayer} – The {@link Player} object representing the disconnected player.
-     * - {@code playerList} – A list of {@link Player} objects representing the players in the game.
-     * - {@code outputs} – A list of {@link ObjectOutputStream} objects for sending data to clients.
-     * - {@code inputs} – A list of {@link ObjectInputStream} objects for receiving data from clients.
-     *
-     * Returns:
-     * - {@code true} if the game should continue with the remaining players.
-     * - {@code false} if all players have disconnected and the game should end.
+     * @param currentPlayer The {@link Player} object representing the disconnected player.
+     * @param playerList    A list of {@link Player} objects representing the players in the game.
+     * @param outputs       A list of {@link ObjectOutputStream} objects for sending data to clients.
+     * @param inputs        A list of {@link ObjectInputStream} objects for receiving data from clients.
+     * @return {@code true} if the game should continue with the remaining players.
+     *         {@code false} if all players have disconnected and the game should end.
      */
     private static boolean handlePlayerDisconnection(Player currentPlayer, ArrayList<Player> playerList, List<ObjectOutputStream> outputs, List<ObjectInputStream> inputs){
 
@@ -580,12 +532,9 @@ public class OnlineGameLogic {
      * Constructs the menu message displayed to players during their turn.
      * Includes information about the deck, parade, current player, collected cards, and hand.
      *
-     * Parameters:
-     * - {@code deck} – The {@link Deck} object representing the deck of cards used in the game.
-     * - {@code currentPlayer} – The {@link Player} object representing the current player.
-     *
-     * Returns:
-     * - A {@link StringBuilder} object containing the constructed menu message.
+     * @param deck          The {@link Deck} object representing the deck of cards used in the game.
+     * @param currentPlayer The {@link Player} object representing the current player.
+     * @return A {@link StringBuilder} object containing the constructed menu message.
      */
     private static StringBuilder buildMenuMessage(Deck deck, Player currentPlayer) {
         StringBuilder menuMessage = new StringBuilder();
@@ -601,18 +550,14 @@ public class OnlineGameLogic {
     }
 
     /**
-    * Validates the player's input for selecting a card during their turn.
-    * Ensures that the input is a valid card index within the player's hand.
-    *
-    * Parameters:
-    * - {@code input} – The player's input as a {@link String}.
-    * - {@code currentPlayer} – The {@link Player} object representing the current player.
-    *
-    * Returns:
-    * - {@code true} if the input is valid.
-    * - {@code false} if the input is invalid.
-    */
-    private static boolean validateGameInput(String input, Player currentPlayer){
+     * Validates the player's input for selecting a card during their turn.
+     * Ensures that the input is a valid card index within the player's hand.
+     *
+     * @param input         The player's input as a {@link String}.
+     * @param currentPlayer The {@link Player} object representing the current player.
+     * @return {@code true} if the input is valid, {@code false} otherwise.
+     */
+    private static boolean validateGameInput(String input, Player currentPlayer) {
         int moveIndex = 0;
         Objects.requireNonNullElse(input, -1);
         try {
@@ -626,7 +571,7 @@ public class OnlineGameLogic {
             }
         } catch (NumberFormatException | InputMismatchException e) {// user puts in alphabetical
             System.out.println("Invalid card number! Please choose again");
-            return false; 
+            return false;
         }
     }
 
@@ -634,12 +579,9 @@ public class OnlineGameLogic {
      * Prompts the player to enter a valid move index and validates the input.
      * Repeats the prompt until a valid input is provided.
      *
-     * Parameters:
-     * - {@code sc} – A {@link Scanner} object for reading user input.
-     * - {@code currentPlayer} – The {@link Player} object representing the current player.
-     *
-     * Returns:
-     * - An integer representing the valid move index.
+     * @param sc            A {@link Scanner} object for reading user input.
+     * @param currentPlayer The {@link Player} object representing the current player.
+     * @return An integer representing the valid move index.
      */
     private static int getValidMoveIndex(Scanner sc, Player currentPlayer){
         while (true) {
@@ -666,5 +608,43 @@ public class OnlineGameLogic {
         System.out.flush();
     }
 
+    /**
+     * Checks if any player has met the game-ending conditions (e.g., collected all colors).
+     * Broadcasts the start of the last round if conditions are met.
+     *
+     * @param hasAllColours           A boolean indicating if any player has all colors.
+     * @param firstPlayerWithAllColours The name of the first player to collect all colors.
+     * @param turnManager             The {@link TurnManager} object managing the turn order.
+     * @param playerList              A list of {@link Player} objects representing the players in the game.
+     * @param currentPlayer           The {@link Player} object representing the current player.
+     * @return {@code true} if the game-ending conditions are met, {@code false} otherwise.
+     * @throws IOException If a network communication error occurs.
+     */
+    private static boolean checkGameEndingConditions(boolean hasAllColours, String firstPlayerWithAllColours, TurnManager turnManager,
+                                                    ArrayList<Player> playerList, Player currentPlayer) throws IOException{
+        //check for game ending situations 
+        for (Player player : playerList) {
+            if (player.checkColours()) {
+                hasAllColours = true;
+                firstPlayerWithAllColours = player.getName();
+                return true;
+            }
+        }
+        if (hasAllColours) {
+
+            StringBuilder lastRoundAnnouncement = new StringBuilder();
+            lastRoundAnnouncement.append(
+                    "\n\n " + firstPlayerWithAllColours + " has all 6 colours \n Commencing last round \n");
+            SocketPacket lastRoundPacket = new SocketPacket(lastRoundAnnouncement, currentPlayer.getName(),
+                    0, playerList);
+            broadcastToAll(playerList, lastRoundPacket);
+
+            // Next player's turn
+            turnManager.nextTurn();
+            return true;
+        }
+
+        return false; //if all is good continue
+    }
     
 }

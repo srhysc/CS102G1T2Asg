@@ -7,6 +7,7 @@ import java.util.*;
  * take cards from based on the card played.
  */
 public class Parade {
+    
     public static ArrayList<Card> paradeRow = new ArrayList<>();
 
     // public Parade(ArrayArrayList<Card> paradeList) {

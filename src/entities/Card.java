@@ -18,7 +18,11 @@ public class Card implements Serializable{
     private boolean faceDown;
     private String colorCode = "\u001B[0m";
     
-
+    /**
+     * Create a Card with a specific colour and value.
+     * @param color The colour of the card
+     * @param value The value of the card
+     */
     public Card(String color, int value) {
         this.colour = color.trim();
         this.value = value;

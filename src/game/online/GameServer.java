@@ -37,6 +37,7 @@ import java.util.*;
 public class GameServer {
     
     private static final int PORT = 1234;
+    private static final int TIMEOUT = 500;
     public static List<Socket> playersSockets = new ArrayList<>();
     ArrayList<String> playerNames = new ArrayList<>();
     ArrayList<Player> multiplayerPlayerList = new ArrayList<>();
@@ -50,102 +51,15 @@ public class GameServer {
      * Starts the server-side logic for the online game.
      * Handles the initialization of the server, player connections, and game setup.
      *
-     * Responsibilities:
-     * - Bind the server to a specific port and display the server's IP address.
-     * - Accept incoming client connections and manage player sockets.
-     * - Set up the game lobby, including player name validation and displaying the lobby status.
-     * - Initialize the game logic and manage the transition to gameplay.
-     *
-     * Parameters:
-     * - {@code deck} – The {@link Deck} object representing the deck of cards used in the game.
-     *
-     * Exceptions:
-     * - Handles {@link IOException} and {@link ClassNotFoundException} for network communication errors.
+     * @param deck The {@link Deck} object representing the deck of cards used in the game.
      */
     public void startServer(Deck deck){
         Scanner sc = new Scanner(System.in);
         try {
 
-            serverSocket = new ServerSocket(PORT);
-            String serverIP = getServerIPAddress();
-            System.out.println("Server started on port " + serverSocket.getLocalPort());
-
-           
-            
-
-            System.out.println("========================");
-            System.out.println("     Set up Server      ");
-            System.out.println("========================");
-            System.out.println("Your host IP is " + serverIP) ;
-            System.out.print("Enter your name: ");
-            String ServerPlayerName = sc.nextLine().strip();//strip leading/trailing spaces
-
-            while (ServerPlayerName.isEmpty()) {
-                System.out.println("Name cannot be empty. Please enter a valid name:");
-                ServerPlayerName = sc.nextLine().strip();
-            }
-
-            playerNames.add(ServerPlayerName);
-            multiplayerPlayerList.add(new Player(ServerPlayerName, null, null));
-
-            System.out.println("Select the number of players (2-6): ");
-            int numberOfPlayers = sc.nextInt();
-            sc.nextLine();
-
-            //menu for server
-            clearConsole();
-            displayLobby(multiplayerPlayerList, sc, serverIP, numberOfPlayers);
-
-            Boolean confirmLobby = false;
-
-            while(numberOfPlayers != multiplayerPlayerList.size()){
-                try {
-                    // Accept new client connections
-                    serverSocket.setSoTimeout(500); // Set a timeout to avoid blocking
-                    Socket clientSocket = serverSocket.accept();
-                    ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
-                    ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
-            
-                    // Ask for the new player's name
-                    out.writeObject("Successful Connection! Please Enter your name:");
-                    out.flush();
-                    
-                    while(true){
-                        String playerName = (String) in.readObject();
-
-                        if(playerNames.contains(playerName)){ 
-                            out.writeObject("That name has been taken, try again! : ");
-                            out.flush();
-                        
-                        } 
-                        else if (playerName.strip().equals("")) {
-                            out.writeObject("Name cant be empty, try again! : ");
-                            out.flush();
-                        }
-                        else {
-                            out.writeObject("Success");
-                            out.flush();
-                            Player newPlayer = new Player(playerName, out, in);
-                            playerNames.add(playerName);
-
-                            // Add the new player to the list
-                            multiplayerPlayerList.add(newPlayer);
-                            playersSockets.add(clientSocket);
-                            outputs.add(out);
-                            inputs.add(in);
-                            break;
-                        }
-                    }
-                
-                } catch (SocketTimeoutException e) {
-                    // No new connections, continue to check for server input
-                }
-
-                // Update the lobby display and ask for confirmation
-                clearConsole();
-                confirmLobby = displayLobby(multiplayerPlayerList, sc, serverIP,numberOfPlayers);
-            }
-                
+            String serverIP = initalizeServer();
+            String ServerPlayerName = setupHostPlayer(sc);
+            int numberOfPlayers = setupLobby(sc, ServerPlayerName, serverIP);   
 
         } 
         catch (IOException | ClassNotFoundException e) {
@@ -185,7 +99,7 @@ public class GameServer {
      * - {@code maxSize} – The maximum number of players allowed in the game.
      *
      * Returns:
-     * - {@code true} if the lobby is successfully displayed.
+     * - @return {@code true} if the lobby is successfully displayed.
      */
     private static boolean displayLobby(ArrayList<Player> playerList, Scanner sc, String ipAddress, int maxSize) {
         System.out.println("========================");
@@ -245,5 +159,114 @@ public class GameServer {
         return "Unable to determine IP address";
     }
 
+    /**
+     * Initializes the server by binding it to a port and displaying the server's IP address.
+     *
+     * @return The server's IP address as a {@link String}.
+     * @throws IOException If an error occurs while creating the server socket.
+     */
+    private String initalizeServer() throws IOException{
+        serverSocket = new ServerSocket(PORT);
+        String serverIP = getServerIPAddress();
+        System.out.println("Server started on port " + serverSocket.getLocalPort());
+        System.out.println("========================");
+        System.out.println("     Set up Server      ");
+        System.out.println("========================");
+        System.out.println("Your host IP is " + serverIP) ;
+
+        return serverIP;
+    }
     
+    /**
+     * Prompts the host player to enter their name and validates it.
+     *
+     * @param sc The {@link Scanner} object for reading user input.
+     * @return The validated host player's name as a {@link String}.
+     */
+    private String setupHostPlayer(Scanner sc){
+        System.out.print("Enter your name: ");
+        String ServerPlayerName = sc.nextLine().strip();//strip leading/trailing spaces
+
+        while (ServerPlayerName.isEmpty()) {
+            System.out.println("Name cannot be empty. Please enter a valid name:");
+            ServerPlayerName = sc.nextLine().strip();
+        }
+
+        playerNames.add(ServerPlayerName);
+        multiplayerPlayerList.add(new Player(ServerPlayerName, null, null));
+        return ServerPlayerName;
+    }
+
+    /**
+     * Sets up the game lobby by managing player connections and validating player names.
+     *
+     * @param sc            The {@link Scanner} object for reading user input.
+     * @param hostPlayerName The name of the host player.
+     * @param serverIP      The server's IP address.
+     * @return The number of players in the game.
+     * @throws IOException If an error occurs while managing player connections.
+     * @throws ClassNotFoundException If an error occurs while reading player data.
+     */
+    private int setupLobby(Scanner sc, String hostPLayerName, String serverIP) throws IOException, ClassNotFoundException{
+        System.out.println("Select the number of players (2-6): ");
+        int numberOfPlayers = sc.nextInt();
+        sc.nextLine();
+
+        //menu for server
+        clearConsole();
+        displayLobby(multiplayerPlayerList, sc, serverIP, numberOfPlayers);
+
+        boolean confirmLobby = false;
+
+        while(numberOfPlayers != multiplayerPlayerList.size()){
+            try {
+                // Accept new client connections
+                serverSocket.setSoTimeout(TIMEOUT); // Set a timeout to avoid blocking
+                Socket clientSocket = serverSocket.accept();
+                ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
+                ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
+        
+                // Ask for the new player's name
+                out.writeObject("Successful Connection! Please Enter your name:");
+                out.flush();
+                
+                while(true){
+                    String playerName = (String) in.readObject();
+
+                    if(playerNames.contains(playerName)){ 
+                        out.writeObject("That name has been taken, try again! : ");
+                        out.flush();
+                    
+                    } 
+                    else if (playerName.strip().equals("")) {
+                        out.writeObject("Name cant be empty, try again! : ");
+                        out.flush();
+                    }
+                    else {
+                        out.writeObject("Success");
+                        out.flush();
+                        Player newPlayer = new Player(playerName, out, in);
+                        playerNames.add(playerName);
+
+                        // Add the new player to the list
+                        multiplayerPlayerList.add(newPlayer);
+                        playersSockets.add(clientSocket);
+                        outputs.add(out);
+                        inputs.add(in);
+                        break;
+                    }
+                }
+            
+            } catch (SocketTimeoutException e) {
+                // No new connections, continue to check for server input
+            }
+
+            // Update the lobby display and ask for confirmation
+            clearConsole();
+            confirmLobby = displayLobby(multiplayerPlayerList, sc, serverIP,numberOfPlayers);
+        }
+
+
+        return numberOfPlayers;
+    }
 }

@@ -27,7 +27,6 @@ public class Game {
     private Difficulty difficulty;
     private boolean isTwoPlayerGame;
     private HighScoreDatabase highScore = new HighScoreDatabase();
-
     /**
      * Constructs a game.
      *
@@ -151,11 +150,6 @@ public class Game {
                 - 66 cards in 6 colors (11 cards per color).
                 - Each color has cards numbered from 0 to 10.
 
-                Gamemodes:
-                - Player vs Computer (3 Varying Difficulties)
-                - Player vs Player (Local Play)
-                - Player vs Player (Online Play)
-
                 Setup:
                 1. Shuffle all cards.
                 2. Deal 5 cards to each player (hand cards).
@@ -164,7 +158,7 @@ public class Game {
 
                 Gameplay (On Your Turn):
                 1. Play 1 card from your hand to the end of the parade line.
-                2. Count how many cards are in the parade line before your played card. Let's say it's X.
+                2. Count how many cards are in the parade line before your played card. Let’s say it’s X.
                 3. From the X cards before the played card, check if any must be taken:
                    - A card must be taken if:
                      - Its color matches the played card, or
@@ -186,7 +180,8 @@ public class Game {
                 3. Add up all points across all colors.
                 4. Lowest score wins.
 
-                If you are up for a challenge (Hint Hint), look out for the Easter Eggs!
+                Optional (2-player game):
+                - Remove one color before starting.
                 """;
 
         System.out.println(instructions);
@@ -457,6 +452,8 @@ public class Game {
      * 
      * @param audioFile The music to be played
      */
+
+
 
     /**
      * Allows user to choose between Host or Client.

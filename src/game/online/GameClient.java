@@ -1,5 +1,4 @@
 package game.online;
-
 import entities.Card;
 import entities.scoring.Scoring;
 import game.GameLogic;
@@ -11,10 +10,8 @@ import java.net.*;
 import java.util.*;
 
 /**
- * The GameClient class is responsible for managing the client-side logic of the
- * online game.
- * It handles connecting to the game server, sending and receiving data, and
- * managing player interactions.
+ * The GameClient class is responsible for managing the client-side logic of the online game.
+ * It handles connecting to the game server, sending and receiving data, and managing player interactions.
  *
  * Key Responsibilities:
  * - Connect to the game server using the provided IP address and port.
@@ -25,19 +22,14 @@ import java.util.*;
  *
  * Key Features:
  * - Supports interactive gameplay for a single player in an online game.
- * - Handles server disconnections gracefully and provides feedback to the
- * player.
- * - Displays game state updates, including other players' moves and
- * announcements.
- * - Allows the player to make moves, including discarding cards during the
- * final round.
+ * - Handles server disconnections gracefully and provides feedback to the player.
+ * - Displays game state updates, including other players' moves and announcements.
+ * - Allows the player to make moves, including discarding cards during the final round.
  *
  * Dependencies:
- * - {@link SocketPacket} – Used for communication between the client and
- * server.
+ * - {@link SocketPacket} – Used for communication between the client and server.
  * - {@link Scoring} – Handles input validation for card selection.
- * - {@link GameLogic} – Provides utility methods for game logic, such as
- * flushing input buffers.
+ * - {@link GameLogic} – Provides utility methods for game logic, such as flushing input buffers.
  *
  * Assumptions:
  * - The server is running and accessible at the provided IP address and port.
@@ -52,21 +44,17 @@ public class GameClient {
     private static final int TIMEOUT = 4000;
 
     /**
-     * Starts the client-side logic for connecting to the game server and managing
-     * gameplay.
-     * Handles the connection setup, communication with the server, and player
-     * interactions.
+     * Starts the client-side logic for connecting to the game server and managing gameplay.
+     * Handles the connection setup, communication with the server, and player interactions.
      *
      * Responsibilities:
      * - Connect to the server using the provided IP address and port.
      * - Exchange player information with the server during the setup phase.
-     * - Process server messages and handle game events such as move requests and
-     * game-over notifications.
+     * - Process server messages and handle game events such as move requests and game-over notifications.
      * - Validate player input and send moves to the server.
      *
      * Exceptions:
-     * - Handles {@link IOException} and {@link ClassNotFoundException} for network
-     * communication errors.
+     * - Handles {@link IOException} and {@link ClassNotFoundException} for network communication errors.
      */
     public void startClient() {
         try (Scanner sc = new Scanner(System.in);) {
@@ -75,6 +63,7 @@ public class GameClient {
             Object[] hostIPDetails = requestHostIP(sc);
             String hostIP = (String) hostIPDetails[0];
             Socket socket = (Socket) hostIPDetails[1];
+
 
             System.out.println("Please wait the Host is still setting up the server!");
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
@@ -303,13 +292,12 @@ public class GameClient {
      * Uses ANSI escape codes to reset the terminal display.
      */
     public static void clearConsole() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+        System.out.print("\033[H\033[2J");  
+        System.out.flush();  
     }
 
     /**
-     * Prompts the user to enter the host IP address and attempts to connect to the
-     * server.
+     * Prompts the user to enter the host IP address and attempts to connect to the server.
      * Repeats the prompt until a valid connection is established.
      *
      * Parameters:
@@ -317,20 +305,19 @@ public class GameClient {
      *
      * Returns:
      * - An {@code Object[]} containing:
-     * - The host IP address as a {@link String}.
-     * - The connected {@link Socket} object.
+     *   - The host IP address as a {@link String}.
+     *   - The connected {@link Socket} object.
      *
      * Exceptions:
-     * - Handles connection errors and prompts the user to re-enter the IP address
-     * if the connection fails.
+     * - Handles connection errors and prompts the user to re-enter the IP address if the connection fails.
      */
-    private static Object[] requestHostIP(Scanner sc) {
+    private static Object[] requestHostIP(Scanner sc){
 
         System.out.println("========================");
         System.out.println("       Join Server      ");
         System.out.println("========================");
 
-        while (true) {
+        while(true){
 
             System.out.print("Please enter the host IP or type 'q' to quit: ");
             String hostIP = sc.nextLine();
@@ -347,8 +334,8 @@ public class GameClient {
                 Socket socket = new Socket();
                 socket.connect(new InetSocketAddress(hostIP, PORT), TIMEOUT); // 4000ms timeout
                 System.out.println("Connected! ");
-                return new Object[] { hostIP, socket };
-
+                return new Object[]{hostIP, socket};
+                
             } catch (Exception e) {
                 System.out.print("\n" + e.getMessage());
                 System.out.println(" : The ip address may not be valid please try again!");

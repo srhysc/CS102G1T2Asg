@@ -1,9 +1,7 @@
 package game;
-
 /**
  * Helper class to keep track of whose turn it is during the game.
- * It loops through players, so once the last player plays, it starts back at
- * player 0.
+ * It loops through players, so once the last player plays, it starts back at player 0.
  */
 public class TurnManager {
     private int currentPlayer;

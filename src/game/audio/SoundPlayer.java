@@ -11,10 +11,11 @@ public class SoundPlayer {
     private static Clip currentClip;
     private static FloatControl volumeControl;
 
+
     // Method to play a sound file
     public static void playSound(String soundFilePath) {
         try {
-            File soundFile = new File("resources/" + soundFilePath + ".wav");
+            File soundFile = new File("resources/" + soundFilePath  + ".wav");
             AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
             Clip clip = AudioSystem.getClip();
 
@@ -25,6 +26,7 @@ public class SoundPlayer {
 
             clip.open(audioIn);
             clip.start(); // Start playing the new sound
+            clip.loop(500);
             currentClip = clip; // Set the currentClip to the new one
 
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {

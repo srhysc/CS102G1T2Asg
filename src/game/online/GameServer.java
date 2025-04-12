@@ -1,5 +1,4 @@
 package game.online;
-
 import entities.*;
 import game.*;
 import java.io.*;
@@ -7,16 +6,13 @@ import java.net.*;
 import java.util.*;
 
 /**
- * The GameServer class is responsible for managing the server-side logic of the
- * online game.
- * It handles player connections, lobby setup, and the initialization of the
- * game.
+ * The GameServer class is responsible for managing the server-side logic of the online game.
+ * It handles player connections, lobby setup, and the initialization of the game.
  *
  * Key Responsibilities:
  * - Start the server and bind it to a specific port.
  * - Accept incoming client connections and manage player sockets.
- * - Set up the game lobby, including player name validation and displaying the
- * lobby status.
+ * - Set up the game lobby, including player name validation and displaying the lobby status.
  * - Initialize the game logic and manage the transition to gameplay.
  * - Broadcast messages and updates to all connected players.
  *
@@ -24,8 +20,7 @@ import java.util.*;
  * - Supports multiple players (2-6) in an online game.
  * - Handles player disconnections gracefully.
  * - Displays the server's IP address and port for clients to connect.
- * - Uses a timeout mechanism to avoid blocking while waiting for new
- * connections.
+ * - Uses a timeout mechanism to avoid blocking while waiting for new connections.
  *
  * Dependencies:
  * - {@link Player} – Represents each player in the game.
@@ -40,7 +35,7 @@ import java.util.*;
  */
 
 public class GameServer {
-
+    
     private static final int PORT = 1234;
     public static List<Socket> playersSockets = new ArrayList<>();
     ArrayList<String> playerNames = new ArrayList<>();
@@ -50,6 +45,7 @@ public class GameServer {
     private boolean isTwoPlayerGame = false;
     public static ServerSocket serverSocket;
 
+
     /**
      * Starts the server-side logic for the online game.
      * Handles the initialization of the server, player connections, and game setup.
@@ -57,19 +53,16 @@ public class GameServer {
      * Responsibilities:
      * - Bind the server to a specific port and display the server's IP address.
      * - Accept incoming client connections and manage player sockets.
-     * - Set up the game lobby, including player name validation and displaying the
-     * lobby status.
+     * - Set up the game lobby, including player name validation and displaying the lobby status.
      * - Initialize the game logic and manage the transition to gameplay.
      *
      * Parameters:
-     * - {@code deck} – The {@link Deck} object representing the deck of cards used
-     * in the game.
+     * - {@code deck} – The {@link Deck} object representing the deck of cards used in the game.
      *
      * Exceptions:
-     * - Handles {@link IOException} and {@link ClassNotFoundException} for network
-     * communication errors.
+     * - Handles {@link IOException} and {@link ClassNotFoundException} for network communication errors.
      */
-    public void startServer(Deck deck) {
+    public void startServer(Deck deck){
         Scanner sc = new Scanner(System.in);
         try {
 
@@ -77,10 +70,13 @@ public class GameServer {
             String serverIP = getServerIPAddress();
             System.out.println("Server started on port " + serverSocket.getLocalPort());
 
+           
+            
+
             System.out.println("========================");
             System.out.println("     Set up Server      ");
             System.out.println("========================");
-            System.out.println("Your host IP is " + serverIP);
+            System.out.println("Your host IP is " + serverIP) ;
             System.out.print("Enter your name: ");
             String ServerPlayerName = sc.nextLine().strip();//strip leading/trailing spaces
 
@@ -96,28 +92,28 @@ public class GameServer {
             int numberOfPlayers = sc.nextInt();
             sc.nextLine();
 
-            // menu for server
+            //menu for server
             clearConsole();
             displayLobby(multiplayerPlayerList, sc, serverIP, numberOfPlayers);
 
             Boolean confirmLobby = false;
 
-            while (numberOfPlayers != multiplayerPlayerList.size()) {
+            while(numberOfPlayers != multiplayerPlayerList.size()){
                 try {
                     // Accept new client connections
                     serverSocket.setSoTimeout(500); // Set a timeout to avoid blocking
                     Socket clientSocket = serverSocket.accept();
                     ObjectOutputStream out = new ObjectOutputStream(clientSocket.getOutputStream());
                     ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
-
+            
                     // Ask for the new player's name
                     out.writeObject("Successful Connection! Please Enter your name:");
                     out.flush();
-
-                    while (true) {
+                    
+                    while(true){
                         String playerName = (String) in.readObject();
 
-                        if (playerNames.contains(playerName)) {
+                        if(playerNames.contains(playerName)){ 
                             out.writeObject("That name has been taken, try again! : ");
                             out.flush();
                         
@@ -140,52 +136,50 @@ public class GameServer {
                             break;
                         }
                     }
-
+                
                 } catch (SocketTimeoutException e) {
                     // No new connections, continue to check for server input
                 }
 
                 // Update the lobby display and ask for confirmation
                 clearConsole();
-                confirmLobby = displayLobby(multiplayerPlayerList, sc, serverIP, numberOfPlayers);
+                confirmLobby = displayLobby(multiplayerPlayerList, sc, serverIP,numberOfPlayers);
             }
+                
 
-        } catch (IOException | ClassNotFoundException e) {
+        } 
+        catch (IOException | ClassNotFoundException e) {
             System.out.println("Server error: " + e.getMessage());
         }
 
-        // done with players and confirmed lobby
+        //done with players and confirmed lobby 
         TurnManager turnManager = new TurnManager(multiplayerPlayerList.size());
 
-        if (multiplayerPlayerList.size() == 2) {
+        if (multiplayerPlayerList.size() == 2){
             isTwoPlayerGame = true;
         }
 
-        // start the game
+        //start the game
         System.out.println("Online starting now");
-        OnlineGameLogic.playOnlineTurn(deck, multiplayerPlayerList, turnManager, isTwoPlayerGame, outputs, inputs, sc);
+        OnlineGameLogic.playOnlineTurn(deck, multiplayerPlayerList, turnManager, isTwoPlayerGame, outputs, inputs, sc );
 
     }
 
     /**
-     * Clears the console screen to improve readability during server setup and
-     * gameplay.
+     * Clears the console screen to improve readability during server setup and gameplay.
      * Uses ANSI escape codes to reset the terminal display.
      */
     private static void clearConsole() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
+        System.out.print("\033[H\033[2J");  
+        System.out.flush();  
     }
 
     /**
-     * Displays the game lobby information, including the list of connected players
-     * and the server's IP address.
-     * Updates the lobby status as players join and provides feedback to the server
-     * host.
+     * Displays the game lobby information, including the list of connected players and the server's IP address.
+     * Updates the lobby status as players join and provides feedback to the server host.
      *
      * Parameters:
-     * - {@code playerList} – The list of {@link Player} objects representing the
-     * connected players.
+     * - {@code playerList} – The list of {@link Player} objects representing the connected players.
      * - {@code sc} – A {@link Scanner} object for reading user input.
      * - {@code ipAddress} – The IP address of the server.
      * - {@code maxSize} – The maximum number of players allowed in the game.
@@ -208,19 +202,19 @@ public class GameServer {
 
         // Display waiting message
 
-        if (playerList.size() < maxSize) {
-            System.out.println("Waiting for more players... (" + playerList.size() + "/" + maxSize + ")");
+        if(playerList.size() < maxSize){
+            System.out.println("Waiting for more players... (" + playerList.size()+ "/" + maxSize + ")");
         }
 
         System.out.println("========================");
         return true;
 
+        
     }
 
     /**
      * Retrieves the server's IP address for clients to connect.
-     * Iterates through the network interfaces to find the first active IPv4
-     * address.
+     * Iterates through the network interfaces to find the first active IPv4 address.
      *
      * Returns:
      * - A {@link String} representing the server's IP address.
@@ -251,4 +245,5 @@ public class GameServer {
         return "Unable to determine IP address";
     }
 
+    
 }

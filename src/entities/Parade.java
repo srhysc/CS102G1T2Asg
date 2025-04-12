@@ -1,5 +1,4 @@
 package entities;
-
 import java.util.*;
 
 /**
@@ -8,10 +7,11 @@ import java.util.*;
  * take cards from based on the card played.
  */
 public class Parade {
+    
     public static ArrayList<Card> paradeRow = new ArrayList<>();
 
     // public Parade(ArrayArrayList<Card> paradeList) {
-    // this.paradeList = paradeList;
+    //     this.paradeList = paradeList;
     // }
 
     /**
@@ -29,11 +29,10 @@ public class Parade {
      * they need to take from the Parade.
      *
      * Rule breakdown:
-     * - Start from the beginning of the Parade and go up to (length - value of
-     * played card)
+     * - Start from the beginning of the Parade and go up to (length - value of played card)
      * - From that subset, the player takes any card that:
-     * a) matches the played card’s colour, OR
-     * b) has a value less than or equal to the played card
+     *      a) matches the played card’s colour, OR
+     *      b) has a value less than or equal to the played card
      *
      * Those cards are then removed from the Parade and returned.
      *

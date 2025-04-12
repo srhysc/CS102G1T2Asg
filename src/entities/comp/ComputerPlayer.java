@@ -1,13 +1,11 @@
 package entities.comp;
-
 import entities.Card;
 import entities.Player;
-import java.util.*;
+import java.util.*; 
 
 /**
  * ComputerPlayer represents an AI Player in Parade.
- * ComputerPlayer extends the Player Class and implements decision making based
- * on the different difficulty levels.
+ * ComputerPlayer extends the Player Class and implements decision making based on the different difficulty levels.
  */
 
 public class ComputerPlayer extends Player {
@@ -29,7 +27,7 @@ public class ComputerPlayer extends Player {
      * @param difficulty The difficulty level to set (EASY, MEDIUM, HARD)
      */
     public static void setGameDifficulty(Difficulty difficulty) {
-        gameDifficulty = difficulty;
+        gameDifficulty = difficulty; 
     }
 
     /**
@@ -38,49 +36,48 @@ public class ComputerPlayer extends Player {
      * @return The current difficulty level
      */
     public static Difficulty getGameDifficulty() {
-        return gameDifficulty;
+        return gameDifficulty; 
     }
 
     /**
-     * Decides on the computer's move based on the current difficulty level with a
-     * delay.
+     * Decides on the computer's move based on the current difficulty level with a delay.
      * 
      * @param parade The current state of the parade (list of cards)
      * @return The card chosen to play, or null if the player's hand is empty
      */
-    public Card playComputerMove(ArrayList<Card> parade) {
+    public Card playComputerMove(ArrayList <Card> parade){
         if (super.getHand().isEmpty()) {
-            return null;
+            return null; 
         }
 
-        Card chosenCard;
+        Card chosenCard; 
         if (gameDifficulty == Difficulty.EASY) {
             chosenCard = chooseRandomCard();
         } else if (gameDifficulty == Difficulty.HARD) {
-            chosenCard = chooseBestCard(parade);
+            chosenCard = chooseBestCard(parade); 
         } else {
-            Random r = new Random();
-            boolean randomChoice = r.nextBoolean();
+            Random r = new Random(); 
+            boolean randomChoice = r.nextBoolean(); 
             if (randomChoice) {
                 chosenCard = chooseRandomCard();
             } else {
-                chosenCard = chooseBestCard(parade);
+                chosenCard = chooseBestCard(parade); 
             }
         }
         getHand().remove(chosenCard);
-        // parade.add(chosenCard);
+        // parade.add(chosenCard); 
         System.out.print(getName() + " is thinking");
         for (int i = 0; i < 3; i++) {
             try {
-                Thread.sleep(500); // half second delay for each . by pausing the execution
+                Thread.sleep(500);  // half second delay for each . by pausing the execution
             } catch (InterruptedException e) { // when another thread interrupts the sleeping thread
                 Thread.currentThread().interrupt();
             }
             System.out.print(".");
         }
-        System.out.println();
+        System.out.println();  
         System.out.println(getName() + " played:" + chosenCard);
-        String colour = "\u001B[38;5;146m"; // Violet-ish colour
+        String colour = "\u001B[38;5;146m"; // Violet-ish  colour
         String reset = "\u001B[0m";
         String phrase = "";
         if (super.getName() == "AI Yeow Leong") {
@@ -126,20 +123,20 @@ public class ComputerPlayer extends Player {
             }
         }
         System.out.println(colour + phrase + reset);
-        return chosenCard;
+        return chosenCard;  
     }
 
     // public static String chooseRandomStatement() {
-    // double rand = Math.random();
-    // String result;
-    // if (rand < 0.4) {
-    // result = "AI Yeow Leong";
-    // } else if (rand < 0.8) {
-    // result = "AI Jason Chan";
-    // } else {
-    // result = "AI VeryEvilCuteBunny";
-    // }
-    // return result;
+    //     double rand = Math.random();
+    //         String result;
+    //         if (rand < 0.4) {
+    //             result = "AI Yeow Leong";
+    //         } else if (rand < 0.8) {
+    //             result = "AI Jason Chan";
+    //         } else {
+    //             result = "AI VeryEvilCuteBunny";
+    //         }
+    //     return result;
     // }
 
     /**
@@ -149,53 +146,50 @@ public class ComputerPlayer extends Player {
      * @return A randomly selected card from the player's hand
      */
     public Card chooseRandomCard() {
-        Random random = new Random();
-        return getHand().get(random.nextInt(getHand().size()));
+        Random random = new Random(); 
+        return getHand().get(random.nextInt(getHand().size())); 
     }
 
     /**
-     * Selects the best card to play from the player's hand based on a penalty
-     * calculation algorithm.
-     * Used for HARD difficulty or when MEDIUM difficulty selects the smart
-     * strategy.
+     * Selects the best card to play from the player's hand based on a penalty calculation algorithm.
+     * Used for HARD difficulty or when MEDIUM difficulty selects the smart strategy.
      * 
      * @param parade The current state of the parade (list of cards)
      * @return The card with the lowest calculated penalty
      */
-    public Card chooseBestCard(ArrayList<Card> parade) {
-        ArrayList<Card> hand = getHand();
-        Card bestCard = null;
-        int minPenalty = Integer.MAX_VALUE;
+    public Card chooseBestCard(ArrayList <Card> parade) {
+        ArrayList<Card> hand = getHand(); 
+        Card bestCard = null; 
+        int minPenalty = Integer.MAX_VALUE; 
 
         for (Card card : hand) {
             int penalty = calculatePenalty(card, parade);
             if (penalty < minPenalty) {
                 minPenalty = penalty;
-                bestCard = card;
+                bestCard = card; 
             }
         }
 
-        return bestCard != null ? bestCard : hand.get(0);
+        return bestCard != null ? bestCard : hand.get(0); 
     }
 
     /**
-     * Calculates a penalty score for playing a specific card with the current
-     * parade state.
+     * Calculates a penalty score for playing a specific card with the current parade state.
      * Lower penalty scores indicate better moves.
      * 
-     * @param card   The card to evaluate
+     * @param card The card to evaluate
      * @param parade The current state of the parade (list of cards)
      * @return The calculated penalty score for playing the card
      */
-    private int calculatePenalty(Card card, ArrayList<Card> parade) {
+    private int calculatePenalty(Card card, ArrayList <Card> parade) {
         int penalty = 0;
         // simulates a new parade with card added - "pretend to play"
         ArrayList<Card> newParade = new ArrayList<>(parade);
-        newParade.add(card);
+        newParade.add(card); 
         int cardsToSkip = card.getValue();
-
+        
         int skipIndex = newParade.size() - 1 - cardsToSkip;
-        // skipIndex should be >= 0;
+        // skipIndex should be >= 0; 
         skipIndex = skipIndex > 0 ? skipIndex : 0;
 
         // evaluate penalty for cards in front of the skipped section
@@ -206,14 +200,12 @@ public class ComputerPlayer extends Player {
             }
         }
         return penalty;
-
+        
     }
 
     /**
-     * Implements the end-game strategy for discarding two cards at the final stage
-     * of the game
-     * The strategy prioritizes discarding cards of colors not in the player's
-     * collection, then cards with higher values.
+     * Implements the end-game strategy for discarding two cards at the final stage of the game
+     * The strategy prioritizes discarding cards of colors not in the player's collection, then cards with higher values.
      * 
      * @return A list containing the two cards to discard
      */
@@ -222,32 +214,29 @@ public class ComputerPlayer extends Player {
         if (hand.size() != 4) {
             return new ArrayList<>();
         }
-
+    
         // count collected card colors
         ArrayList<Card> collected = getCollected();
         Map<String, Integer> colourCounts = new HashMap<>();
         for (Card card : collected) {
             colourCounts.put(card.getColour(), colourCounts.getOrDefault(card.getColour(), 0) + 1);
         }
-        // sort to remove any new colours not in collected first, then remove cards with
-        // higher value
+        // sort to remove any new colours not in collected first, then remove cards with higher value
         List<Card> sortedHand = new ArrayList<>(hand);
         sortedHand.sort((c1, c2) -> {
             boolean c1NewColour = !colourCounts.containsKey(c1.getColour());
             boolean c2NewColour = !colourCounts.containsKey(c2.getColour());
-
-            if (c1NewColour && !c2NewColour)
-                return -1;
-            if (!c1NewColour && c2NewColour)
-                return 1;
-
+    
+            if (c1NewColour && !c2NewColour) return -1;
+            if (!c1NewColour && c2NewColour) return 1;
+    
             return Integer.compare(c2.getValue(), c1.getValue()); // cards with higher value in front
         });
-
+    
         List<Card> toDiscard = new ArrayList<>();
         toDiscard.add(sortedHand.get(0));
         toDiscard.add(sortedHand.get(1));
-
+        
         hand.remove(sortedHand.get(0));
         hand.remove(sortedHand.get(1));
 
@@ -255,3 +244,4 @@ public class ComputerPlayer extends Player {
     }
 
 }
+

@@ -41,7 +41,7 @@ import entities.comp.ComputerPlayer;
  * - {@link SocketPacket} – used to send scoring results in online games.
  *
  * Assumes that all normal gameplay (drawing, playing cards, etc.) is finished.
- * This class wraps up the round and tells everyone how they did.
+ * This class just wraps up the round and tells everyone how they did.
  */
 public class Scoring {
     /**
@@ -102,7 +102,7 @@ public class Scoring {
                 System.out.print(cPlayer.getName() + " is discarding 2 cards");
                 for (int i = 0; i < 3; i++) {
                     try {
-                        Thread.sleep(500); // half second delay for each
+                        Thread.sleep(500); // half second delay for each .
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                     }
@@ -138,8 +138,14 @@ public class Scoring {
                 Card discardedSecondCard = hand.remove(secondCardIndex);
                 System.out.println("\n You discarded: " + discardedSecondCard.getDetails() + "\n");
 
-                // Add remaining cards to front
+                // Add remaining cards to front //im not sure this is correct
                 player.addToCollected(hand);
+                // while (!hand.isEmpty()) {
+                // player.addToCollected(hand);
+
+                // System.out.println("stuck");
+
+                // System.out.println("test ");
             }
 
         }

@@ -64,13 +64,12 @@ public class ComputerPlayer extends Player {
                 chosenCard = chooseBestCard(parade); 
             }
         }
-        getHand().remove(chosenCard);
-        // parade.add(chosenCard); 
+        getHand().remove(chosenCard); 
         System.out.print(getName() + " is thinking");
         for (int i = 0; i < 3; i++) {
             try {
                 Thread.sleep(500);  // half second delay for each . by pausing the execution
-            } catch (InterruptedException e) { // when another thread interrupts the sleeping thread
+            } catch (InterruptedException e) { 
                 Thread.currentThread().interrupt();
             }
             System.out.print(".");
@@ -125,19 +124,6 @@ public class ComputerPlayer extends Player {
         System.out.println(colour + phrase + reset);
         return chosenCard;  
     }
-
-    // public static String chooseRandomStatement() {
-    //     double rand = Math.random();
-    //         String result;
-    //         if (rand < 0.4) {
-    //             result = "AI Yeow Leong";
-    //         } else if (rand < 0.8) {
-    //             result = "AI Jason Chan";
-    //         } else {
-    //             result = "AI VeryEvilCuteBunny";
-    //         }
-    //     return result;
-    // }
 
     /**
      * Selects a random card from the player's hand.
@@ -227,10 +213,13 @@ public class ComputerPlayer extends Player {
             boolean c1NewColour = !colourCounts.containsKey(c1.getColour());
             boolean c2NewColour = !colourCounts.containsKey(c2.getColour());
     
-            if (c1NewColour && !c2NewColour) return -1;
-            if (!c1NewColour && c2NewColour) return 1;
-    
-            return Integer.compare(c2.getValue(), c1.getValue()); // cards with higher value in front
+            if (c1NewColour && !c2NewColour) {
+                return -1; 
+            }
+            if (!c1NewColour && c2NewColour) {
+                return 1;
+            }
+            return Integer.compare(c2.getValue(), c1.getValue()); // sort in desc order, cards with higher value in front
         });
     
         List<Card> toDiscard = new ArrayList<>();

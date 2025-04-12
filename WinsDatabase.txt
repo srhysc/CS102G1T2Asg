@@ -1,5 +1,5 @@
 Player: a, Wins: 4
-Player: A, Wins: 6
+Player: A, Wins: 1
 Player: B, Wins: 10
 Player: Cheesecake, Wins: 1
 Player: C, Wins: 1
@@ -8,9 +8,9 @@ Player: poopy, Wins: 1
 Player: h, Wins: 1
 Player: asfas, Wins: 1
 Player: 1, Wins: 1
+Player: AI Jason Chan, Wins: 1
 Player: r, Wins: 1
 Player: joran, Wins: 1
 Player: ok1, Wins: 1
 Player: jordan, Wins: 5
 Player: Hayyun, Wins: 1
-Player: A , Wins: 1

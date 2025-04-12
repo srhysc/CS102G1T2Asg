@@ -562,32 +562,34 @@ public class Game {
 
     }
 
-    public static void checkGameEnd(boolean allColoursCollected) {
-        // if (allColoursCollected || ) {
-        // this.playTurn();
+    // To check if this method is required
+    // public static void checkGameEnd(boolean allColoursCollected) {
+    //     // if (allColoursCollected || ) {
+    //     // this.playTurn();
 
-        // }
-    }
+    //     // }
+    // }
 
-    public static boolean checkGameEnd() {
-        boolean gameEnd = false;
+    // To check if this method is required
+    // public static boolean checkGameEnd() {
+    //     boolean gameEnd = false;
 
-        // for (Player player : playerList) {
-        // if (player.allColoursCollected()) {
-        // gameEnd = true;
-        // break;
-        // }
-        // }
+    //     // for (Player player : playerList) {
+    //     // if (player.allColoursCollected()) {
+    //     // gameEnd = true;
+    //     // break;
+    //     // }
+    //     // }
 
-        // if (gameEnd || deck.getCards() == 0) {
-        // System.out.println("This is the last round!");
-        // playTurn(); // Last Round to end up with 4 cards, I need to see how the play
-        // // turn is being handled
-        // return true;
-        // }
+    //     // if (gameEnd || deck.getCards() == 0) {
+    //     // System.out.println("This is the last round!");
+    //     // playTurn(); // Last Round to end up with 4 cards, I need to see how the play
+    //     // // turn is being handled
+    //     // return true;
+    //     // }
 
-        return false;
-    }
+    //     return false;
+    // }
 
     /**
      * Ends the game and starts calculating the scores of each player.

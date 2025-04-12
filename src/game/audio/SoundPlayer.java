@@ -83,7 +83,7 @@ public class SoundPlayer {
      * The method uses a {@link Scanner} to read user input from the console and updates the 
      * {@link FloatControl} associated with the current audio clip to reflect changes in volume.
      *
-     * @param game the current game instance; used to return to the main menu after the user quits the volume menu.
+     * @param game The current game instance; used to return to the main menu after the user quits the volume menu.
      */
 
     public static void volumeMenu(Game game) {

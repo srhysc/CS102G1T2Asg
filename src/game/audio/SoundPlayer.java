@@ -11,11 +11,10 @@ public class SoundPlayer {
     private static Clip currentClip;
     private static FloatControl volumeControl;
 
-
     // Method to play a sound file
     public static void playSound(String soundFilePath) {
         try {
-            File soundFile = new File("resources/" + soundFilePath  + ".wav");
+            File soundFile = new File("resources/" + soundFilePath + ".wav");
             AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
             Clip clip = AudioSystem.getClip();
 

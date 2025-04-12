@@ -151,6 +151,11 @@ public class Game {
                 - 66 cards in 6 colors (11 cards per color).
                 - Each color has cards numbered from 0 to 10.
 
+                Gamemodes:
+                - Player vs Computer (3 Varying Difficulties)
+                - Player vs Player (Local Play)
+                - Player vs Player (Online Play)
+
                 Setup:
                 1. Shuffle all cards.
                 2. Deal 5 cards to each player (hand cards).
@@ -181,8 +186,7 @@ public class Game {
                 3. Add up all points across all colors.
                 4. Lowest score wins.
 
-                Optional (2-player game):
-                - Remove one color before starting.
+                If you are up for a challenge (Hint Hint), look out for the Easter Eggs!
                 """;
 
         System.out.println(instructions);

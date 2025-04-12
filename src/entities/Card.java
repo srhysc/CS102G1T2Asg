@@ -20,6 +20,7 @@ public class Card implements Serializable{
     
     /**
      * Create a Card with a specific colour and value.
+     * 
      * @param color The colour of the card
      * @param value The value of the card
      */
@@ -49,6 +50,8 @@ public class Card implements Serializable{
 
     /**
      * Sets the value of the card.
+     * 
+     * @return The value of the card
      */
     public void setValue(int value) {
         this.value = value;
@@ -64,9 +67,10 @@ public class Card implements Serializable{
     }
 
     /**
-    * Sets the card's colour. 
-    * @param colour The colour of the card in String format (eg. "red", "blue", etc.)
-    */
+     * Sets the card's colour. 
+     *
+     * @param colour The colour of the card in String format (eg. "red", "blue", etc.)
+     */
     public void setColour(String colour) {
         this.colour = colour;
     }
@@ -82,6 +86,7 @@ public class Card implements Serializable{
 
     /**
      * Get the ANSI colour code for the card's colour. It is used for making console text coloured.
+     * 
      * @return The ANSI colour code for the card’s colour
      * 
      */
@@ -100,6 +105,7 @@ public class Card implements Serializable{
     }
     /**
      * Gets the card's details.
+     * 
      * @return String format of the card’s details (colour + value), 
      * formatted with colour codes for console output.
      */

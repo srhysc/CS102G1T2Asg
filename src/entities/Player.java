@@ -30,6 +30,13 @@ public class Player implements Serializable {
         this.collected = new ArrayList<>();
     }
 
+    /**
+     * Constructs a new player with the specified name, output stream and input stream.
+     * 
+     * @param name The player's name
+     * @param output The output stream used to send objects to the player
+     * @param input The input stream used to receive objevts from the player
+     */
     public Player(String name, ObjectOutputStream output, ObjectInputStream input){
         this.name = name;
         this.hand = new ArrayList<>();
@@ -40,6 +47,8 @@ public class Player implements Serializable {
 
     /**
      * Adds a card to the player’s hand.
+     * 
+     * @param card The card to be added to the player's hand
      */
     public void addToHand(Card card) {
         if (card != null)
@@ -48,6 +57,9 @@ public class Player implements Serializable {
 
     /**
      * Adds multiple cards to the collected pile (cards taken from the parade).
+     * 
+     * @param cards An ArrayList of Card objects to be collected from the parade and 
+     * added to the collected pile
      */
     public void addToCollected(ArrayList<Card> cards) {
         collected.addAll(cards);
@@ -62,10 +74,10 @@ public class Player implements Serializable {
     }
 
     /**
-     * Removes a card from the hand by index and returns it.
+     * Removes a card from the player's hand by index and returns it.
      *
-     * @param index Index of the card to play
-     * @return The card played
+     * @param index Index of the card in the player's hand to be played
+     * @return The Card being played
      */
     public Card playCard(int index) {
         return hand.remove(index);
@@ -88,34 +100,68 @@ public class Player implements Serializable {
         return "[" + formattedHand + "]";
     }
 
+    /**
+     * Get the list of cards currently held in the player's hand.
+     * 
+     * @return An ArrrayList of Card objects representing the player's hand
+     */
     public ArrayList<Card> getHand() {
         return hand;
     }
 
+    /**
+     * Returns the list of cards that the player has collected.
+     * 
+     * @return An ArrrayList of Card objects representing the cards 
+     * that the player has collected
+     */
     public ArrayList<Card> getCollected() {
         return collected;
     }
 
+    /**
+     * Returns the name of the player.
+     * 
+     * @return The player's name
+     */
     public String getName() {
         return name;
     }
 
-   
+   /**
+    * Returns the current score of the player.
 
+    * @return The player's score
+    */
     public int getScore() {
         return score;
     }
 
+    /**
+     * Sets the player's score to the specified value.
+     * 
+     * @param score The value of the score
+     */
     public void setScore(int score) {
         this.score = score;
     }
 
-    
-
+    /**
+     * Returns the ObjectOutputStream associated with the player.
+     * This stream is used to send serialised objects (eg. game state updates)
+     * 
+     * @return an ObjectOutputStream used for sending objects
+     */    
     public ObjectOutputStream getOutputSteam() {
         return out;
     }
 
+    /**
+     * Returns the ObjectOutputStream associated with the player.
+     * This stream is used to receive serialised objects (eg. the player's moves)
+     * 
+     * @return an ObjectInputStream used for receiving objects
+     */
     public ObjectInputStream getInputSteam() {
         return in;
     }

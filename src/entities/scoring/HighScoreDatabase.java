@@ -1,4 +1,6 @@
 package entities.scoring;
+import entities.Player;
+import entities.comp.ComputerPlayer;
 import java.io.*;
 import java.util.*;
 
@@ -99,14 +101,14 @@ public class HighScoreDatabase {
      *
      * @param playerName The name of the player whose score needs to be updated
      */
-    public void updateHighScore(String playerName) {
-        HighScore highScore = highScores.get(playerName);
-        if (playerName.contains("CPU")) {
+    public void updateHighScore(Player winner) {
+        HighScore highScore = highScores.get(winner.getName());
+        if (winner instanceof ComputerPlayer) {
             return;
         } else if (highScore != null) {
             highScore.incrementWins();
         } else {
-            highScores.put(playerName, new HighScore(playerName, 1));
+            highScores.put(winner.getName(), new HighScore(winner.getName(), 1));
         }
         saveScores();
     }

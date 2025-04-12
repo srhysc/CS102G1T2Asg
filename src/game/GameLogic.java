@@ -1,14 +1,10 @@
 package game;
 
-import game.online.SocketPacket;
 import entities.*;
+import entities.comp.ComputerPlayer;
 import entities.scoring.*;
-
 import java.io.*;
 import java.util.*;
-
-import entities.comp.ComputerPlayer;
-import game.online.*;
 
 /**
  * Handles the core gameplay mechanics and turn-based logic for the Parade card
@@ -259,7 +255,7 @@ public class GameLogic {
         if (winner != null) {
             // Update the winner's high score record
             HighScoreDatabase highScoreDatabase = new HighScoreDatabase();
-            highScoreDatabase.updateHighScore(winner.getName());
+            highScoreDatabase.updateHighScore(winner);
         }
 
         // Return to the main menu

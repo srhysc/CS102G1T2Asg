@@ -365,7 +365,7 @@ public class Scoring {
             returnSB.append("\n The winner is: " + winner.getName() + " with a score of " + winner.getScore());
 
             HighScoreDatabase highScoreDatabase = new HighScoreDatabase();
-            highScoreDatabase.updateHighScore(winner.getName());
+            highScoreDatabase.updateHighScore(winner);
 
         } else {
             returnSB.append("Sometimes it is not about the game but the friends we made along the way, YOU ALL LOST!");

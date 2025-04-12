@@ -11,6 +11,7 @@ import java.util.*;
 
 /**
  * Represents the main controller for the game logic and flow.
+ * 
  * The Game class handles player setup (human and AI), game configuration
  * (such as difficulty level and number of players), game progression,
  * and end-of-game conditions. It also manages user interaction via menus,
@@ -71,9 +72,26 @@ public class Game {
         this.difficulty = difficulty;
     }
 
-    /**
+     /**
      * Displays the main menu and processes user input to navigate to the selected
      * option.
+     * 
+     * The menu options are:
+     * 1. Start Game
+     * 2. Settings (Volume Control)
+     * 3. Help
+     * 4. Hall of Fame
+     * 
+     * The user chooses an option by entering 1–4 or 'q' to exit the game.
+     * When the user enters an invalid input, the program will prompt them to 
+     * enter a valid choice.
+     * 
+     * Once a valid choice is made:
+     * - Option 1 starts the game.
+     * - Option 2 opens the volume menu.
+     * - Option 3 shows the help menu.
+     * - Option 4 shows high scores and prompts user to return to the MENU page.
+     * 
      */
     // start menu display
     public void printMenu() {
@@ -192,6 +210,9 @@ public class Game {
 
     /**
      * Prompts the user to press 1 to return to the menu.
+     * When the user enters an invalid input, the program will prompt them 
+     * to enter a valid choice.
+     * 
      */
     private void promptReturnToMenu(Scanner sc) {
         int choice = 0;
@@ -213,8 +234,11 @@ public class Game {
     /**
      * Allows the user to choose the number of human players (between 2 and 6) and
      * enter a unique username for each player.
+     * When the user enters an invalid input, the program will prompt them to enter 
+     * a valid choice. 
      * Ensures that player names are not blank and there are no duplicates of
      * existing names.
+     * 
      */
     // choosing number of HUMAN players and name
     public void selectHumanPlayers() {
@@ -291,6 +315,21 @@ public class Game {
 
     /**
      * Allows the user to choose the difficulty level for the AI game style.
+     * 
+     * The menu options are:
+     * 1. Easy
+     * 2. Medium
+     * 3. Difficult
+     * 
+     * The user chooses an option by entering 1–4.
+     * When the user enters an invalid input, the program will prompt them to enter a valid choice.
+     * 
+     * Once a valid choice is made:
+     * - Option 1 sets the game to EASY difficulty level.
+     * - Option 2 sets the game to MEDIUM difficulty level.
+     * - Option 3 sets the game to DIFFICULT difficulty level.
+     * - Option 4 directs the user back to the GAME STYLE page.
+     * 
      */
     // choosing difficulty level for AI game style
     public void aiDifficultyLevel() {
@@ -399,6 +438,19 @@ public class Game {
 
     /**
      * Allows the user to choose the type of game styles.
+     * 
+     * The menu options are:
+     * 1. Local Play
+     * 2. Play vs AI
+     * 3. Play Online
+     * 4. Back
+     * 
+     * The user chooses an option by entering 1–4.
+     * When the user enters an invalid input, the program will prompt them to 
+     * enter a valid choice.
+     * The method validates the user's input and calls the corresponding method 
+     * based on the choice.
+     * 
      */
     // choosing game style
     public void startGame() {
@@ -448,15 +500,19 @@ public class Game {
     }
 
     /**
-     * Plays the background music throughout the game.
-     * 
-     * @param audioFile The music to be played
-     */
-
-
-
-    /**
      * Allows user to choose between Host or Client.
+     * 
+     * The menu options are:
+     * 1. Host
+     * 2. Join on LAN
+     * 4. Back
+     * 
+     * The user chooses an option by entering 1–3.
+     * When the user enters an invalid input, the program will prompt them to 
+     * enter a valid choice.
+     * The method validates the user's input and calls the corresponding method 
+     * based on the choice.
+     * 
      */
     public void multiplayerMenu() {
 
@@ -552,11 +608,11 @@ public class Game {
 
     }
 
+    /**
+     * The main entry point of Parade Game.
+     * @param args The command-line arguments (not used in this method)
+     */
     public static void main(String[] args) {
-        // ArrayList<Player> playerList = new ArrayList<>();
-        // playerList.add(new Player("Alice"));
-        // playerList.add(new Player("Bob"));
-        // // playerList.add(new Player("Charlie"));
 
         Game game = new Game(playerList);
 

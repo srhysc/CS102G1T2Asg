@@ -2,7 +2,7 @@ package entities;
 import java.util.*;
 
 /**
- * This class handles everything going on in the Parade row during the game.
+ * Handles everything going on in the Parade row during the game.
  * The Parade is displayed as a shared line of cards that players add to, and
  * take cards from based on the card played.
  */

@@ -1,7 +1,8 @@
 package entities.scoring;
 /**
  * A simple tracker for player high scores.
- * Keeps count of how many times someone has won.
+ * 
+ * The HighScore class keeps count of how many times someone has won.
  */
 public class HighScore {
     private String playerName;

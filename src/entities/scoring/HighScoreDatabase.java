@@ -7,7 +7,7 @@ import game.online.GameClient;
 /**
  * Manages the high score data for the game.
  * 
- * This class is responsible for loading, saving, and updating the high scores of players.
+ * The HighScoreDatabase class is responsible for loading, saving, and updating the high scores of players.
  * It reads from a file called "WinsDatabase.txt" to retrieve past high scores and writes
  * updates back to the file when a player gets a new win. The top players' scores are displayed
  * with a little flair (gold, silver, bronze) for the first three positions.

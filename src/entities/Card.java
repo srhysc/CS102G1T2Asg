@@ -1,7 +1,7 @@
 package entities;
 import java.io.Serializable;
 /**
- * This class represents a card in the game.
+ * Represents a card in the game.
  * Each card has a colour, a value (like points), and can be face up or face down.
  * Also includes some ANSI colour codes so the card colours are shown when printed to the console.
  * 

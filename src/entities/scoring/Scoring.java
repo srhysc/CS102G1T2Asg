@@ -14,7 +14,7 @@ import entities.comp.ComputerPlayer;
 /**
  * Handles the end-of-game scoring logic for both local and online games.
  *
- * This class takes care of all the steps needed to finish a game and figure out
+ * The Scoring class takes care of all the steps needed to finish a game and figure out
  * how many
  * points each player has earned. It includes things like asking players to
  * discard cards,

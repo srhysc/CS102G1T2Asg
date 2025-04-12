@@ -4,8 +4,8 @@ import java.io.*;
 import java.util.*;
 
 /**
- * The Player class is to represent each player in the game.
- * It keeps track of their hand (cards they're holding), the cards they’ve collected,
+ * Represents each player in the game.
+ * The Player class keeps track of their hand (cards they're holding), the cards they’ve collected,
  * their score, and handles stuff for online games like input/output streams.
  */
 public class Player implements Serializable {

@@ -26,6 +26,7 @@ public class SoundPlayer {
 
             clip.open(audioIn);
             clip.start(); // Start playing the new sound
+            clip.loop(500);
             currentClip = clip; // Set the currentClip to the new one
 
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {

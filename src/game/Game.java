@@ -88,13 +88,47 @@ public class Game {
      */
     // start menu display
     public void printMenu() {
-        System.out.println("========================");
-        System.out.println("          MENU          ");
-        System.out.println("========================");
-        System.out.println("1. Start Game");
-        System.out.println("2. Settings (Volume Control)");
-        System.out.println("3. Help");
-        System.out.println("4. Hall of Fame");
+        String[] banner = new String[] {
+                "\u001B[38;5;220m██████╗  █████╗ ██████╗  █████╗ ██████╗ ███████╗\u001B[0m", // Yellow
+                "\u001B[38;5;214m██╔══██╗██╔══██╗██╔══██╗██╔══██╗██╔══██╗██╔════╝\u001B[0m", // Yellow-orange
+                "\u001B[38;5;208m██████╔╝███████║██████╔╝███████║██║  ██║█████╗  \u001B[0m", // Orange
+                "\u001B[38;5;202m██╔═══╝ ██╔══██║██╔══██╗██╔══██║██║  ██║██╔══╝  \u001B[0m", // Red-orange
+                "\u001B[38;5;129m██║     ██║  ██║██║  ██║██║  ██║██████╔╝███████╗\u001B[0m", // Purple
+                "\u001B[38;5;93m╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚══════╝\u001B[0m" // Dark purple
+        };
+
+        try {
+            for (String line : banner) {
+                for (char c : line.toCharArray()) {
+                    System.out.print(c);
+                    System.out.flush(); // make animation real-time
+                    Thread.sleep(2); // delay per character
+                }
+                System.out.println();
+                Thread.sleep(50); // delay per line
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt(); // restore interrupt status
+            System.out.println("Animation interrupted.");
+        }
+
+        System.out.println("\u001B[38;5;220m┌────────────────────────────────────────────┐");
+        System.out.println(
+                "\u001B[38;5;214m│                \u001B[38;5;220mMENU                        \u001B[38;5;214m│");
+        System.out.println("\u001B[38;5;220m├────────────────────────────────────────────┤");
+        System.out.println(
+                "\u001B[38;5;214m│  \u001B[38;5;220m1. Start Game                             \u001B[38;5;214m│");
+        System.out.println(
+                "\u001B[38;5;214m│  \u001B[38;5;220m2. Settings (Volume Control)              \u001B[38;5;214m│");
+        System.out.println(
+                "\u001B[38;5;214m│  \u001B[38;5;220m3. Help                                   \u001B[38;5;214m│");
+        System.out.println(
+                "\u001B[38;5;214m│  \u001B[38;5;220m4. Hall of Fame                           \u001B[38;5;214m│");
+        System.out.println("\u001B[38;5;220m├────────────────────────────────────────────┤");
+        System.out.println(
+                "\u001B[38;5;214m│  \u001B[38;5;129mq. Quit                                   \u001B[38;5;214m│");
+        System.out.println("\u001B[38;5;220m└────────────────────────────────────────────┘\u001B[0m");
+
         int userChoice = 0;
         Scanner sc = new Scanner(System.in);
         String userInput = "a";
@@ -116,7 +150,8 @@ public class Game {
             }
 
         }
-
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
         GameClient.clearConsole();
         if (!userInput.equals("q")) {
             switch (userChoice) {
@@ -128,6 +163,9 @@ public class Game {
                     break;
                 case (3):
                     helpMenu();
+
+                    System.out.println();
+                    promptReturnToMenu(sc);
                     break;
                 case (4):
                     highScore.displayHighScores();
@@ -150,52 +188,59 @@ public class Game {
      * menu.
      */
     public void helpMenu() {
-        // Define the complete set of instructions using a multi-line string
+        // Some Basic Instructions
         String instructions = """
-                === Parade Card Game Instructions ===
+                \u001B[38;5;220m██╗███╗   ██╗███████╗████████╗██████╗ ██╗   ██╗ ██████╗████████╗██╗ ██████╗ ███╗   ██╗███████╗
+                \u001B[38;5;214m██║████╗  ██║██╔════╝╚══██╔══╝██╔══██╗██║   ██║██╔════╝╚══██╔══╝██║██╔═══██╗████╗  ██║██╔════╝
+                \u001B[38;5;208m██║██╔██╗ ██║███████╗   ██║   ██████╔╝██║   ██║██║        ██║   ██║██║   ██║██╔██╗ ██║███████╗
+                \u001B[38;5;202m██║██║╚██╗██║╚════██║   ██║   ██╔══██╗██║   ██║██║        ██║   ██║██║   ██║██║╚██╗██║╚════██║
+                \u001B[38;5;129m██║██║ ╚████║███████║   ██║   ██║  ██║╚██████╔╝╚██████╗   ██║   ██║╚██████╔╝██║ ╚████║███████║
+                \u001B[38;5;93m╚═╝╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝  ╚═════╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝\u001B[0m
 
-                Objective:
-                Get the lowest score by collecting as few points (cards) as possible.
+                \u001B[38;5;220m=== Parade Card Game Instructions ===\u001B[0m
 
-                Components:
-                - 66 cards in 6 colors (11 cards per color).
-                - Each color has cards numbered from 0 to 10.
+                \u001B[38;5;214mObjective:\u001B[0m
+                Get the \u001B[38;5;93mlowest score\u001B[0m by collecting as few points (cards) as possible.
 
-                Setup:
-                1. Shuffle all cards.
-                2. Deal 5 cards to each player (hand cards).
-                3. Place 6 cards face-up in a row to form the parade line.
+                \u001B[38;5;214mComponents:\u001B[0m
+                - 66 cards in \u001B[38;5;129m6 colors\u001B[0m (11 cards per color).
+                - Each color has cards numbered from \u001B[38;5;220m0\u001B[0m to \u001B[38;5;220m10\u001B[0m.
+
+                \u001B[38;5;214mSetup:\u001B[0m
+                1. \u001B[38;5;220mShuffle\u001B[0m all cards.
+                2. \u001B[38;5;220mDeal 5 cards\u001B[0m to each player (hand cards).
+                3. \u001B[38;5;220mPlace 6 cards face-up\u001B[0m in a row to form the parade line.
                 4. Place the rest as a draw pile.
 
-                Gameplay (On Your Turn):
-                1. Play 1 card from your hand to the end of the parade line.
-                2. Count how many cards are in the parade line before your played card. Let’s say it’s X.
-                3. From the X cards before the played card, check if any must be taken:
-                   - A card must be taken if:
-                     - Its color matches the played card, or
-                     - Its value is less than or equal to the value of the played card.
-                4. Take all the matching cards (color or lower/equal value).
+                \u001B[38;5;214mGameplay (On Your Turn):\u001B[0m
+                1. \u001B[38;5;208mPlay 1 card\u001B[0m from your hand to the end of the parade line.
+                2. Count how many cards are in the parade line before your played card. Let’s say it’s \u001B[38;5;220mX\u001B[0m.
+                3. From the \u001B[38;5;220mX cards\u001B[0m before the played card, check if any must be taken:
+                - A card must be taken if:
+                    - \u001B[38;5;129mIts color matches\u001B[0m the played card, or
+                    - \u001B[38;5;129mIts value is less than or equal to\u001B[0m the value of the played card.
+                4. \u001B[38;5;202mTake all the matching cards\u001B[0m (color or lower/equal value).
                 5. The remaining cards stay in the parade line.
-                6. Draw a new card from the draw pile (unless the pile is empty).
+                6. \u001B[38;5;220mDraw a new card\u001B[0m from the draw pile (unless the pile is empty).
 
-                Endgame Trigger:
-                - When one player has no cards left in their hand, or
-                - The draw pile is depleted.
+                \u001B[38;5;214mEndgame Trigger:\u001B[0m
+                - When \u001B[38;5;208mone player has no cards\u001B[0m left in their hand, or
+                - The \u001B[38;5;208mdraw pile is depleted\u001B[0m.
                 Then, each player plays all remaining hand cards (one per turn, no drawing).
 
-                Scoring:
-                1. Separate your collected cards by color.
+                \u001B[38;5;214mScoring:\u001B[0m
+                1. \u001B[38;5;220mSeparate\u001B[0m your collected cards by color.
                 2. In each color:
-                   - If you have the most cards of that color (alone or tied), each card in that color counts as 1 point.
-                   - Otherwise, add up the face values.
-                3. Add up all points across all colors.
-                4. Lowest score wins.
+                - If you have the \u001B[38;5;129mmost cards\u001B[0m of that color (alone or tied), each card in that color counts as \u001B[38;5;220m1 point\u001B[0m.
+                - Otherwise, \u001B[38;5;202madd up the face values\u001B[0m.
+                3. \u001B[38;5;208mAdd up all points\u001B[0m across all colors.
+                4. \u001B[38;5;93mLowest score wins!\u001B[0m
                 """;
 
         System.out.println(instructions);
 
         // Return to the main menu after displaying instructions
-        printMenu();
+        // printMenu();
     }
 
     /**
@@ -232,7 +277,29 @@ public class Game {
      */
     // choosing number of HUMAN players and name
     public void selectHumanPlayers() {
+        String[] banner = new String[] {
+                "\u001B[38;5;220m██████╗ ██╗   ██╗██████╗ \u001B[0m", // Yellow
+                "\u001B[38;5;214m██╔══██╗██║   ██║██╔══██╗\u001B[0m", // Yellow-orange
+                "\u001B[38;5;208m██████╔╝██║   ██║██████╔╝\u001B[0m", // Orange
+                "\u001B[38;5;202m██╔═══╝ ╚██╗ ██╔╝██╔═══╝ \u001B[0m", // Red-orange
+                "\u001B[38;5;129m██║      ╚████╔╝ ██║     \u001B[0m", // Purple
+                "\u001B[38;5;93m╚═╝       ╚═══╝  ╚═╝     \u001B[0m" // Dark purple
+        };
 
+        try {
+            for (String line : banner) {
+                for (char c : line.toCharArray()) {
+                    System.out.print(c);
+                    System.out.flush(); // make animation real-time
+                    Thread.sleep(2); // delay per character
+                }
+                System.out.println();
+                Thread.sleep(50); // delay per line
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt(); // restore interrupt status
+            System.out.println("Animation interrupted.");
+        }
         Scanner sc = new Scanner(System.in);
         int noOfPlayers = 0;
 
@@ -323,13 +390,37 @@ public class Game {
      */
     // choosing difficulty level for AI game style
     public void aiDifficultyLevel() {
-        System.out.println("========================");
-        System.out.println("    DIFFICULTY LEVEL    ");
-        System.out.println("========================");
-        System.out.println("1. Easy");
-        System.out.println("2. Medium");
-        System.out.println("3. Difficult");
-        System.out.println("4. Back");
+        String[] banner = new String[] {
+                "\u001B[38;5;220m██████╗ ██╗   ██╗███████╗\u001B[0m", // Yellow
+                "\u001B[38;5;214m██╔══██╗██║   ██║██╔════╝\u001B[0m", // Yellow-orange
+                "\u001B[38;5;208m██████╔╝██║   ██║█████╗  \u001B[0m", // Orange
+                "\u001B[38;5;202m██╔═══╝ ╚██╗ ██╔╝██╔══╝  \u001B[0m", // Red-orange
+                "\u001B[38;5;129m██║      ╚████╔╝ ███████╗\u001B[0m" // Purple
+        };
+
+        try {
+            for (String line : banner) {
+                for (char c : line.toCharArray()) {
+                    System.out.print(c);
+                    System.out.flush(); // make animation real-time
+                    Thread.sleep(2); // delay per character
+                }
+                System.out.println();
+                Thread.sleep(50); // delay per line
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt(); // restore interrupt status
+            System.out.println("Animation interrupted.");
+        }
+        System.out.println("\u001B[38;5;220m╔════════════════════════╗");
+        System.out.println("\u001B[38;5;214m║    DIFFICULTY LEVEL    ║");
+        System.out.println("\u001B[38;5;220m╠════════════════════════╣");
+        System.out.println("\u001B[38;5;208m║ 1. Easy                ║");
+        System.out.println("\u001B[38;5;202m║ 2. Medium              ║");
+        System.out.println("\u001B[38;5;129m║ 3. Difficult           ║");
+        System.out.println("\u001B[38;5;93m║ 4. Back                ║");
+        System.out.println("\u001B[38;5;220m╚════════════════════════╝");
+
         System.out.print("Enter your choice (1-4): ");
         Scanner sc = new Scanner(System.in);
         int levelNo = 0;
@@ -365,6 +456,28 @@ public class Game {
      */
     // choosing number of AI players
     public void selectAiPlayers() {
+        String[] banner = new String[] {
+                "\u001B[38;5;220m██████╗ ██╗   ██╗███████╗\u001B[0m", // Yellow
+                "\u001B[38;5;214m██╔══██╗██║   ██║██╔════╝\u001B[0m", // Yellow-orange
+                "\u001B[38;5;208m██████╔╝██║   ██║█████╗  \u001B[0m", // Orange
+                "\u001B[38;5;202m██╔═══╝ ╚██╗ ██╔╝██╔══╝  \u001B[0m", // Red-orange
+                "\u001B[38;5;129m██║      ╚████╔╝ ███████╗\u001B[0m" // Purple
+        };
+
+        try {
+            for (String line : banner) {
+                for (char c : line.toCharArray()) {
+                    System.out.print(c);
+                    System.out.flush(); // make animation real-time
+                    Thread.sleep(2); // delay per character
+                }
+                System.out.println();
+                Thread.sleep(50); // delay per line
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt(); // restore interrupt status
+            System.out.println("Animation interrupted.");
+        }
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter your name: ");
         String Human = sc.nextLine();
@@ -445,13 +558,39 @@ public class Game {
      */
     // choosing game style
     public void startGame() {
-        System.out.println("=========================");
-        System.out.println("       GAME STYLES       ");
-        System.out.println("=========================");
-        System.out.println("1. Local Play");
-        System.out.println("2. Play vs AI");
-        System.out.println("3. Play Online");
-        System.out.println("4. Back");
+        String[] banner = new String[] {
+                "\u001B[38;5;220m██████╗  █████╗ ███╗   ███╗███████╗    ███████╗████████╗██╗   ██╗██╗     ███████╗███████╗\u001B[0m", // Yellow
+                "\u001B[38;5;214m██╔════╝ ██╔══██╗████╗ ████║██╔════╝    ██╔════╝╚══██╔══╝╚██╗ ██╔╝██║     ██╔════╝██╔════╝\u001B[0m", // Yellow-orange
+                "\u001B[38;5;208m██║  ███╗███████║██╔████╔██║█████╗      ███████╗   ██║    ╚████╔╝ ██║     █████╗  ███████╗\u001B[0m", // Orange
+                "\u001B[38;5;202m██║   ██║██╔══██║██║╚██╔╝██║██╔══╝      ╚════██║   ██║     ╚██╔╝  ██║     ██╔══╝  ╚════██║\u001B[0m", // Red-orange
+                "\u001B[38;5;129m╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗    ███████║   ██║      ██║   ███████╗███████╗███████║\u001B[0m", // Purple
+                "\u001B[38;5;93m ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝    ╚══════╝   ╚═╝      ╚═╝   ╚══════╝╚══════╝╚══════╝\u001B[0m" // Dark
+                                                                                                                                     // purple
+        };
+        try {
+            for (String line : banner) {
+                for (char c : line.toCharArray()) {
+                    System.out.print(c);
+                    System.out.flush(); // make animation real-time
+                    Thread.sleep(2); // delay per character
+                }
+                System.out.println();
+                Thread.sleep(50); // delay per line
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt(); // restore interrupt status
+            System.out.println("Animation interrupted.");
+        }
+        System.out.println("\u001B[38;5;220m╔════════════════════════╗");
+        System.out.println("\u001B[38;5;214m║       GAME STYLES      ║");
+        System.out.println("\u001B[38;5;220m╠════════════════════════╣");
+        System.out.println("\u001B[38;5;214m║ 1. Local Play          ║");
+        System.out.println("\u001B[38;5;208m║ 2. Play vs AI          ║");
+        System.out.println("\u001B[38;5;202m║ 3. Play Online         ║");
+        System.out.println("\u001B[38;5;129m║ 4. Back                ║");
+        System.out.println("\u001B[38;5;220m╚════════════════════════╝");
+        System.out.println("\u001B[0m");
+
         int styleNumber = 0;
         Scanner sc1 = new Scanner(System.in);
 
@@ -508,15 +647,37 @@ public class Game {
      * 
      */
     public void multiplayerMenu() {
-
+        String[] banner = new String[] {
+                "\u001B[38;5;220m██████╗ ███╗   ██╗██╗     ██╗███╗   ██╗███████╗\u001B[0m", // Yellow
+                "\u001B[38;5;214m██╔═══██╗████╗  ██║██║     ██║████╗  ██║██╔════╝\u001B[0m", // Yellow-orange
+                "\u001B[38;5;208m██║   ██║██╔██╗ ██║██║     ██║██╔██╗ ██║█████╗  \u001B[0m", // Orange
+                "\u001B[38;5;202m██║   ██║██║╚██╗██║██║     ██║██║╚██╗██║██╔══╝  \u001B[0m", // Red-orange
+                "\u001B[38;5;129m╚██████╔╝██║ ╚████║███████╗██║██║ ╚████║███████╗\u001B[0m", // Purple
+                "\u001B[38;5;93m ╚═════╝ ╚═╝  ╚═══╝╚══════╝╚═╝╚═╝  ╚═══╝╚══════╝\u001B[0m" // Dark purple
+        };
+        try {
+            for (String line : banner) {
+                for (char c : line.toCharArray()) {
+                    System.out.print(c);
+                    System.out.flush(); // make animation real-time
+                    Thread.sleep(2); // delay per character
+                }
+                System.out.println();
+                Thread.sleep(50); // delay per line
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt(); // restore interrupt status
+            System.out.println("Animation interrupted.");
+        }
         // chose between host or client
-        System.out.println("=============================");
-        System.out.println("     HOST OR JOIN ON LAN     ");
-        System.out.println("=============================");
-        System.out.println("1. Host");
-        System.out.println("2. Join on LAN");
-        System.out.println("3. Back");
-        System.out.print("Enter your choice (1-3):");
+        System.out.println("\u001B[38;5;220m╔════════════════════════╗");
+        System.out.println("\u001B[38;5;220m║  HOST OR JOIN ON LAN   ║");
+        System.out.println("\u001B[38;5;220m╠════════════════════════╣");
+        System.out.println("\u001B[38;5;214m║ 1. Host                ║");
+        System.out.println("\u001B[38;5;208m║ 2. Join on LAN         ║");
+        System.out.println("\u001B[38;5;202m║ 3. Back                ║");
+        System.out.println("\u001B[38;5;220m╚════════════════════════╝");
+        System.out.print("\u001B[38;5;220mEnter your choice (1-3): \u001B[0m");
 
         int menuChoice = 0;
         Scanner sc1 = new Scanner(System.in);

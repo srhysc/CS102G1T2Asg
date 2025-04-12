@@ -93,6 +93,16 @@ public class SoundPlayer {
         String input;
         float currentVolume = volumeControl.getValue(); // Default volume level
 
+        String banner = """
+        \u001B[38;5;220m██╗   ██╗ ██████╗ ██╗     ██╗   ██╗███╗   ███╗███████╗
+        \u001B[38;5;214m██║   ██║██╔═══██╗██║     ██║   ██║████╗ ████║██╔════╝
+        \u001B[38;5;208m██║   ██║██║   ██║██║     ██║   ██║██╔████╔██║█████╗  
+        \u001B[38;5;202m╚██╗ ██╔╝██║   ██║██║     ██║   ██║██║╚██╔╝██║██╔══╝  
+        \u001B[38;5;129m ╚████╔╝ ╚██████╔╝███████╗╚██████╔╝██║ ╚═╝ ██║███████╗
+        \u001B[38;5;93m  ╚═══╝   ╚═════╝ ╚══════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝\u001B[0m
+        """;
+
+        System.out.println(banner);
         System.out.println("Volume control: Type '+' to increase, '-' to decrease,'m' to mute, 'q' to quit volume menu.");
         while (true) {
             input = sc.nextLine();

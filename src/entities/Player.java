@@ -5,7 +5,8 @@ import java.util.*;
 
 /**
  * The Player class is to represent each player in the game.
- * It keeps track of their hand (cards they're holding), the cards they’ve collected,
+ * It keeps track of their hand (cards they're holding), the cards they’ve
+ * collected,
  * their score, and handles stuff for online games like input/output streams.
  */
 public class Player implements Serializable {
@@ -14,10 +15,9 @@ public class Player implements Serializable {
     private ArrayList<Card> collected;
     private int score;
 
-    //for online
+    // for online
     private transient ObjectOutputStream out;
     private transient ObjectInputStream in;
-
 
     /**
      * Constructs a new player with the given name.
@@ -30,7 +30,7 @@ public class Player implements Serializable {
         this.collected = new ArrayList<>();
     }
 
-    public Player(String name, ObjectOutputStream output, ObjectInputStream input){
+    public Player(String name, ObjectOutputStream output, ObjectInputStream input) {
         this.name = name;
         this.hand = new ArrayList<>();
         this.collected = new ArrayList<>();
@@ -100,8 +100,6 @@ public class Player implements Serializable {
         return name;
     }
 
-   
-
     public int getScore() {
         return score;
     }
@@ -109,8 +107,6 @@ public class Player implements Serializable {
     public void setScore(int score) {
         this.score = score;
     }
-
-    
 
     public ObjectOutputStream getOutputSteam() {
         return out;
@@ -121,12 +117,13 @@ public class Player implements Serializable {
     }
 
     /**
-     * Checks if the player has collected at least one card from *each* of the six colours.
+     * Checks if the player has collected at least one card from *each* of the six
+     * colours.
      * Used for ending the game.
      *
      * @return True if the player has all 6 colours, false otherwise
      */
-    public boolean checkColours(){
+    public boolean checkColours() {
         boolean hasRed = false;
         boolean hasBlue = false;
         boolean hasGreen = false;
@@ -134,28 +131,28 @@ public class Player implements Serializable {
         boolean hasGrey = false;
         boolean hasOrange = false;
 
-        for(Card card : getCollected()){
-            if(card.toString().startsWith("Red")){
+        for (Card card : getCollected()) {
+            if (card.toString().startsWith("Red")) {
                 hasRed = true;
             }
-            if(card.toString().startsWith("Blue")){
+            if (card.toString().startsWith("Blue")) {
                 hasBlue = true;
             }
-            if(card.toString().startsWith("Purple")){
+            if (card.toString().startsWith("Purple")) {
                 hasPurple = true;
             }
-            if(card.toString().startsWith("Green")){
+            if (card.toString().startsWith("Green")) {
                 hasGreen = true;
             }
-            if(card.toString().startsWith("Grey")){
+            if (card.toString().startsWith("Grey")) {
                 hasGrey = true;
             }
-            if(card.toString().startsWith("Orange")){
+            if (card.toString().startsWith("Orange")) {
                 hasOrange = true;
             }
-            
+
         }
-        
+
         // System.out.println(hasRed);
         // System.out.println(hasBlue);
         // System.out.println(hasGreen);
@@ -166,7 +163,8 @@ public class Player implements Serializable {
     }
 
     /**
-     * Gives a String representation in the format {name} | Hand: {hand} + | Collected: {collected}
+     * Gives a String representation in the format {name} | Hand: {hand} + |
+     * Collected: {collected}
      * 
      * @return a quick summary of the player — name, hand, and collected cards.
      */
@@ -177,7 +175,7 @@ public class Player implements Serializable {
 
     // // Helper method to apply card formatting properly
     // public String formatCardList(List<Card> cards) {
-    //     return cards.stream().map(Card::toString).collect(Collectors.joining(" "));
+    // return cards.stream().map(Card::toString).collect(Collectors.joining(" "));
     // }
 
 }

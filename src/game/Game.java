@@ -27,6 +27,7 @@ public class Game {
     private Difficulty difficulty;
     private boolean isTwoPlayerGame;
     private HighScoreDatabase highScore = new HighScoreDatabase();
+
     /**
      * Constructs a game.
      *
@@ -158,7 +159,7 @@ public class Game {
 
                 Gameplay (On Your Turn):
                 1. Play 1 card from your hand to the end of the parade line.
-                2. Count how many cards are in the parade line before your played card. Let’s say it’s X.
+                2. Count how many cards are in the parade line before your played card. Let's say it's X.
                 3. From the X cards before the played card, check if any must be taken:
                    - A card must be taken if:
                      - Its color matches the played card, or
@@ -452,8 +453,6 @@ public class Game {
      * 
      * @param audioFile The music to be played
      */
-
-
 
     /**
      * Allows user to choose between Host or Client.

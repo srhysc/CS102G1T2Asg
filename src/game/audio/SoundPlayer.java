@@ -42,7 +42,7 @@ public class SoundPlayer {
         String input;
         float currentVolume = volumeControl.getValue(); // Default volume level
 
-        System.out.println("Volume control: Type '+' to increase, '-' to decrease, 'q' to quit volume menu.");
+        System.out.println("Volume control: Type '+' to increase, '-' to decrease,'m' to mute, 'q' to quit volume menu.");
         while (true) {
             input = sc.nextLine();
             if (input.equals("+")) {
@@ -55,11 +55,16 @@ public class SoundPlayer {
                 volumeControl.setValue(currentVolume);
                 GameClient.clearConsole();
                 System.out.println("Decreased volume to: " + currentVolume + ", press 'q' to quit back to main menu.");
+            } else if (input.equals("m")){
+                volumeControl.setValue(volumeControl.getMinimum());
+                GameClient.clearConsole();
+                System.out.println("Decreased volume to: " + currentVolume + ", press 'q' to quit back to main menu.");
+            
             } else if (input.equals("q")) {
                 GameClient.clearConsole();
                 game.printMenu();
             } else {
-                System.out.println("Invalid input. Use '+', '-', or 'q'.");
+                System.out.println("Invalid input. Use '+', '-', 'm' or 'q'.");
             }
         }
 

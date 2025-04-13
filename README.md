@@ -48,11 +48,11 @@ Engage in **Online Multiplayer Mode**, where you can either **host a game** or *
 
 #### Host
 
-As the host, a default port (`1234`) will be assigned. Simply specify the number of players to create a game lobby.
+As the host, simply set up a server and specify the number of players to create a game lobby. Then share your IP address to your friends on LAN!
 
 #### Join on LAN
 
-Players can join a LAN session **only if a server is already active**. If no host is detected, the player will be redirected to the **Main Menu**.
+Players can join a LAN session **only if a server is already active** using the hosts IP Address.
 
 ## Tracking Wins and Scores
 

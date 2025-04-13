@@ -85,7 +85,7 @@ public class Player implements Serializable {
         String formattedHand = "";
         for (Card card : hand) {
             int idx = hand.indexOf(card) + 1;
-            formattedHand += card + " (" + idx + ")" + " ";
+            formattedHand += "(" + idx + ") " + card + " " ;
         }
         return "[" + formattedHand + "]";
     }

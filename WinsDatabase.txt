@@ -1,5 +1,6 @@
+Player: AI Jason Chan, Wins: 1
 Player: Cheesecake, Wins: 10
 Player: Ethan, Wins: 2
-Player: AI Jason Chan, Wins: 1
 Player: jordan, Wins: 5
+Player: ok, Wins: 1
 Player: Hayyun, Wins: 1

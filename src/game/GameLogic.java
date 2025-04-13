@@ -215,6 +215,24 @@ public class GameLogic {
         endGame(playerList, isTwoPlayerGame);
     }
 
+
+
+    /**
+     * Retrieves a valid card index from the user through input validation.
+     * This method continuously prompts the user to enter a card index until user inputs a valid number 
+     * within the correct range. 
+     * <p> It ensures that the input:
+     * <ul>
+     * <li> Is not empty or composed of only spaces.</li>
+     * <li> Does not contain leading or trailing spaces.</li>
+     * <li> Is a valid integer.</li>
+     * <li> Falls within the acceptable index range for the player's hand.</li>
+     * </ul>
+     * 
+     * @param sc Scanner object for reading user input
+     * @param currentPlayerHandSize The number of cards in the player's hand
+     * @return The valid card index (0-based) selected by the user
+     */
     public static int getValidCardIndex(Scanner sc, int currentPlayerHandSize) {
         int validCardIndex = 0;
 

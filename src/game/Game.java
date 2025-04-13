@@ -333,7 +333,7 @@ public class Game {
             boolean alreadyExists = false;
 
             while (playerNames == "") {
-                System.out.println("Name cannot be blank");
+                System.out.println("Name cannot be blank!");
                 System.out.print("Enter player " + currentNumber + "'s name: ");
                 playerNames = sc.nextLine();
             }

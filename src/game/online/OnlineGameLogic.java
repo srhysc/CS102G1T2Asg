@@ -351,9 +351,9 @@ public class OnlineGameLogic {
                             System.out.println("Please discard 2 cards");
 
                             while (true) {
-                                int firstCardIndex = Scoring.getValidCardIndex(sc, hand.size(),
+                                int firstCardIndex = Scoring.getValidCardIndexToDiscard(sc, hand.size(),
                                         "Choose the number of the 1st card to discard: ");
-                                int secondCardIndex = Scoring.getValidCardIndex(sc, hand.size(),
+                                int secondCardIndex = Scoring.getValidCardIndexToDiscard(sc, hand.size(),
                                         "Choose the number of the 2nd card to discard: ");
 
                                 if (firstCardIndex != secondCardIndex) {

@@ -127,7 +127,7 @@ public class Scoring {
                 System.out.println();
 
                 // Discard first card
-                int firstCardIndex = getValidCardIndex(sc, hand.size(),
+                int firstCardIndex = getValidCardIndexToDiscard(sc, hand.size(),
                         "Choose the number of the 1st card to discard: ");
                 Card discardedFirstCard = hand.remove(firstCardIndex);
                 System.out.println("\n You discarded: " + discardedFirstCard.getDetails());
@@ -140,7 +140,7 @@ public class Scoring {
                 System.out.println();
 
                 // Discard second card
-                int secondCardIndex = getValidCardIndex(sc, hand.size(),
+                int secondCardIndex = getValidCardIndexToDiscard(sc, hand.size(),
                         "Choose the number of the 2nd card to discard: ");
                 Card discardedSecondCard = hand.remove(secondCardIndex);
                 System.out.println("\n You discarded: " + discardedSecondCard.getDetails() + "\n");
@@ -384,6 +384,45 @@ public class Scoring {
 
     }
 
+    /**
+     * 
+     * Helper method to get a valid card index from user input.
+     * Keeps asking until the user gives a number within range.
+     * Adjusts for player input from counting from 1.
+     * 
+     * @param sc      Scanner to read user input
+     * @param maxSize max number allowed (hand size)
+     * @param prompt  message to show to the user
+     * @return valid index (adjusted to start counting from 0)
+     */
+    public static int getValidCardIndexToDiscard(Scanner sc, int maxSize, String prompt) {
+        int index;
+        do {
+
+            while (true) {
+                System.out.print(prompt);
+
+                if (!sc.hasNextInt()) {
+                    sc.nextLine(); // clear the invalid input
+                    System.out.println("Card index must be a number");
+                    continue;
+                }
+
+                index = sc.nextInt();
+                sc.nextLine(); // clear the newline character after nextInt
+
+                if (index < 1 || index > maxSize) {
+                    System.out.println("Invalid choice! Please select a valid card number.");
+                    continue;
+                }
+
+                break; // valid input, exit loop
+            }
+
+        } while (index < 1 || index > maxSize);
+        return index - 1; // we count from 0 while player counts from 1
+    }
+
     /*
      * public static Player calculateScores(ArrayList<Player> players, boolean
      * isTwoPlayerGame) {
@@ -549,43 +588,5 @@ public class Scoring {
      * 
      * }
      */
-
-    /**
-     * 
-     * Helper method to get a valid card index from user input.
-     * Keeps asking until the user gives a number within range.
-     * Adjusts for player input from counting from 1.
-     * 
-     * @param sc      Scanner to read user input
-     * @param maxSize max number allowed (hand size)
-     * @param prompt  message to show to the user
-     * @return valid index (adjusted to start counting from 0)
-     */
-    public static int getValidCardIndex(Scanner sc, int maxSize, String prompt) {
-        int index;
-        do {
-
-            while (true) {
-                System.out.print(prompt);
-
-                if (!sc.hasNextInt()) {
-                    sc.nextLine(); // clear the invalid input
-                    System.out.println("Card index must be a number");
-                    continue;
-                }
-
-                index = sc.nextInt();
-                sc.nextLine(); // clear the newline character after nextInt
-
-                if (index < 1 || index > maxSize) {
-                    System.out.println("Invalid choice! Please select a valid card number.");
-                    continue;
-                }
-
-                break; // valid input, exit loop
-            }
-
-        } while (index < 1 || index > maxSize);
-        return index - 1; // we count from 0 while player counts from 1
-    }
 }
+    

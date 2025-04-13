@@ -110,7 +110,7 @@ public class GameLogic {
 
                 // Validate user input: ensure it's a number, not empty, does not have leading and trailing
                 // spaces and within valid card index range
-                cardIndex = getValidCardIndex(sc, currentPlayer.getHand().size());
+                cardIndex = getValidCardIndexToPlay(sc, currentPlayer.getHand().size());
 
                 
                 // Play the selected card and resolve the parade effect
@@ -192,7 +192,7 @@ public class GameLogic {
 
                 // Validate user input: ensure it's a number, not empty, does not have leading and trailing
                 // spaces and within valid card index range
-                cardIndex = getValidCardIndex(sc, currentPlayer.getHand().size());
+                cardIndex = getValidCardIndexToPlay(sc, currentPlayer.getHand().size());
 
 
                 // Play selected card and resolve parade effect
@@ -233,8 +233,8 @@ public class GameLogic {
      * @param currentPlayerHandSize The number of cards in the player's hand
      * @return The valid card index (0-based) selected by the user
      */
-    public static int getValidCardIndex(Scanner sc, int currentPlayerHandSize) {
-        int validCardIndex = 0;
+    public static int getValidCardIndexToPlay(Scanner sc, int currentPlayerHandSize) {
+        int index = 0;
 
         while (true) {
             System.out.print("Choose a card index (1-" + currentPlayerHandSize + "): ");
@@ -260,9 +260,9 @@ public class GameLogic {
                 continue;
             }
             
-            validCardIndex = number - 1;
+            index = number - 1;
             
-            if (validCardIndex < 0 || validCardIndex >= currentPlayerHandSize) {
+            if (index < 0 || index >= currentPlayerHandSize) {
                 System.out.println("Invalid card number! Please choose again.");
                 continue;
             }
@@ -270,7 +270,7 @@ public class GameLogic {
             break; 
         }
 
-        return validCardIndex;
+        return index;
     }
 
     /**

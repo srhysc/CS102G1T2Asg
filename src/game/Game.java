@@ -445,6 +445,7 @@ public class Game {
             this.setDifficulty(Difficulty.MEDIUM);
         } else if (levelNo == 3) {
             this.setDifficulty(Difficulty.HARD);
+            SoundPlayer.playSound("HardBoss");
         } else if (levelNo == 4) {
             startGame();
         }

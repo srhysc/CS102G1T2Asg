@@ -332,10 +332,10 @@ public class Game {
             String playerNames = sc.nextLine().trim();
             boolean alreadyExists = false;
 
-            while (playerNames == "") {
-                System.out.println("Name cannot be blank!");
+            while (playerNames.isEmpty()) {
+                System.out.println("Name cannot be blank! Please choose a different name");
                 System.out.print("Enter player " + currentNumber + "'s name: ");
-                playerNames = sc.nextLine();
+                playerNames = sc.nextLine().trim();
             }
 
             for (Player player : playerList) {
@@ -350,6 +350,12 @@ public class Game {
                 System.out.print("Enter player " + currentNumber + "'s name: ");
                 playerNames = sc.nextLine().trim();
 
+                while (playerNames.isBlank()) { 
+                    System.out.println("Name cannot be blank! Please choose a different name");
+                    System.out.print("Enter player " + currentNumber + "'s name: ");
+                    playerNames = sc.nextLine().trim();
+                }
+        
                 alreadyExists = false;
                 for (Player player : playerList) {
                     if (player.getName().equalsIgnoreCase(playerNames)) {

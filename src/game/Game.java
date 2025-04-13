@@ -26,6 +26,37 @@ public class Game {
     private HighScoreDatabase highScore = new HighScoreDatabase();
 
     /**
+     * Prints a banner with a typing animation effect.
+     * <p>
+     * Each character in the banner is printed with a slight delay to simulate
+     * real-time typing.
+     * After each line is printed, a short pause is added before printing the next
+     * line.
+     * This method also ensures the output is flushed immediately to reflect the
+     * animation in real time.
+     * </p>
+     *
+     * @param banner An array of strings where each string represents a line in the
+     *               banner.
+     */
+    public static void printBanner(String[] banner) {
+        try {
+            for (String line : banner) {
+                for (char c : line.toCharArray()) {
+                    System.out.print(c);
+                    System.out.flush(); // make animation real-time
+                    Thread.sleep(2); // delay per character
+                }
+                System.out.println();
+                Thread.sleep(50); // delay per line
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt(); // restore interrupt status
+            System.out.println("Animation interrupted.");
+        }
+    }
+
+    /**
      * Constructs a game.
      *
      * @param playerList The list of players playing the game
@@ -97,20 +128,7 @@ public class Game {
                 "\u001B[38;5;93m╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═════╝ ╚══════╝\u001B[0m" // Dark purple
         };
 
-        try {
-            for (String line : banner) {
-                for (char c : line.toCharArray()) {
-                    System.out.print(c);
-                    System.out.flush(); // make animation real-time
-                    Thread.sleep(2); // delay per character
-                }
-                System.out.println();
-                Thread.sleep(50); // delay per line
-            }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt(); // restore interrupt status
-            System.out.println("Animation interrupted.");
-        }
+        Game.printBanner(banner);
 
         System.out.println("\u001B[38;5;220m┌────────────────────────────────────────────┐");
         System.out.println(
@@ -286,20 +304,8 @@ public class Game {
                 "\u001B[38;5;93m╚═╝       ╚═══╝  ╚═╝     \u001B[0m" // Dark purple
         };
 
-        try {
-            for (String line : banner) {
-                for (char c : line.toCharArray()) {
-                    System.out.print(c);
-                    System.out.flush(); // make animation real-time
-                    Thread.sleep(2); // delay per character
-                }
-                System.out.println();
-                Thread.sleep(50); // delay per line
-            }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt(); // restore interrupt status
-            System.out.println("Animation interrupted.");
-        }
+        Game.printBanner(banner);
+
         Scanner sc = new Scanner(System.in);
         int noOfPlayers = 0;
 
@@ -350,12 +356,12 @@ public class Game {
                 System.out.print("Enter player " + currentNumber + "'s name: ");
                 playerNames = sc.nextLine().trim();
 
-                while (playerNames.isBlank()) { 
+                while (playerNames.isBlank()) {
                     System.out.println("Name cannot be blank! Please choose a different name");
                     System.out.print("Enter player " + currentNumber + "'s name: ");
                     playerNames = sc.nextLine().trim();
                 }
-        
+
                 alreadyExists = false;
                 for (Player player : playerList) {
                     if (player.getName().equalsIgnoreCase(playerNames)) {
@@ -404,20 +410,8 @@ public class Game {
                 "\u001B[38;5;129m██║      ╚████╔╝ ███████╗\u001B[0m" // Purple
         };
 
-        try {
-            for (String line : banner) {
-                for (char c : line.toCharArray()) {
-                    System.out.print(c);
-                    System.out.flush(); // make animation real-time
-                    Thread.sleep(2); // delay per character
-                }
-                System.out.println();
-                Thread.sleep(50); // delay per line
-            }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt(); // restore interrupt status
-            System.out.println("Animation interrupted.");
-        }
+        Game.printBanner(banner);
+
         System.out.println("\u001B[38;5;220m╔════════════════════════╗");
         System.out.println("\u001B[38;5;214m║    DIFFICULTY LEVEL    ║");
         System.out.println("\u001B[38;5;220m╠════════════════════════╣");
@@ -473,20 +467,8 @@ public class Game {
                 "\u001B[38;5;129m██║      ╚████╔╝ ███████╗\u001B[0m" // Purple
         };
 
-        try {
-            for (String line : banner) {
-                for (char c : line.toCharArray()) {
-                    System.out.print(c);
-                    System.out.flush(); // make animation real-time
-                    Thread.sleep(2); // delay per character
-                }
-                System.out.println();
-                Thread.sleep(50); // delay per line
-            }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt(); // restore interrupt status
-            System.out.println("Animation interrupted.");
-        }
+        Game.printBanner(banner);
+
         Scanner sc = new Scanner(System.in);
         String humanName; // Variable declaration outside the loop
 
@@ -585,20 +567,8 @@ public class Game {
                 "\u001B[38;5;93m ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝    ╚══════╝   ╚═╝      ╚═╝   ╚══════╝╚══════╝╚══════╝\u001B[0m" // Dark
                                                                                                                                      // purple
         };
-        try {
-            for (String line : banner) {
-                for (char c : line.toCharArray()) {
-                    System.out.print(c);
-                    System.out.flush(); // make animation real-time
-                    Thread.sleep(2); // delay per character
-                }
-                System.out.println();
-                Thread.sleep(50); // delay per line
-            }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt(); // restore interrupt status
-            System.out.println("Animation interrupted.");
-        }
+        Game.printBanner(banner);
+
         System.out.println("\u001B[38;5;220m╔════════════════════════╗");
         System.out.println("\u001B[38;5;214m║       GAME STYLES      ║");
         System.out.println("\u001B[38;5;220m╠════════════════════════╣");
@@ -673,20 +643,8 @@ public class Game {
                 "\u001B[38;5;129m╚██████╔╝██║ ╚████║███████╗██║██║ ╚████║███████╗\u001B[0m", // Purple
                 "\u001B[38;5;93m ╚═════╝ ╚═╝  ╚═══╝╚══════╝╚═╝╚═╝  ╚═══╝╚══════╝\u001B[0m" // Dark purple
         };
-        try {
-            for (String line : banner) {
-                for (char c : line.toCharArray()) {
-                    System.out.print(c);
-                    System.out.flush(); // make animation real-time
-                    Thread.sleep(2); // delay per character
-                }
-                System.out.println();
-                Thread.sleep(50); // delay per line
-            }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt(); // restore interrupt status
-            System.out.println("Animation interrupted.");
-        }
+        Game.printBanner(banner);
+
         // chose between host or client
         System.out.println("\u001B[38;5;220m╔════════════════════════╗");
         System.out.println("\u001B[38;5;220m║  HOST OR JOIN ON LAN   ║");

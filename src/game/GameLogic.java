@@ -212,7 +212,7 @@ public class GameLogic {
 
                     if (!sc.hasNextInt()) {
                         sc.nextLine(); // Clear invalid input
-                        System.out.println("Card index must be a number");
+                        System.out.println("Card index must be a number ! Please choose again");
                         continue;
                     }
 

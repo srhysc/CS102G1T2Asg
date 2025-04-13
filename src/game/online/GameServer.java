@@ -34,14 +34,6 @@ import java.util.*;
  * <li> {@link OnlineGameLogic} – Contains the core game logic for online gameplay.</li>
  * </ul>
  *
-<<<<<<< Updated upstream
- * <p> Assumptions:
- * <ul>
- * <li> The server is hosted on a machine with a valid network configuration.</li>
- * <li> Players connect using the provided IP address and port.</li>
- * <li> The game ends when all players disconnect or the game logic concludes.</li>
- * </ul>
-=======
  * Key Features:
  * - Supports multiple players (2-6) in an online game.
  * - Handles player disconnections gracefully.
@@ -60,7 +52,6 @@ import java.util.*;
  * - The game ends when all players disconnect or the game logic concludes.
  * - Players who connect are also running the same game platform and not from their own code.
  * - The players joining are on the same network 
->>>>>>> Stashed changes
  */
 
 public class GameServer {
@@ -239,9 +230,22 @@ public class GameServer {
      * @throws ClassNotFoundException If an error occurs while reading player data.
      */
     private int setupLobby(Scanner sc, String hostPLayerName, String serverIP) throws IOException, ClassNotFoundException{
+
         System.out.println("Select the number of players (2-6): ");
-        int numberOfPlayers = sc.nextInt();
-        sc.nextLine();
+        int numberOfPlayers = 0;
+
+        while (numberOfPlayers < 2 || numberOfPlayers > 6) {
+            if (sc.hasNextInt()) {
+                numberOfPlayers = sc.nextInt();
+                sc.nextLine(); // Consume the newline character
+                if (numberOfPlayers < 2 || numberOfPlayers > 6) {
+                    System.out.println("Invalid input. Please enter a number between 2 and 6:");
+                }
+            } else {
+                System.out.println("Invalid input. Please enter a number between 2 and 6:");
+                sc.nextLine(); // Clear the invalid input
+            }
+        }
 
         //menu for server
         clearConsole();

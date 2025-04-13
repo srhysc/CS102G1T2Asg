@@ -397,33 +397,7 @@ public class Scoring {
      */
     public static int getValidCardIndexToDiscard(Scanner sc, int maxSize, String prompt) {
         int index;
-        // do {
-
-        //     while (true) {
-        //         System.out.print(prompt);
-
-        //         if (!sc.hasNextInt()) {
-        //             sc.nextLine(); // clear the invalid input
-        //             System.out.println("Card index must be a number");
-        //             continue;
-        //         }
-
-        //         index = sc.nextInt();
-        //         sc.nextLine(); // clear the newline character after nextInt
-
-        //         if (index < 1 || index > maxSize) {
-        //             System.out.println("Invalid choice! Please select a valid card number.");
-        //             continue;
-        //         }
-
-        //         break; // valid input, exit loop
-        //     }
-
-        // } while (index < 1 || index > maxSize);
-        // return index - 1; // we count from 0 while player counts from 1
-
-
-        // Alternative
+        
         while (true) {
             System.out.print(prompt);
             

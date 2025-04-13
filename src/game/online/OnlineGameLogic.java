@@ -47,6 +47,9 @@ import game.TurnManager;
  * <ul>
  * <li> The server is running and all players are connected before the game starts.</li>
  * <li> The game ends when all non-host players disconnect or the game logic concludes.</li>
+ * <li> Players in the game are actively playing </li>
+ * <li> Assumes that the server is secure </li>
+ * <li> Assumes that the network is not held back by firewalls, etc </li>
  * </ul>
  */
 

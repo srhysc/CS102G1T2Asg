@@ -64,6 +64,7 @@ public class ComputerPlayer extends Player {
                 chosenCard = chooseBestCard(parade); 
             }
         }
+
         getHand().remove(chosenCard); 
         System.out.print(getName() + " is thinking");
         for (int i = 0; i < 3; i++) {
@@ -79,7 +80,7 @@ public class ComputerPlayer extends Player {
         String colour = "\u001B[38;5;146m"; // Violet-ish  colour
         String reset = "\u001B[0m";
         String phrase = "";
-        // if (super.getName() == "AI Yeow Leong") {
+        
         if ("AI Yeow Leong".equals(super.getName())) {
             double rand = Math.random();
             if (rand < 0.2) {

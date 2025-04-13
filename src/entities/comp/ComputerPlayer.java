@@ -79,7 +79,8 @@ public class ComputerPlayer extends Player {
         String colour = "\u001B[38;5;146m"; // Violet-ish  colour
         String reset = "\u001B[0m";
         String phrase = "";
-        if (super.getName() == "AI Yeow Leong") {
+        // if (super.getName() == "AI Yeow Leong") {
+        if ("AI Yeow Leong".equals(super.getName())) {
             double rand = Math.random();
             if (rand < 0.2) {
                 phrase = "Let's C... you are losing!";
@@ -94,7 +95,7 @@ public class ComputerPlayer extends Player {
             } else {
                 phrase = "**Gasp** MAGIC... Yeow Leong the magician!";
             }
-        } else if (super.getName() == "AI Jason Chan") {
+        } else if ("AI Jason Chan".equals(super.getName())) {
             double rand = Math.random();
             if (rand < 0.2) {
                 phrase = "Don't reply to this move unless you have any questions";
@@ -107,7 +108,7 @@ public class ComputerPlayer extends Player {
             } else {
                 phrase = "Can students claim bragging rights and outsmart a prof?";
             }
-        } else if (super.getName() == "AI VeryEvilCuteBunny") {
+        } else if ("AI VeryEvilCuteBunny".equals(super.getName())) {
             double rand = Math.random();
             if (rand < 0.2) {
                 phrase = "What did the bunny say? I'm winning!";

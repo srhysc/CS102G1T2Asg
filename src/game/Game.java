@@ -581,20 +581,50 @@ public class Game {
 
         int styleNumber = 0;
         Scanner sc1 = new Scanner(System.in);
+        boolean confirmed = false;
 
-        while (!(styleNumber >= 1 && styleNumber <= 4)) {
-            try {
-                System.out.print("Enter your choice (1-4): ");
-                String chosenStyle = sc1.nextLine();
-                styleNumber = Integer.parseInt(chosenStyle);
-                if (styleNumber < 1 || styleNumber > 4) {
+        while (!confirmed) {
+            while (!(styleNumber >= 1 && styleNumber <= 4)) {
+                try {
+                    System.out.print("Enter your choice (1-4): ");
+                    String chosenStyle = sc1.nextLine();
+                    styleNumber = Integer.parseInt(chosenStyle);
+                    if (styleNumber < 1 || styleNumber > 4) {
+                        System.out.println("Invalid game style! Please choose again");
+                    }
+                } catch (NumberFormatException e) {
                     System.out.println("Invalid game style! Please choose again");
                 }
-
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid game style! Please choose again");
             }
 
+            // Ask for confirmation
+            if (styleNumber == 4) {
+                confirmed = true;
+            } else {
+                String optionChosen = "";
+                switch (styleNumber) {
+                    case (1):
+                        optionChosen = "Local Play";
+                        break;
+                    case (2):
+                        optionChosen = "Play vs AI";
+                        break;
+                    case (3):
+                        optionChosen = "Play Online";
+                        break;
+                }
+
+                System.out.print("You chose " + optionChosen + ". Confirm? (Y/N): ");
+                String confirm = sc1.nextLine().trim().toUpperCase();
+
+                if (confirm.equals("Y")) {
+                    confirmed = true;
+                } else {
+                    styleNumber = -1; // Reset so user can re-enter
+                    System.out.println("Let's choose again.");
+                    System.out.println();
+                }
+            }
         }
 
         GameClient.clearConsole();

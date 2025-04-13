@@ -81,7 +81,18 @@ public class GameLogic {
 
             System.out.println("\n\n" + currentPlayer.getName() + "'s turn!");
             System.out.println("Deck num : " + deck.getSize());
-            System.out.println("Parade: " + Parade.getParadeRow());
+            
+            // Changes parade into a string and add in a (place card here) at the end
+            // so users will know where the new card will be placed
+            String paradeRowString = Parade.getParadeRow().toString();
+            if (paradeRowString.endsWith("]")) {
+                paradeRowString = paradeRowString.substring(0, paradeRowString.length() - 1)
+                                + ", (place card here)]";
+            }
+
+            // Now print the updated string
+            System.out.println("Parade: " + paradeRowString);
+
 
             // If the player is a computer
             if (currentPlayer instanceof ComputerPlayer) {
@@ -103,7 +114,7 @@ public class GameLogic {
 
                     if (!sc.hasNextInt()) {
                         sc.nextLine(); // Clear invalid input
-                        System.out.println("Card index must be a number");
+                        System.out.println("Card index must be a number ! Please choose again");
                         continue;
                     }
 

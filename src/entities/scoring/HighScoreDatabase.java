@@ -14,19 +14,25 @@ import game.online.GameClient;
  * updates back to the file when a player gets a new win. The top players' scores are displayed
  * with a little flair (gold, silver, bronze) for the first three positions.
  * 
- * The main operations in this class:
- * - {@code loadScores()} loads the existing scores from the file when the game starts.
- * - {@code saveScores()} saves the updated scores back to the file.
- * - {@code updateHighScore(String playerName)} increases a player's win count and saves it.
- * - {@code displayHighScores()} shows the current high scores, highlighting the top 3.
+ * <p> The main operations in this class:
+ * <ul>
+ * <li> {@code loadScores()} loads the existing scores from the file when the game starts.</li> 
+ * <li> {@code saveScores()} saves the updated scores back to the file.</li> 
+ * <li> {@code updateHighScore(String playerName)} increases a player's win count and saves it.</li> 
+ * <li> {@code displayHighScores()} shows the current high scores, highlighting the top 3.</li> 
+ * </ul>
  * 
- * File format:
- * - Each line in the "WinsDatabase.txt" file represents one player's score in this format:
- *   "Player: [playerName], Wins: [winsCount]".
+ * <p> File format:
+ * <ul>
+ * <li> Each line in the "WinsDatabase.txt" file represents one player's score in this format:
+ *   "Player: [playerName], Wins: [winsCount]".</li> 
+ * </ul>
  * 
- * Notes:
- * - CPU players are ignored in the high score list.
- * - The scores are sorted in descending order, with the top player shown first in gold.
+ * <p> Notes:
+ * <ul>
+ * <li> CPU players are ignored in the high score list.</li> 
+ * <li> The scores are sorted in descending order, with the top player shown first in gold.</li> 
+ * </ul>
  */
 public class HighScoreDatabase {
     private static final String FILE_NAME = "WinsDatabase.txt";
@@ -97,9 +103,9 @@ public class HighScoreDatabase {
      * it increments their win count. If the player is not found in the list, a new entry is created with
      * one win. The updated scores are saved back to the file.
      * 
-     * Note: CPU players are ignored and will not have their scores updated.
+     * <p> Note: CPU players are ignored and will not have their scores updated.
      *
-     * @param playerName The name of the player whose score needs to be updated
+     * @param winner The name of the player whose score needs to be updated
      */
     public void updateHighScore(Player winner) {
         HighScore highScore = highScores.get(winner.getName());
@@ -120,12 +126,14 @@ public class HighScoreDatabase {
      * top 3 players in a colorful format (gold, silver, bronze) for first, second, and third place,
      * respectively. The rest of the players are displayed normally.
      * 
-     * The display uses ANSI escape codes for color:
-     * - Gold for 1st place
-     * - Silver for 2nd place
-     * - Bronze for 3rd place
+     * <p> The display uses ANSI escape codes for color:
+     * <ul>
+     * <li> Gold for 1st place</li> 
+     * <li> Silver for 2nd place</li> 
+     * <li> Bronze for 3rd place</li> 
+     * </ul>
      * 
-     * It also handles printing the players with their names and win counts in the sorted order.
+     * <p> It also handles printing the players with their names and win counts in the sorted order.
      */
     public void displayHighScores() {
         // Create a list from the highScores values and sort by the number of wins

@@ -17,29 +17,37 @@ import game.TurnManager;
  * The OnlineGameLogic class manages the core game logic for an online multiplayer game.
  * It handles player turns, game state updates, and communication between the server and clients.
  *
- * Key Responsibilities:
- * - Manage the flow of the game, including player turns and game-ending conditions.
- * - Handle player disconnections and adjust the game state accordingly.
- * - Broadcast game updates and messages to all connected players.
- * - Validate and process player inputs, both local and remote.
+ * <p> Key Responsibilities:
+ * <ul>
+ * <li> Manage the flow of the game, including player turns and game-ending conditions.</li>
+ * <li> Handle player disconnections and adjust the game state accordingly.</li>
+ * <li> Broadcast game updates and messages to all connected players.</li>
+ * <li> Validate and process player inputs, both local and remote.</li>
+ * </ul>
  *
- * Key Features:
- * - Supports interactive gameplay for multiple players in an online environment.
- * - Handles the final round and endgame logic, including score calculation.
- * - Provides utility methods for broadcasting messages and managing player input.
- * - Ensures synchronization between the server and clients during gameplay.
+ * <p> Key Features:
+ * <ul>
+ * <li> Supports interactive gameplay for multiple players in an online environment.</li>
+ * <li> Handles the final round and endgame logic, including score calculation.</li>
+ * <li> Provides utility methods for broadcasting messages and managing player input.</li>
+ * <li> Ensures synchronization between the server and clients during gameplay.</li>
+ * </ul>
  *
- * Dependencies:
- * - {@link Deck} – Represents the deck of cards used in the game.
- * - {@link Player} – Represents each player in the game.
- * - {@link TurnManager} – Manages the turn order of players.
- * - {@link Parade} – Handles the parade row and card removal logic.
- * - {@link Scoring} – Calculates scores and determines the winner.
- * - {@link SocketPacket} – Facilitates communication between the server and clients.
+ * <p> Dependencies:
+ * <ul>
+ * <li> {@link Deck} – Represents the deck of cards used in the game.</li>
+ * <li> {@link Player} – Represents each player in the game.</li>
+ * <li> {@link TurnManager} – Manages the turn order of players.</li>
+ * <li> {@link Parade} – Handles the parade row and card removal logic.</li>
+ * <li> {@link Scoring} – Calculates scores and determines the winner.</li>
+ * <li> {@link SocketPacket} – Facilitates communication between the server and clients.</li>
+ * </ul>
  *
- * Assumptions:
- * - The server is running and all players are connected before the game starts.
- * - The game ends when all non-host players disconnect or the game logic concludes.
+ * <p> Assumptions:
+ * <ul>
+ * <li> The server is running and all players are connected before the game starts.</li>
+ * <li> The game ends when all non-host players disconnect or the game logic concludes.</li>
+ * </ul>
  */
 
 public class OnlineGameLogic {
@@ -172,11 +180,13 @@ public class OnlineGameLogic {
          * environment.
          * Ensures all players take their final turns and resolves the game state.
          *
-         * Responsibilities:
-         * - Broadcast final round announcements and updates to all players.
-         * - Process player moves during the final round.
-         * - Handle player disconnections gracefully and adjust the game state
-         * accordingly.
+         * <p> Responsibilities:
+         * <ul>
+         * <li> Broadcast final round announcements and updates to all players.</li>
+         * <li> Process player moves during the final round.</li>
+         * <li> Handle player disconnections gracefully and adjust the game state.
+         * accordingly.</li>
+         * </ul>
          *
          * @param deck            The {@link Deck} object representing the deck of cards
          *                        used in the game.
@@ -291,12 +301,14 @@ public class OnlineGameLogic {
          * Processes the endgame logic, including discarding cards and calculating scores.
          * Handles the final actions for all players and determines the winner.
          *
-         * Responsibilities:
-         * - Prompt players to discard two cards from their hand.
-         * - Broadcast endgame updates and final scores to all players.
-         * - Handle player disconnections gracefully and adjust the game state accordingly.
-         * - Transition back to the main menu after the game concludes.
-         *
+         * <p> Responsibilities:
+         * <ul>
+         * <li> Prompt players to discard two cards from their hand.</li>
+         * <li> Broadcast endgame updates and final scores to all players.</li>
+         * <li> Handle player disconnections gracefully and adjust the game state accordingly.</li>
+         * <li> Transition back to the main menu after the game concludes.</li>
+         * </ul>
+         * 
          * @param playerList     A list of {@link Player} objects representing the players in the game.
          * @param isTwoPlayerGame A boolean indicating whether the game is a two-player game.
          * @param turnManager    The {@link TurnManager} object managing the turn order.
@@ -479,8 +491,10 @@ public class OnlineGameLogic {
      * Clears any unwanted input from the input buffer to prevent accidental input values.
      * Ensures that the input stream is clean before processing new input.
      *
-     * Exceptions:
-     * - Handles {@link IOException} for input stream errors.
+     * <p> Exceptions:
+     * <ul>
+     * <li> Handles {@link IOException} for input stream errors.</li>
+     * </ul>
      */
     public static void flushInputBuffer() {
         try {

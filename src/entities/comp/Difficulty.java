@@ -1,7 +1,6 @@
 package entities.comp;
 /**
- * The difficulty level of AI Players.\
- * <p>
+ * The difficulty level of AI Players. 
  * Each level affects the AI's behavior and decision-making complexity.
  */
 public enum Difficulty {

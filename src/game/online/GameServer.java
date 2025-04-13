@@ -8,42 +8,54 @@ import java.util.*;
 /**
  * The GameServer class is responsible for managing the server-side logic of the online game.
  * It handles player connections, lobby setup, and the initialization of the game.
+ * 
+ * <p> Key Responsibilities:
+ * <ul>
+ * <li> Start the server and bind it to a specific port.</li>
+ * <li> Accept incoming client connections and manage player sockets.</li>
+ * <li> Set up the game lobby, including player name validation and displaying the lobby status.</li>
+ * <li> Initialize the game logic and manage the transition to gameplay.</li>
+ * <li> Broadcast messages and updates to all connected players.</li>
+ * </ul>
+ * 
+ * <p> Key Features:
+ * <ul>
+ * <li> Supports multiple players (2-6) in an online game.</li>
+ * <li> Handles player disconnections gracefully.</li>
+ * <li> Displays the server's IP address and port for clients to connect.</li>
+ * <li> Uses a timeout mechanism to avoid blocking while waiting for new connections.</li>
+ * </ul>
  *
- * Key Responsibilities:
- * - Start the server and bind it to a specific port.
- * - Accept incoming client connections and manage player sockets.
- * - Set up the game lobby, including player name validation and displaying the lobby status.
- * - Initialize the game logic and manage the transition to gameplay.
- * - Broadcast messages and updates to all connected players.
+ * <p> Dependencies:
+ * <ul>
+ * <li> {@link Player} – Represents each player in the game.</li>
+ * <li> {@link Deck} – Represents the deck of cards used in the game.</li>
+ * <li> {@link TurnManager} – Manages the turn order of players.</li>
+ * <li> {@link OnlineGameLogic} – Contains the core game logic for online gameplay.</li>
+ * </ul>
  *
- * Key Features:
- * - Supports multiple players (2-6) in an online game.
- * - Handles player disconnections gracefully.
- * - Displays the server's IP address and port for clients to connect.
- * - Uses a timeout mechanism to avoid blocking while waiting for new connections.
- *
- * Dependencies:
- * - {@link Player} – Represents each player in the game.
- * - {@link Deck} – Represents the deck of cards used in the game.
- * - {@link TurnManager} – Manages the turn order of players.
- * - {@link OnlineGameLogic} – Contains the core game logic for online gameplay.
- *
- * Assumptions:
- * - The server is hosted on a machine with a valid network configuration.
- * - Players connect using the provided IP address and port.
- * - The game ends when all players disconnect or the game logic concludes.
+ * <p> Assumptions:
+ * <ul>
+ * <li> The server is hosted on a machine with a valid network configuration.</li>
+ * <li> Players connect using the provided IP address and port.</li>
+ * <li> The game ends when all players disconnect or the game logic concludes.</li>
+ * </ul>
  */
 
 public class GameServer {
     
     private static final int PORT = 1234;
     private static final int TIMEOUT = 500;
+
+    /** A list of player sockets representing connected clients.*/
     public static List<Socket> playersSockets = new ArrayList<>();
     ArrayList<String> playerNames = new ArrayList<>();
     ArrayList<Player> multiplayerPlayerList = new ArrayList<>();
     private static List<ObjectOutputStream> outputs = new ArrayList<>();
     private static List<ObjectInputStream> inputs = new ArrayList<>();
     private boolean isTwoPlayerGame = false;
+
+    /** The {@link ServerSocket} used to accept incoming client connections.*/
     public static ServerSocket serverSocket;
 
 
@@ -92,14 +104,11 @@ public class GameServer {
      * Displays the game lobby information, including the list of connected players and the server's IP address.
      * Updates the lobby status as players join and provides feedback to the server host.
      *
-     * Parameters:
-     * - {@code playerList} – The list of {@link Player} objects representing the connected players.
-     * - {@code sc} – A {@link Scanner} object for reading user input.
-     * - {@code ipAddress} – The IP address of the server.
-     * - {@code maxSize} – The maximum number of players allowed in the game.
-     *
-     * Returns:
-     * - @return {@code true} if the lobby is successfully displayed.
+     * @param playerList The list of {@link Player} objects representing the connected players.
+     * @param sc A {@link Scanner} object for reading user input.
+     * @param ipAddress The IP address of the server.
+     * @param maxSize The maximum number of players allowed in the game.
+     * @return {@code true} if the lobby is successfully displayed.
      */
     private static boolean displayLobby(ArrayList<Player> playerList, Scanner sc, String ipAddress, int maxSize) {
         System.out.println("========================");
@@ -130,12 +139,13 @@ public class GameServer {
      * Retrieves the server's IP address for clients to connect.
      * Iterates through the network interfaces to find the first active IPv4 address.
      *
-     * Returns:
-     * - A {@link String} representing the server's IP address.
-     * - If no valid IP address is found, returns "Unable to determine IP address".
+     * @return A {@link String} representing the server's IP address. If no valid IP address is found, 
+     * returns "Unable to determine IP address".
      *
-     * Exceptions:
-     * - Handles {@link SocketException} for network interface errors.
+     * <p> Exceptions:
+     * <ul>
+     * <li> Handles {@link SocketException} for network interface errors.</li>
+     * </ul>
      */
     private static String getServerIPAddress() {
         try {

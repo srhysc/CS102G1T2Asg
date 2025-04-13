@@ -40,13 +40,6 @@ public class SoundPlayer {
      * is started, it is set to loop 500 times.</p>
      *
      * @param soundFilePath The relative file path (minus extension) to the sound file.
-     *
-     * @throws UnsupportedAudioFileException if the specified audio file is not supported.
-     * @throws IOException if there is an error while reading the file.
-     * @throws LineUnavailableException if a clip cannot be opened due to resource restrictions.
-     *
-     * <p>Note: The exceptions are caught within the method and a message is printed to the console.
-     * In a production environment, better error handling might be required.</p>
      */
     // Method to play a sound file
     public static void playSound(String soundFilePath) {

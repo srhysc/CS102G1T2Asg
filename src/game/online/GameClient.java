@@ -13,30 +13,38 @@ import java.util.*;
  * The GameClient class is responsible for managing the client-side logic of the online game.
  * It handles connecting to the game server, sending and receiving data, and managing player interactions.
  *
- * Key Responsibilities:
- * - Connect to the game server using the provided IP address and port.
- * - Handle communication with the server, including sending player moves and
- * receiving game updates.
- * - Display game menus, announcements, and prompts from the host to the player.
- * - Validate player input and ensure proper communication with the server.
+ * <p> Key Responsibilities:
+ * <ul>
+ * <li> Connect to the game server using the provided IP address and port.</li>
+ * <li> Handle communication with the server, including sending player moves and
+ * receiving game updates.</li>
+ * <li> Display game menus, announcements, and prompts from the host to the player.</li>
+ * <li> Validate player input and ensure proper communication with the server.</li>
+ * </ul>
  *
- * Key Features:
- * - Supports interactive gameplay for a single player in an online game.
- * - Handles server disconnections gracefully and provides feedback to the player.
- * - Displays game state updates, including other players' moves and announcements.
- * - Allows the player to make moves, including discarding cards during the final round.
+ * <p> Key Features:
+ * <ul>
+ * <li> Supports interactive gameplay for a single player in an online game.</li>
+ * <li> Handles server disconnections gracefully and provides feedback to the player.</li>
+ * <li> Displays game state updates, including other players' moves and announcements.</li>
+ * <li> Allows the player to make moves, including discarding cards during the final round.</li>
+ * </ul>
  *
- * Dependencies:
- * - {@link SocketPacket} – Used for communication between the client and server.
- * - {@link Scoring} – Handles input validation for card selection.
- * - {@link GameLogic} – Provides utility methods for game logic, such as flushing input buffers.
+ * <p> Dependencies:
+ * <ul>
+ * <li> {@link SocketPacket} – Used for communication between the client and server.</li>
+ * <li> {@link Scoring} – Handles input validation for card selection.</li>
+ * <li> {@link GameLogic} – Provides utility methods for game logic, such as flushing input buffers.</li>
+ * </ul>
  *
- * Assumptions:
- * - The server is running and accessible at the provided IP address and port.
- * - The player provides valid input when prompted.
- * - The game ends when the server sends a "Game Over" message or the connection
- * is closed.
- * - A player is only running one server on one computer
+ * <p> Assumptions:
+ * <ul>
+ * <li> The server is running and accessible at the provided IP address and port.</li>
+ * <li> The player provides valid input when prompted.</li>
+ * <li> The game ends when the server sends a "Game Over" message or the connection
+ * is closed.</li>
+ * <li> A player is only running one server on one computer.</li>
+ * </ul>
  */
 
 public class GameClient {
@@ -47,14 +55,18 @@ public class GameClient {
      * Starts the client-side logic for connecting to the game server and managing gameplay.
      * Handles the connection setup, communication with the server, and player interactions.
      *
-     * Responsibilities:
-     * - Connect to the server using the provided IP address and port.
-     * - Exchange player information with the server during the setup phase.
-     * - Process server messages and handle game events such as move requests and game-over notifications.
-     * - Validate player input and send moves to the server.
+     * <p> Responsibilities:
+     * <ul>
+     * <li> Connect to the server using the provided IP address and port.</li>
+     * <li> Exchange player information with the server during the setup phase.</li>
+     * <li> Process server messages and handle game events such as move requests and game-over notifications.</li>
+     * <li> Validate player input and send moves to the server.</li>
+     * </ul>
      *
-     * Exceptions:
-     * - Handles {@link IOException} and {@link ClassNotFoundException} for network communication errors.
+     * <p> Exceptions:
+     * <ul>
+     * <li> Handles {@link IOException} and {@link ClassNotFoundException} for network communication errors.</li>
+     * </ul>
      */
     public void startClient() {
         try (Scanner sc = new Scanner(System.in);) {
@@ -299,17 +311,14 @@ public class GameClient {
     /**
      * Prompts the user to enter the host IP address and attempts to connect to the server.
      * Repeats the prompt until a valid connection is established.
+     * Handles connection errors and prompts the user to re-enter the IP address if the connection fails.
      *
-     * Parameters:
-     * - {@code sc} – A {@link Scanner} object for reading user input.
-     *
-     * Returns:
-     * - An {@code Object[]} containing:
-     *   - The host IP address as a {@link String}.
-     *   - The connected {@link Socket} object.
-     *
-     * Exceptions:
-     * - Handles connection errors and prompts the user to re-enter the IP address if the connection fails.
+     * @param A {@link Scanner} object for reading user input.
+     * @return An {@code Object[]} containing:
+     *     <ul>
+     *   <li> The host IP address as a {@link String}.</li>
+     *   <li> The connected {@link Socket} object.</li>
+     *      </ul>
      */
     private static Object[] requestHostIP(Scanner sc){
 

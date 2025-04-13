@@ -23,25 +23,31 @@ import entities.comp.ComputerPlayer;
  * out who has the
  * most of each card color, and calculating final scores.
  *
- * There are two main entry points:
- * - {@code calculateScores(List<Player> players)} is used in local games.
- * - {@code calculateScoresOnline(List<Player> players)} is used in online
+ * <p> There are two main entry points:
+ * <ul>
+ * <li> {@code calculateScores(List<Player> players)} is used in local games.</li> 
+ * <li> {@code calculateScoresOnline(List<Player> players)} is used in online
  * games,
- * and returns a {@link SocketPacket} so results can be sent to each player.
+ * and returns a {@link SocketPacket} so results can be sent to each player.</li> 
+ * </ul>
  *
- * Key things this class does:
- * - Ask each player to discard two cards from their hand.
- * - Tally up all collected cards and award bonuses for majorities by color.
- * - Count up everyone's points and print them out (or send them over the
- * network).
- *
- * Depends on:
- * - {@link Player} – represents each player in the game.
- * - {@link Card} – represents a card in the game (with color, value, and
- * flipped state).
- * - {@link SocketPacket} – used to send scoring results in online games.
- *
- * Assumes that all normal gameplay (drawing, playing cards, etc.) is finished.
+ * <p> Key things this class does:
+ * <ul>
+ * <li> Ask each player to discard two cards from their hand.</li> 
+ * <li> Tally up all collected cards and award bonuses for majorities by color.</li> 
+ * <li> Count up everyone's points and print them out (or send them over the
+ * network).</li> 
+ *  </ul>
+ * 
+ * <p> Depends on:
+ * <ul>
+ * <li> {@link Player} – represents each player in the game.</li> 
+ * <li> {@link Card} – represents a card in the game (with color, value, and
+ * flipped state).</li> 
+ * <li> {@link SocketPacket} – used to send scoring results in online games.</li> 
+ * </ul>
+ * 
+ * <p> Assumes that all normal gameplay (drawing, playing cards, etc.) is finished.
  * This class just wraps up the round and tells everyone how they did.
  */
 public class Scoring {

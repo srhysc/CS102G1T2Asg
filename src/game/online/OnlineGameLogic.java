@@ -71,15 +71,9 @@ public class OnlineGameLogic {
     public static void playOnlineTurn(Deck deck, ArrayList<Player> playerList, TurnManager turnManager,
             boolean isTwoPlayerGame, List<ObjectOutputStream> outputs, List<ObjectInputStream> inputs, Scanner sc) {
 
-            
+            //initalise game deck 
             GameLogic.initalizeGame(deck, playerList);
-
-            // for testing
-            for (int i = 0; i < 40; i++) {
-                deck.drawCard();
-            }
-
-           
+        
             int moveIndex = 0;
             boolean hasAllColours = false;
             String firstPlayerWithAllColours = null;

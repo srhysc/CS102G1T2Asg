@@ -108,27 +108,11 @@ public class GameLogic {
 
                 int cardIndex = 0;
 
-                // Validation loop to check for non-number input and card index out of range
-                while (true) {
-                    System.out.print("Choose a card index (1-" + currentPlayer.getHand().size() + "): ");
+                // Validate user input: ensure it's a number, not empty, does not have leading and trailing
+                // spaces and within valid card index range
+                cardIndex = getValidCardIndex(sc, currentPlayer.getHand().size());
 
-                    if (!sc.hasNextInt()) {
-                        sc.nextLine(); // Clear invalid input
-                        System.out.println("Card index must be a number ! Please choose again");
-                        continue;
-                    }
-
-                    cardIndex = sc.nextInt() - 1;
-                    sc.nextLine(); // Clear the newline character
-
-                    if (cardIndex < 0 || cardIndex >= currentPlayer.getHand().size()) {
-                        System.out.println("Invalid card number! Please choose again");
-                        continue;
-                    }
-
-                    break; // Valid input
-                }
-
+                
                 // Play the selected card and resolve the parade effect
                 Card playedCard = currentPlayer.playCard(cardIndex);
                 ArrayList<Card> takenCards = new ArrayList<>(Parade.removeCards(playedCard));
@@ -206,26 +190,10 @@ public class GameLogic {
 
                 int cardIndex = 0;
 
-                // Validate user input: ensure it's a number and within valid card index range
-                while (true) {
-                    System.out.print("Choose a card index (1-" + currentPlayer.getHand().size() + "): ");
+                // Validate user input: ensure it's a number, not empty, does not have leading and trailing
+                // spaces and within valid card index range
+                cardIndex = getValidCardIndex(sc, currentPlayer.getHand().size());
 
-                    if (!sc.hasNextInt()) {
-                        sc.nextLine(); // Clear invalid input
-                        System.out.println("Card index must be a number ! Please choose again");
-                        continue;
-                    }
-
-                    cardIndex = sc.nextInt() - 1;
-                    sc.nextLine(); // Clear newline character
-
-                    if (cardIndex < 0 || cardIndex >= currentPlayer.getHand().size()) {
-                        System.out.println("Invalid card number! Please choose again");
-                        continue;
-                    }
-
-                    break; // Valid input
-                }
 
                 // Play selected card and resolve parade effect
                 Card playedCard = currentPlayer.playCard(cardIndex);
@@ -245,6 +213,46 @@ public class GameLogic {
 
         // End the game and calculate final results
         endGame(playerList, isTwoPlayerGame);
+    }
+
+    public static int getValidCardIndex(Scanner sc, int currentPlayerHandSize) {
+        int validCardIndex = 0;
+
+        while (true) {
+            System.out.print("Choose a card index (1-" + currentPlayerHandSize + "): ");
+
+            String input = sc.nextLine();
+            
+            
+            if (input.trim().isEmpty()) {
+                System.out.println("Input cannot be empty! Please choose again.");
+                continue;
+            }
+            
+            if (!input.equals(input.trim())) {
+                System.out.println("Input must not have spaces before or after the number! Please choose again.");
+                continue;
+            }                    
+            
+            int number = 0;
+            try {
+                number = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Card index must be a number! Please choose again.");
+                continue;
+            }
+            
+            validCardIndex = number - 1;
+            
+            if (validCardIndex < 0 || validCardIndex >= currentPlayerHandSize) {
+                System.out.println("Invalid card number! Please choose again.");
+                continue;
+            }
+            
+            break; 
+        }
+
+        return validCardIndex;
     }
 
     /**

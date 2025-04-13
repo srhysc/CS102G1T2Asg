@@ -486,8 +486,17 @@ public class Game {
             System.out.println("Animation interrupted.");
         }
         Scanner sc = new Scanner(System.in);
-        System.out.print("Enter your name: ");
-        String Human = sc.nextLine();
+        String humanName; // Variable declaration outside the loop
+
+        do {
+            System.out.print("Enter your name: ");
+            humanName = sc.nextLine().trim();
+
+            if (humanName.isBlank()) {
+                System.out.println("Name cannot be blank! Please choose a different name.");
+            }
+        } while (humanName.isBlank());
+
         int noOfAIPlayers = 0;
 
         while (!(noOfAIPlayers >= 1 && noOfAIPlayers <= 5)) {
@@ -513,7 +522,7 @@ public class Game {
         }
 
         playerList = new ArrayList<>();
-        playerList.add(new Player(Human));
+        playerList.add(new Player(humanName));
         int currentNumber = 1;
         while (noOfAIPlayers > 0) {
 

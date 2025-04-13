@@ -397,30 +397,68 @@ public class Scoring {
      */
     public static int getValidCardIndexToDiscard(Scanner sc, int maxSize, String prompt) {
         int index;
-        do {
+        // do {
 
-            while (true) {
-                System.out.print(prompt);
+        //     while (true) {
+        //         System.out.print(prompt);
 
-                if (!sc.hasNextInt()) {
-                    sc.nextLine(); // clear the invalid input
-                    System.out.println("Card index must be a number");
-                    continue;
-                }
+        //         if (!sc.hasNextInt()) {
+        //             sc.nextLine(); // clear the invalid input
+        //             System.out.println("Card index must be a number");
+        //             continue;
+        //         }
 
-                index = sc.nextInt();
-                sc.nextLine(); // clear the newline character after nextInt
+        //         index = sc.nextInt();
+        //         sc.nextLine(); // clear the newline character after nextInt
 
-                if (index < 1 || index > maxSize) {
-                    System.out.println("Invalid choice! Please select a valid card number.");
-                    continue;
-                }
+        //         if (index < 1 || index > maxSize) {
+        //             System.out.println("Invalid choice! Please select a valid card number.");
+        //             continue;
+        //         }
 
-                break; // valid input, exit loop
+        //         break; // valid input, exit loop
+        //     }
+
+        // } while (index < 1 || index > maxSize);
+        // return index - 1; // we count from 0 while player counts from 1
+
+
+        // Alternative
+        while (true) {
+            System.out.print(prompt);
+            
+            String input = sc.nextLine();
+            
+            
+            if (input.trim().isEmpty()) {
+                System.out.println("Input cannot be empty! Please choose again.");
+                continue;
             }
+            
+            if (!input.equals(input.trim())) {
+                System.out.println("Invalid input! Ensure there are no spaces before or after and that you enter a valid number. Please choose again.");
+                continue;
+            }                    
+            
+            int number = 0;
+            try {
+                number = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println("Card index must be a number! Please choose again.");
+                continue;
+            }
+            
+            index = number - 1;
+            
+            if (index < 0 || index >= maxSize) {
+                System.out.println("Invalid card number! Please choose again.");
+                continue;
+            }
+            
+            break; 
+        }
 
-        } while (index < 1 || index > maxSize);
-        return index - 1; // we count from 0 while player counts from 1
+        return index;
     }
 
     /*

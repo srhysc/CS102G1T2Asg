@@ -248,7 +248,7 @@ public class GameLogic {
             }
             
             if (!input.equals(input.trim())) {
-                System.out.println("Input must not have spaces before or after the number! Please choose again.");
+                System.out.println("Invalid input! Ensure there are no spaces before or after and that you enter a valid number. Please choose again.");
                 continue;
             }                    
             

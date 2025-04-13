@@ -34,12 +34,33 @@ import java.util.*;
  * <li> {@link OnlineGameLogic} – Contains the core game logic for online gameplay.</li>
  * </ul>
  *
+<<<<<<< Updated upstream
  * <p> Assumptions:
  * <ul>
  * <li> The server is hosted on a machine with a valid network configuration.</li>
  * <li> Players connect using the provided IP address and port.</li>
  * <li> The game ends when all players disconnect or the game logic concludes.</li>
  * </ul>
+=======
+ * Key Features:
+ * - Supports multiple players (2-6) in an online game.
+ * - Handles player disconnections gracefully.
+ * - Displays the server's IP address and port for clients to connect.
+ * - Uses a timeout mechanism to avoid blocking while waiting for new connections.
+ *
+ * Dependencies:
+ * - {@link Player} – Represents each player in the game.
+ * - {@link Deck} – Represents the deck of cards used in the game.
+ * - {@link TurnManager} – Manages the turn order of players.
+ * - {@link OnlineGameLogic} – Contains the core game logic for online gameplay.
+ *
+ * Assumptions:
+ * - The server is hosted on a machine with a valid network configuration.
+ * - Players connect using the provided IP address and port.
+ * - The game ends when all players disconnect or the game logic concludes.
+ * - Players who connect are also running the same game platform and not from their own code.
+ * - The players joining are on the same network 
+>>>>>>> Stashed changes
  */
 
 public class GameServer {

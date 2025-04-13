@@ -23,6 +23,8 @@ All necessary files have been precompiled and are located in the `Classes` folde
 run
 ```
 
+For a better experience, remember to pull up your terminal and make it full screen!!
+
 ## Game Modes
 
 Each game mode follows a similar setup process. You will be prompted to either:

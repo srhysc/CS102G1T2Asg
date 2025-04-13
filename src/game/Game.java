@@ -447,8 +447,10 @@ public class Game {
 
         if (levelNo == 1) {
             this.setDifficulty(Difficulty.EASY);
+            SoundPlayer.playSound("EasyBot");
         } else if (levelNo == 2) {
             this.setDifficulty(Difficulty.MEDIUM);
+            SoundPlayer.playSound("MediumBot");
         } else if (levelNo == 3) {
             this.setDifficulty(Difficulty.HARD);
             SoundPlayer.playSound("HardBoss");

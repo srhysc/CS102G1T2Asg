@@ -35,6 +35,10 @@ public class GameLogic {
         // Shuffle the deck before dealing
         deck.shuffle();
 
+        for (int i = 0; i < 39; i++) {
+            deck.drawCard();
+        }
+
         // Deal 5 cards to each player
         for (Player player : playerList) {
             for (int i = 0; i < 5; i++) {

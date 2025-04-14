@@ -513,7 +513,7 @@ public class Game {
             if (ComputerPlayer.getGameDifficulty() == Difficulty.HARD && currentNumber == 2) {
                 double prof_chance = Math.random(); // 40% chance YL, 40% Jason, 20% Bunny
                 String result;
-                if (prof_chance < 0.4) {
+                if (prof_chance < 1) {
                     result = "AI Yeow Leong";
                 } else if (prof_chance < 0.8) {
                     result = "AI Jason Chan";
